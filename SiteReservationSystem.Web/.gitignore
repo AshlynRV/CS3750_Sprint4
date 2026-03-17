@@ -1,0 +1,27 @@
+# Visual Studio local files
+.vs/
+*.user
+*.suo
+
+# Build output
+bin/
+obj/
+
+# Rider / ReSharper
+.idea/
+*.sln.iml
+
+# Node / npm (if using frontend libraries)
+node_modules/
+
+# Logs
+*.log
+
+# Publish folder
+publish/
+
+# Temporary files
+*.tmp
+*.cache
+*.db
+*.sqlite
