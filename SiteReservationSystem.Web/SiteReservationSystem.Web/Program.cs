@@ -10,6 +10,13 @@ builder.Services.AddControllersWithViews();
 builder.Services.AddDbContext<ApplicationDbContext>(options =>
     options.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection")));
 
+builder.Services.AddSession(options =>
+{
+    options.IdleTimeout = TimeSpan.FromMinutes(90);
+    options.Cookie.HttpOnly = true;
+    options.Cookie.IsEssential = true;
+});
+
 var app = builder.Build();
 
 // Configure the HTTP request pipeline.
@@ -20,6 +27,9 @@ if (!app.Environment.IsDevelopment())
     app.UseHsts();
 }
 
+// Sessions are used for storing user info, ie. UserID, UserRole, Permissions, Name
+// This is done in AccountController.Login, look there for how it's stored and how to access the stored info
+app.UseSession();
 app.UseHttpsRedirection();
 app.UseRouting();
 app.UseAuthorization();
