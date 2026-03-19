@@ -1,6 +1,81 @@
-﻿@{
+﻿@model IEnumerable<SiteReservationSystem.Web.Models.Reservation>
+
+@{
     ViewData["Title"] = "Reservations";
 }
 
 <h2>Reservations</h2>
-<p>This page will manage reservations and reports.</p>
+
+@* Search form for filtering reservations by ID, customer name, and date range *@
+<form method="get" class="row mb-3">
+    <div class="col">
+        <input type="number" name="reservationId"
+               value="@Context.Request.Query["reservationId"]"
+               class="form-control" placeholder="Reservation #" />
+    </div>
+
+    <div class="col">
+        <input type="text" name="customerName"
+               value="@Context.Request.Query["customerName"]"
+               class="form-control" placeholder="Customer Name" />
+    </div>
+
+    <div class="col">
+        <input type="date" name="startDate"
+               value="@Context.Request.Query["startDate"]"
+               class="form-control" />
+    </div>
+
+    <div class="col">
+        <input type="date" name="endDate"
+               value="@Context.Request.Query["endDate"]"
+               class="form-control" />
+    </div>
+
+    <div class="col">
+        <button type="submit" class="btn btn-primary">Search</button>
+        <a href="/Reservations" class="btn btn-secondary">Clear</a>
+    </div>
+</form>
+
+@* Displays filtered reservation results *@
+<table class="table table-bordered">
+    <thead>
+        <tr>
+            <th>Reservation #</th>
+            <th>Customer Name</th>
+            <th>Phone</th>
+            <th>Email</th>
+            <th>Site Number</th>
+            <th>Start Date</th>
+            <th>End Date</th>
+            <th>Status</th>
+        </tr>
+    </thead>
+    <tbody>
+        @if (!Model.Any())
+        {
+            <tr>
+                <td colspan="8" class="text-center">
+                    No reservations found.
+                </td>
+            </tr>
+        }
+        else
+        {
+            foreach (var r in Model)
+            {
+                <tr>
+                    <td>@r.ReservationID</td>
+                    <td>@r.Customer.FirstName @r.Customer.LastName</td>
+                    <td>@r.Customer.PhoneNumber</td>
+                    <td>@r.Customer.User.Email</td>
+                    <td>@r.Site.SiteNumber</td>
+                    <td>@r.StartDate.ToShortDateString()</td>
+                    <td>@r.EndDate.ToShortDateString()</td>
+                    <td>@r.ReservationStatus.StatusName</td>
+                </tr>
+            }
+        }
+    </tbody>
+</table>
