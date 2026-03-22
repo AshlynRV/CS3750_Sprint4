@@ -1,6 +1,7 @@
 using Microsoft.EntityFrameworkCore;
 using SiteReservationSystem.Web.Data;
 
+
 var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
@@ -41,3 +42,7 @@ app.MapControllerRoute(
     .WithStaticAssets();
 
 app.Run();
+
+
+
+
