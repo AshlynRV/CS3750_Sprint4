@@ -1,0 +1,14 @@
+﻿@model SiteReservationSystem.Web.Models.Employee
+
+@{
+    ViewData["Title"] = "Delete Employee";
+}
+
+<h2>Delete Employee</h2>
+
+<p>Are you sure you want to delete @Model.FirstName @Model.LastName?</p>
+
+<form asp-action="DeleteEmployeeConfirmed" asp-route-id="@Model.EmployeeID" method="post">
+    <button type="submit" class="btn btn-danger">Yes, Delete</button>
+    <a asp-action="Employees" class="btn btn-secondary">Cancel</a>
+</form>

@@ -125,6 +125,41 @@ namespace SiteReservationSystem.Web.Controllers
             return RedirectToAction(nameof(Employees));
         }
 
+        // GET: Admin/DeleteEmployee/5
+        public async Task<IActionResult> DeleteEmployee(int id)
+        {
+            var employee = await _context.Employees
+                .Include(e => e.User)
+                .FirstOrDefaultAsync(e => e.EmployeeID == id);
+
+            if (employee == null)
+                return NotFound();
+
+            return View(employee); // Shows confirmation page
+        }
+
+        // POST: Admin/DeleteEmployeeConfirmed/5
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> DeleteEmployeeConfirmed(int id)
+        {
+            var employee = await _context.Employees
+                .Include(e => e.User)
+                .FirstOrDefaultAsync(e => e.EmployeeID == id);
+
+            if (employee == null)
+                return NotFound();
+
+            // Remove associated user first
+            if (employee.User != null)
+                _context.Users.Remove(employee.User);
+
+            _context.Employees.Remove(employee);
+            await _context.SaveChangesAsync();
+
+            return RedirectToAction(nameof(Employees));
+        }
+
         // POST: Admin/ToggleLock/5
         [HttpPost]
         [ValidateAntiForgeryToken]

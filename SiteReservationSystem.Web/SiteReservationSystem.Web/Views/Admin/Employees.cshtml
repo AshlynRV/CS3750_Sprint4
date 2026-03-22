@@ -32,11 +32,14 @@
                 <td>@emp.IsLockedOut</td>
                 <td>
                     <a asp-action="EditEmployee" asp-route-id="@emp.EmployeeID" class="btn btn-sm btn-warning">Edit</a>
+                    
                     <form asp-action="ToggleLock" asp-route-id="@emp.EmployeeID" method="post" style="display:inline;">
                         <button type="submit" class="btn btn-sm btn-danger">
                             @(emp.IsLockedOut ? "Unlock" : "Lock")
                         </button>
                     </form>
+                    
+                    <a asp-action="DeleteEmployee" asp-route-id="@emp.EmployeeID" class="btn btn-sm btn-secondary">Delete</a>
                 </td>
             </tr>
         }
