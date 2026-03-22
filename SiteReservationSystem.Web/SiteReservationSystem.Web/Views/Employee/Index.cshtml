@@ -1,0 +1,37 @@
+﻿@model IEnumerable<SiteReservationSystem.Web.Models.Employee>
+
+<h1>Employees</h1>
+
+<p>
+    <a asp-action="Create" class="btn btn-primary">Create New Employee</a>
+</p>
+
+<table class="table table-striped">
+    <thead>
+        <tr>
+            <th>First Name</th>
+            <th>Last Name</th>
+            <th>Email</th>
+            <th>Access</th>
+            <th>Active</th>
+            <th>Actions</th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var emp in Model)
+        {
+            <tr>
+                <td>@emp.FirstName</td>
+                <td>@emp.LastName</td>
+                <td>@emp.User.Email</td>
+                <td>@emp.AccessPermissions</td>
+                <td>@emp.IsActive</td>
+                <td>
+                    <a asp-action="Details" asp-route-id="@emp.EmployeeID">Details</a> |
+                    <a asp-action="Edit" asp-route-id="@emp.EmployeeID">Edit</a> |
+                    <a asp-action="Delete" asp-route-id="@emp.EmployeeID">Delete</a>
+                </td>
+            </tr>
+        }
+    </tbody>
+</table>
