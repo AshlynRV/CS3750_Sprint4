@@ -25,3 +25,6 @@ publish/
 *.cache
 *.db
 *.sqlite
+
+# Ignore appsettings.json
+appsettings.json
