@@ -1,0 +1,102 @@
+﻿@{
+    ViewData["Title"] = "Site Details";
+}
+
+@model SiteReservationSystem.Web.Models.Site
+
+<h2>Site @Html.DisplayFor(site => site.SiteNumber)</h2>
+<div>
+    <h3>Photos</h3>
+    <table style="width: 100%; margin-top: 20px; border-collapse: collapse">
+        <thead>
+            <tr style="background: #2c3e6b; color: white">
+                <th style="padding: 10px; text-align: left">Photo</th>
+                <th style="padding: 10px; text-align: left">Caption</th>
+                <th style="padding: 10px; text-align: left">Actions</th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var photo in Model.SitePhotos)
+            {
+                <tr style="border-bottom: 1px solid #ddd">
+                    <td style="padding: 10px"><img src="@photo.PhotoURL" style="width: 400px; height: 300px; object-fit: cover;" /></td>
+                    <td>@photo.Caption</td>
+                    <td>
+                        <a asp-action="EditPhoto" asp-route-id="@photo.PhotoID" class="btn btn-sm btn-warning">Edit</a>
+                        <a asp-action="DeletePhoto" asp-route-id="@photo.PhotoID" class="btn btn-sm btn-danger">Delete</a>
+                    </td>
+                </tr>
+            }
+        </tbody>
+    </table>
+
+    <h3 style="margin-top: 10px;">Add Photo</h3>
+
+    <p>
+        <a asp-action="CreatePhoto" asp-route-siteID="@Model.SiteID" class="btn btn-primary">Add Photo</a>
+    </p>
+
+</div>
+
+<div>
+    <h3>Reservations</h3>
+    <table style="width: 100%; margin-top: 20px; border-collapse: collapse">
+        <thead>
+            <tr style="background: #2c3e6b; color: white">
+                <th style="padding: 10px; text-align: left">Reservation ID</th>
+                <th style="padding: 10px; text-align: left">Customer</th>
+                <th style="padding: 10px; text-align: left">Reservation Status</th>
+                <th style="padding: 10px; text-align: left">Start</th>
+                <th style="padding: 10px; text-align: left">End</th>
+                <th style="padding: 10px; text-align: left">Trailer Length (ft)</th>
+                <th style="padding: 10px; text-align: left">Base Amount</th>
+                <th style="padding: 10px; text-align: left">Total Amount</th>
+                <th style="padding: 10px; text-align: left">Balance Due</th>
+                <th style="padding: 10px; text-align: left">Scheduled Check-in</th>
+                <th style="padding: 10px; text-align: left">Actual Check-in</th>
+                <th style="padding: 10px; text-align: left">Scheduled Check-out</th>
+                <th style="padding: 10px; text-align: left">Actual Check-out</th>
+                <th style="padding: 10px; text-align: left">Date Created</th>
+                <th style="padding: 10px; text-align: left">Last Updated</th>
+                <th style="padding: 10px; text-align: left">Notes</th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var res in Model.Reservations)
+            {
+                <tr style="border-bottom: 1px solid #ddd">
+                    <td style="padding: 10px">@res.ReservationID</td>
+                    <td style="padding: 10px">@res.Customer.FirstName @res.Customer.LastName (ID: @res.CustomerID)</td>
+                    <td style="padding: 10px">@res.ReservationStatus.StatusName</td>
+                    <td style="padding: 10px">@res.StartDate.ToShortDateString()</td>
+                    <td style="padding: 10px">@res.EndDate.ToShortDateString()</td>
+                    <td style="padding: 10px">@res.TrailerLengthFeet</td>
+                    <td style="padding: 10px">@res.BaseAmount</td>
+                    <td style="padding: 10px">@res.TotalAmount</td>
+                    <td style="padding: 10px">@res.BalanceDue</td>
+                    <td style="padding: 10px">@res.ScheduledCheckInTime</td>
+                    <td style="padding: 10px">@res.ActualCheckInTime</td>
+                    <td style="padding: 10px">@res.ScheduledCheckOutTime</td>
+                    <td style="padding: 10px">@res.ActualCheckOutTime</td>
+                    <td style="padding: 10px">@res.DateCreated</td>
+                    <td style="padding: 10px">@res.LastUpdated</td>
+                    <td style="padding: 10px">@res.Notes</td>
+                </tr>
+            }
+        </tbody>
+    </table>
+
+    @{
+        var firstRes = Model.Reservations.FirstOrDefault();
+    }
+    @if (firstRes == null)
+    {
+        <p style="padding-top: 10px;">No reservations</p>
+    }
+</div>
+
+@section Scripts {
+    @{
+        await Html.RenderPartialAsync("_ValidationScriptsPartial");
+    }
+}

@@ -1,0 +1,14 @@
+﻿@model SiteReservationSystem.Web.Models.Site
+
+@{
+    ViewData["Title"] = "Delete Site";
+}
+
+<h2>Delete Site</h2>
+
+<p>Are you sure you want to delete Site @Model.SiteNumber?</p>
+
+<form asp-action="DeleteSite" asp-route-id="@Model.SiteID" method="post">
+    <button type="submit" class="btn btn-danger">Yes, Delete</button>
+    <a asp-action="Index" class="btn btn-secondary">Cancel</a>
+</form>

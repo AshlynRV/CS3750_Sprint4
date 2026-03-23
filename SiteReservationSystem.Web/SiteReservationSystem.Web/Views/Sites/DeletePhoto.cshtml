@@ -1,0 +1,14 @@
+﻿@model SiteReservationSystem.Web.Models.SitePhoto
+
+@{
+    ViewData["Title"] = "Delete Photo";
+}
+
+<h2>Delete Photo</h2>
+
+<p>Are you sure you want to delete Photo ID @Model.PhotoID for Site @Model.Site.SiteNumber?</p>
+
+<form asp-action="DeletePhoto" asp-route-id="@Model.PhotoID" method="post">
+    <button type="submit" class="btn btn-danger">Yes, Delete</button>
+    <a asp-action="Details" asp-route-id="@Model.SiteID" class="btn btn-secondary">Cancel</a>
+</form>
