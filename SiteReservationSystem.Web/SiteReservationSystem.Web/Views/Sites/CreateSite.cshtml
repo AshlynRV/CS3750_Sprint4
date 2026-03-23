@@ -1,0 +1,53 @@
+﻿@model SiteReservationSystem.Web.Models.Site
+
+@{
+    ViewData["Title"] = "Add a Site";
+}
+
+<h2>Add a New Site</h2>
+
+<form asp-action="CreateSite" method="post">
+
+    <div class="form-group">
+        <label asp-for="SiteNumber">Site Number</label>
+        <input asp-for="SiteNumber" class="form-control" />
+        <span asp-validation-for="SiteNumber" class="text-danger"></span>
+    </div>
+
+    <div class="form-group">
+        <label asp-for="SiteTypeID" style="padding-top: 10px">Site Type</label>
+        <select asp-for="SiteTypeID" class="form-control">
+            @foreach (var type in (List<SiteReservationSystem.Web.Models.SiteType>)ViewBag.SiteTypes)
+            {
+                <option value="@type.SiteTypeID">@type.TypeName</option>
+            }
+        </select>
+    </div>
+
+    <div class="form-group">
+        <label asp-for="MaxLengthFeet" style="padding-top: 10px">Max Length (ft)</label>
+        <input asp-for="MaxLengthFeet" class="form-control" />
+        <span asp-validation-for="MaxLengthFeet" class="text-danger"></span>
+    </div>
+
+    <div class="form-group">
+        <label asp-for="Notes" style="padding-top: 10px"></label>
+        <textarea asp-for="Notes" class="form-control" ></textarea>
+    </div>
+
+    <div class="form-group form-check">
+        <input asp-for="IsActive" class="form-check-input" />
+        <label asp-for="IsActive" class="form-check-label">Active?</label>
+    </div>
+
+    <br />
+
+    <button type="submit" class="btn btn-primary">Add Site</button>
+    <a asp-action="Index" class="btn btn-secondary">Cancel</a>
+</form>
+
+@section Scripts {
+    @{
+        await Html.RenderPartialAsync("_ValidationScriptsPartial");
+    }
+}

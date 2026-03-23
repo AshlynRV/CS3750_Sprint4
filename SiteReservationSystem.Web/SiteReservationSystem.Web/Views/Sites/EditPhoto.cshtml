@@ -1,0 +1,37 @@
+﻿@model SiteReservationSystem.Web.Models.SitePhoto
+
+@{
+    ViewData["Title"] = "Edit Photo";
+}
+
+<h2>Edit Photo ID @Model.PhotoID for Site @Model.Site.SiteNumber</h2>
+
+<form asp-action="EditPhoto" method="post">
+    <input type="hidden" asp-for="PhotoID" />
+    <input type="hidden" asp-for="SiteID" />
+
+    <div class="form-group">
+        <label asp-for="PhotoURL">Photo URL</label>
+        <input asp-for="PhotoURL" class="form-control" />
+        <span asp-validation-for="PhotoURL" class="text-danger"></span>
+    </div>
+
+    <div class="form-group">
+        <label asp-for="Caption" style="padding-top: 10px"></label>
+        <input asp-for="Caption" class="form-control" />
+    </div>
+
+    <input type="hidden" asp-for="DisplayOrder" />
+    <input type="hidden" asp-for="DateUploaded" />
+
+    <br />
+
+    <button type="submit" class="btn btn-primary">Save Changes</button>
+    <a asp-action="Details" asp-route-id="@Model.SiteID" class="btn btn-secondary">Cancel</a>
+</form>
+
+@section Scripts {
+    @{
+        await Html.RenderPartialAsync("_ValidationScriptsPartial");
+    }
+}

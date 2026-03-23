@@ -1,0 +1,55 @@
+﻿@model List<SiteReservationSystem.Web.Models.Site>
+
+@{
+    ViewData["Title"] = "Sites";
+}
+
+<h2>Sites</h2>
+
+<p>
+    <a asp-action="CreateSite" class="btn btn-primary">Add New Site</a>
+</p>
+
+<h4>(Click each site name to view photo and reservation details)</h4>
+
+<table style="width: 100%; margin-top: 20px; border-collapse: collapse">
+    <thead>
+        <tr style="background: #2c3e6b; color: white">
+            <th style="padding: 10px; text-align: left">Photo</th>
+            <th style="padding: 10px; text-align: left">Site Number</th>
+            <th style="padding: 10px; text-align: left">Site Type</th>
+            <th style="padding: 10px; text-align: left">Max Length (ft)</th>
+            <th style="padding: 10px; text-align: left">Notes</th>
+            <th style="padding: 10px; text-align: left">Active</th>
+            <th style="padding: 10px; text-align: left">Actions</th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var site in Model) {
+        <tr style="border-bottom: 1px solid #ddd">
+                <td style="padding: 10px">
+                    @{
+                        var firstPhoto = site.SitePhotos.FirstOrDefault();
+                    }
+                    @if (firstPhoto != null)
+                    {
+                        <img src="@firstPhoto.PhotoURL" style="width: 100px; height: 75px; object-fit: cover;" />
+                    }
+                    else
+                    {
+                        <span>No photo</span>
+                    }
+                </td>
+                <td style="padding: 10px"><a asp-action="Details" asp-route-id="@site.SiteID">Site @site.SiteNumber</a></td>
+                <td style="padding: 10px">@site.SiteType.TypeName</td>
+                <td style="padding: 10px">@site.MaxLengthFeet</td>
+                <td style="padding: 10px">@site.Notes</td>
+                <td style="padding: 10px">@(site.IsActive ? "Yes" : "No")</td>
+                <td>
+                    <a asp-action="EditSite" asp-route-id="@site.SiteID" class="btn btn-sm btn-warning">Edit</a>
+                    <a asp-action="DeleteSite" asp-route-id="@site.SiteID" class="btn btn-sm btn-danger">Delete</a>
+                </td>
+        </tr>
+        }
+    </tbody>
+</table>
