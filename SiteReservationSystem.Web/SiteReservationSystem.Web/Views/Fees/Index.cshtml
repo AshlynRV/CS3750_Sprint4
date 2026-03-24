@@ -1,6 +1,11 @@
 ﻿@{ ViewData["Title"] = "Fees"; }
 
 <h2>Fees</h2>
+
+<p>
+    <a asp-action="CreateFee" class="btn" style="background: #2c3e6b; color:white">Create New Fee</a>
+</p>
+
 <table style="width: 100%; margin-top: 20px; border-collapse: collapse">
     <thead>
         <tr style="background: #2c3e6b; color: white">
@@ -8,6 +13,7 @@
             <th style="padding: 10px; text-align: left">Default Amount</th>
             <th style="padding: 10px; text-align: left">Description</th>
             <th style="padding: 10px; text-align: left">Active</th>
+            <th style="padding: 10px; text-align: left " colspan="3">Manage Fees</th>
         </tr>
     </thead>
     <tbody>
@@ -17,7 +23,17 @@
             <td style="padding: 10px">$@fee.DefaultAmount.ToString("0.00")</td>
             <td style="padding: 10px">@fee.Description</td>
             <td style="padding: 10px">@(fee.IsActive ? "Yes" : "No")</td>
-        </tr>
+            <td>
+                <a asp-action="EditFee" asp-route-id="@fee.FeeID" class="btn btn-sm btn-primary">Edit</a>
+
+                    <form asp-action="ToggleActive" asp-route-id="@fee.FeeID" method="post" style="display:inline;">
+                        <button type="submit" class="btn btn-sm btn-secondary">
+                            @(fee.IsActive ? "Inactive" : "Active")
+                        </button>
+                    </form>
+                    <a asp-action="DeleteFee" asp-route-id="@fee.FeeID" class="btn btn-sm btn-danger">Delete</a>
+            </td>
+            </tr>
         }
     </tbody>
 </table>
