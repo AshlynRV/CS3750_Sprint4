@@ -135,7 +135,13 @@ namespace SiteReservationSystem.Web.Controllers
             return RedirectToAction(nameof(Index));
         }
 
-
+        /// <summary>
+        /// Displays the confirmation view for deleting a fee with the specified identifier.
+        /// </summary>
+        /// <remarks>This method does not perform the actual deletion. It presents a confirmation view to
+        /// the user before deletion occurs.</remarks>
+        /// <param name="id">The identifier of the fee to delete. If null, the method returns a 404 Not Found result.</param>
+        /// <returns>A view displaying the fee to be deleted if found; otherwise, a 404 Not Found result.</returns>
         public async Task<IActionResult> DeleteFee(int? id)
         {
             if (id == null) return NotFound();
@@ -148,7 +154,13 @@ namespace SiteReservationSystem.Web.Controllers
             return View(fee);
         }
 
-        
+        /// <summary>
+        /// Deletes the fee with the specified identifier and redirects to the index view.
+        /// </summary>
+        /// <remarks>If the specified fee does not exist, no action is taken and the user is redirected to
+        /// the index view. This action requires a valid anti-forgery token.</remarks>
+        /// <param name="id">The unique identifier of the fee to delete.</param>
+        /// <returns>A redirect to the index action after the fee is deleted.</returns>
         [HttpPost, ActionName("DeleteFee")]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Delete(int id)
