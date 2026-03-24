@@ -3,8 +3,6 @@ using Microsoft.EntityFrameworkCore;
 using SiteReservationSystem.Web.Data;
 using SiteReservationSystem.Web.Models;
 
-// Connect to database, load reservations, load customer info, send to view
-
 namespace SiteReservationSystem.Web.Controllers
 {
     public class ReservationsController : Controller
@@ -17,15 +15,9 @@ namespace SiteReservationSystem.Web.Controllers
         }
 
         /// <summary>
-        /// Displays all reservations, also supports filtering by reservation number,
-        /// customer name, and date range. If no filters are applied, all reservations are shown.
+        /// Displays all reservations and supports filtering and sorting.
         /// </summary>
-        /// <param name="reservationId"></param>
-        /// <param name="customerName"></param>
-        /// <param name="startDate"></param>
-        /// <param name="endDate"></param>
-        /// <returns></returns>
-        public IActionResult Index(int? reservationId, string? customerName, DateTime? startDate, DateTime? endDate)
+        public IActionResult Index(int? reservationId, string? customerName, DateTime? startDate, DateTime? endDate, string? sortOrder)
         {
             var query = _context.Reservations
                 .Include(r => r.Customer)
@@ -48,9 +40,51 @@ namespace SiteReservationSystem.Web.Controllers
             if (endDate.HasValue)
                 query = query.Where(r => r.EndDate <= endDate.Value);
 
+            if (sortOrder == "status")
+                query = query.OrderBy(r => r.ReservationStatus.StatusName);
+
             var reservations = query.ToList();
 
             return View(reservations);
+        }
+
+        // GET: Edit Reservation
+        public IActionResult Edit(int id)
+        {
+            var reservation = _context.Reservations
+                .Include(r => r.Site)
+                .Include(r => r.ReservationStatus)
+                .FirstOrDefault(r => r.ReservationID == id);
+
+            if (reservation == null)
+                return NotFound();
+
+            ViewBag.Sites = _context.Sites.ToList();
+            ViewBag.Statuses = _context.ReservationStatuses.ToList();
+
+            return View(reservation);
+        }
+
+        // ✅ POST: Edit Reservation
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public IActionResult Edit(Reservation updatedReservation)
+        {
+            var reservation = _context.Reservations
+                .FirstOrDefault(r => r.ReservationID == updatedReservation.ReservationID);
+
+            if (reservation == null)
+                return NotFound();
+
+            reservation.StartDate = updatedReservation.StartDate;
+            reservation.EndDate = updatedReservation.EndDate;
+            reservation.SiteID = updatedReservation.SiteID;
+            reservation.ReservationStatusID = updatedReservation.ReservationStatusID;
+            reservation.LastUpdated = DateTime.UtcNow;
+
+            _context.SaveChanges();
+
+            return RedirectToAction("Index");
         }
     }
 }
