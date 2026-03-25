@@ -1,4 +1,5 @@
 ﻿using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using SiteReservationSystem.Web.Data;
 using SiteReservationSystem.Web.Models;
@@ -176,6 +177,49 @@ namespace SiteReservationSystem.Web.Controllers
             }
 
             return RedirectToAction(nameof(Index));
+        }
+
+        public IActionResult AddFee(int reservationId)
+        {
+            var reservation = _context.Reservations
+                .Include(r => r.Customer)
+                .FirstOrDefault(r => r.ReservationID == reservationId);
+            if(reservation == null)
+            {
+                return NotFound();
+            }
+            ViewBag.ReservationId = reservation.ReservationID;
+
+            var model = new ReservationFee { ReservationID = reservationId , Reservation =reservation };
+
+            var fees = _context.Fees.ToList();
+            ViewBag.AllFees = fees;
+            ViewBag.FeeList = new SelectList(_context.Fees,"FeeID", "FeeName");
+
+            return View(model);
+        }
+
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> AddFeeAsync(ReservationFee reservationfee) 
+        {
+            ModelState.Remove("Reservation");
+            ModelState.Remove("Fee");
+
+            if (ModelState.IsValid)
+            {
+                _context.ReservationFees.Add(reservationfee);
+                await _context.SaveChangesAsync();
+                return RedirectToAction("Index", "Reservations", new { id = reservationfee.ReservationID });
+
+            }
+            reservationfee.Reservation = await _context.Reservations
+                .Include(r => r.Customer)
+                .FirstOrDefaultAsync(r => r.ReservationID == reservationfee.ReservationID);
+
+            ViewBag.FeeList = new SelectList(_context.Fees, "FeeID", "FeeName", reservationfee.FeeID);
+
+            return View(reservationfee);
         }
     }
 }
