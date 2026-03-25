@@ -3,8 +3,17 @@
 @{
     ViewData["Title"] = "Reservations";
 }
-
 <h2>Reservations</h2>
+
+<a asp-action="Index"
+       asp-route-reservationId="@Context.Request.Query["reservationId"]"
+       asp-route-customerName="@Context.Request.Query["customerName"]"
+       asp-route-startDate="@Context.Request.Query["startDate"]"
+       asp-route-endDate="@Context.Request.Query["endDate"]"
+       asp-route-sortOrder="status"
+       class="btn btn-info mb-2">
+    Sort by Status
+</a>
 
 @* Search form for filtering reservations by ID, customer name, and date range *@
 <form method="get" class="row mb-3">
@@ -38,6 +47,10 @@
     </div>
 </form>
 
+<button onclick="window.print()" class="btn btn-secondary mb-2">
+    Print / Save as PDF
+</button>
+
 @* Displays filtered reservation results *@
 <table class="table table-bordered">
     <thead>
@@ -50,6 +63,7 @@
             <th>Start Date</th>
             <th>End Date</th>
             <th>Status</th>
+            <th>Actions</th>
         </tr>
     </thead>
     <tbody>
@@ -74,6 +88,13 @@
                     <td>@r.StartDate.ToShortDateString()</td>
                     <td>@r.EndDate.ToShortDateString()</td>
                     <td>@r.ReservationStatus.StatusName</td>
+                    <td>
+                        <a asp-action="Edit"
+                               asp-route-id="@r.ReservationID"
+                               class="btn btn-warning btn-sm">
+                            Edit
+                        </a>
+                    </td>
                 </tr>
             }
         }

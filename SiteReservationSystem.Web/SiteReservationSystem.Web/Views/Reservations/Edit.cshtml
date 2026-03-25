@@ -1,0 +1,50 @@
+﻿@model SiteReservationSystem.Web.Models.Reservation
+
+@{
+    ViewData["Title"] = "Edit Reservation";
+}
+
+<h2>Edit Reservation</h2>
+
+<form asp-action="Edit" method="post">
+    <input type="hidden" asp-for="ReservationID" />
+
+    <div class="mb-3">
+        <label asp-for="StartDate" class="form-label"></label>
+        <input asp-for="StartDate" type="date" class="form-control" />
+    </div>
+
+    <div class="mb-3">
+        <label asp-for="EndDate" class="form-label"></label>
+        <input asp-for="EndDate" type="date" class="form-control" />
+    </div>
+
+    <div class="mb-3">
+        <label>Site</label>
+        <select asp-for="SiteID" class="form-control">
+            @foreach (var site in ViewBag.Sites)
+            {
+                <option value="@site.SiteID"
+                        selected="@(site.SiteID == Model.SiteID)">
+                    @site.SiteNumber
+                </option>
+            }
+        </select>
+    </div>
+
+    <div class="mb-3">
+        <label>Status</label>
+        <select asp-for="ReservationStatusID" class="form-control">
+            @foreach (var status in ViewBag.Statuses)
+            {
+                <option value="@status.ReservationStatusID"
+                        selected="@(status.ReservationStatusID == Model.ReservationStatusID)">
+                    @status.StatusName
+                </option>
+            }
+        </select>
+    </div>
+
+    <button type="submit" class="btn btn-primary">Save Changes</button>
+    <a asp-action="Index" class="btn btn-secondary">Cancel</a>
+</form>
