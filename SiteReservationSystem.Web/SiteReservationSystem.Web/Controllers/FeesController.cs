@@ -207,11 +207,19 @@ namespace SiteReservationSystem.Web.Controllers
             ModelState.Remove("Fee");
 
             if (ModelState.IsValid)
-            {
-                _context.ReservationFees.Add(reservationfee);
-                await _context.SaveChangesAsync();
-                return RedirectToAction("Index", "Reservations", new { id = reservationfee.ReservationID });
+            { 
+                var reservation = await _context.Reservations.FindAsync(reservationfee.ReservationID);
+                if( reservation !=null) 
+                {
+                    reservation.BalanceDue += reservationfee.Amount;
 
+                    _context.ReservationFees.Add(reservationfee);
+                    await _context.SaveChangesAsync();
+
+                    TempData["FeeMessage"] = $"Fee successfully applied to the reservation! New balance: ${reservation.BalanceDue:N2}";
+
+                    return RedirectToAction("Index", "Reservations", new { id = reservationfee.ReservationID });
+                }
             }
             reservationfee.Reservation = await _context.Reservations
                 .Include(r => r.Customer)
