@@ -86,5 +86,18 @@ namespace SiteReservationSystem.Web.Controllers
 
             return RedirectToAction("Index");
         }
+
+        public async Task<IActionResult> Details(int? id) 
+        { 
+            if (id == null) return NotFound();
+
+            var reservation = await _context.Reservations
+                .Include(r => r.ReservationFees)
+                .ThenInclude(rf => rf.Fee)
+                .FirstOrDefaultAsync(m => m.ReservationID == id);
+            if (reservation == null ) return NotFound();
+
+            return View(reservation);
+        }
     }
 }

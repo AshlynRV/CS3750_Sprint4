@@ -52,7 +52,7 @@
 </button>
 
 @* Displays filtered reservation results *@
-<table class="table table-bordered">
+<table class="table table-bordered table-hover">
     <thead>
         <tr>
             <th>Reservation #</th>
@@ -89,18 +89,21 @@
                     <td>@r.EndDate.ToShortDateString()</td>
                     <td>@r.ReservationStatus.StatusName</td>
                     <td>
+                        <a asp-action="Details" asp-route-id="@r.ReservationID" class="btn btn-secondary btn-sm">View Details</a>
                         <a asp-action="Edit"
                                asp-route-id="@r.ReservationID"
                                class="btn btn-warning btn-sm">
                             Edit
                         </a>
                         <a asp-action="AddFee" asp-controller="Fees" asp-route-reservationId="@r.ReservationID" class="btn btn-danger btn-sm">Add Fee</a>
+                        
                     </td>
                 </tr>
             }
         }
     </tbody>
 </table>
+
 @section Scripts 
 {
     @{

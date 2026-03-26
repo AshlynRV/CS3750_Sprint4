@@ -229,5 +229,23 @@ namespace SiteReservationSystem.Web.Controllers
 
             return View(reservationfee);
         }
+
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> DeleteReservationFee(int id)
+        {
+            var reservationFee = await _context.ReservationFees
+                .Include(r => r.Reservation)
+                .FirstOrDefaultAsync(r => r.ReservationFeeID == id);
+
+            if (reservationFee == null) return NotFound();
+
+            reservationFee.Reservation.BalanceDue -= reservationFee.Amount;
+
+            _context.ReservationFees.Remove(reservationFee);
+            await _context.SaveChangesAsync();
+            
+            return RedirectToAction("Details", "Reservations", new { id = reservationFee.ReservationID });
+        }
     }
 }
