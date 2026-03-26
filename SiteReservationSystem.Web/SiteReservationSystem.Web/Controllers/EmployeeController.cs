@@ -1,11 +1,13 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using SiteReservationSystem.Web.Data;
+using SiteReservationSystem.Web.Filters;
 using SiteReservationSystem.Web.Models;
 
 namespace SiteReservationSystem.Web.Controllers
 {
-    public class EmployeeController : Controller
+    [Authorize(AccessPermissions.ManageEmployees)]
+    public class EmployeeController : BaseController
     {
         private readonly ApplicationDbContext _context;
 

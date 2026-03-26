@@ -19,6 +19,11 @@ namespace SiteReservationSystem.Web.Controllers
 
         public IActionResult Privacy()
         {
+            var redirect = RequireLogin();
+            if (redirect != null)
+                // Redirects to login page
+                return redirect;
+
             return View();
         }
 

@@ -1,11 +1,13 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using SiteReservationSystem.Web.Data;
+using SiteReservationSystem.Web.Filters;
 using SiteReservationSystem.Web.Models;
 
 namespace SiteReservationSystem.Web.Controllers
 {
-    public class ReservationsController : Controller
+    [Authorize(AccessPermissions.ManageReservations)]
+    public class ReservationsController : BaseController
     {
         private readonly ApplicationDbContext _context;
 

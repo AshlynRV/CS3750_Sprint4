@@ -2,11 +2,13 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using SiteReservationSystem.Web.Data;
+using SiteReservationSystem.Web.Filters;
 using SiteReservationSystem.Web.Models;
 
 namespace SiteReservationSystem.Web.Controllers
 {
-    public class SiteTypesController : Controller
+    [Authorize(AccessPermissions.ManageSiteTypes)]
+    public class SiteTypesController : BaseController
     {
         private readonly ApplicationDbContext _context;
 

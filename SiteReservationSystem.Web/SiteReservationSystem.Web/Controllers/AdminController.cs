@@ -2,11 +2,13 @@
 using Microsoft.EntityFrameworkCore;
 using SiteReservationSystem.Web.Data;
 using SiteReservationSystem.Web.Models;
+using SiteReservationSystem.Web.Filters;
 using SiteReservationSystem.Web.ViewModels;
 
 namespace SiteReservationSystem.Web.Controllers
 {
-    public class AdminController : Controller
+    [Authorize]
+    public class AdminController : BaseController
     {
         private readonly ApplicationDbContext _context;
 
