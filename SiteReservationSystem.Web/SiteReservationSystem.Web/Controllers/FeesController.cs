@@ -207,11 +207,19 @@ namespace SiteReservationSystem.Web.Controllers
             ModelState.Remove("Fee");
 
             if (ModelState.IsValid)
-            {
-                _context.ReservationFees.Add(reservationfee);
-                await _context.SaveChangesAsync();
-                return RedirectToAction("Index", "Reservations", new { id = reservationfee.ReservationID });
+            { 
+                var reservation = await _context.Reservations.FindAsync(reservationfee.ReservationID);
+                if( reservation !=null) 
+                {
+                    reservation.BalanceDue += reservationfee.Amount;
 
+                    _context.ReservationFees.Add(reservationfee);
+                    await _context.SaveChangesAsync();
+
+                    TempData["FeeMessage"] = $"Fee successfully applied to the reservation! New balance: ${reservation.BalanceDue:N2}";
+
+                    return RedirectToAction("Index", "Reservations", new { id = reservationfee.ReservationID });
+                }
             }
             reservationfee.Reservation = await _context.Reservations
                 .Include(r => r.Customer)
@@ -220,6 +228,24 @@ namespace SiteReservationSystem.Web.Controllers
             ViewBag.FeeList = new SelectList(_context.Fees, "FeeID", "FeeName", reservationfee.FeeID);
 
             return View(reservationfee);
+        }
+
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> DeleteReservationFee(int id)
+        {
+            var reservationFee = await _context.ReservationFees
+                .Include(r => r.Reservation)
+                .FirstOrDefaultAsync(r => r.ReservationFeeID == id);
+
+            if (reservationFee == null) return NotFound();
+
+            reservationFee.Reservation.BalanceDue -= reservationFee.Amount;
+
+            _context.ReservationFees.Remove(reservationFee);
+            await _context.SaveChangesAsync();
+            
+            return RedirectToAction("Details", "Reservations", new { id = reservationFee.ReservationID });
         }
     }
 }
