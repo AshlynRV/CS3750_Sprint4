@@ -1,0 +1,28 @@
+@model SiteReservationSystem.Web.Models.SiteTypePricing
+
+@{
+    ViewData["Title"] = "Update Price";
+}
+
+<h2>Update Price for @ViewBag.SiteTypeName</h2>
+<form asp-action="UpdatePrice" method="post">
+    <input type="hidden" asp-for="PricingID" />
+    <input type="hidden" asp-for="SiteTypeID" />
+
+    <div class="form-group">
+        <label asp-for="BasePrice">Price:</label>
+        <input asp-for="BasePrice" class="form-control" />
+        <span asp-validation-for="BasePrice" class="text-danger"></span>
+    </div>
+    <div class="form-group">
+        <label asp-for="StartDate">Start Date (Defaults to current day):</label>
+        <input asp-for="StartDate" type="date" class="form-control" />
+    </div>
+    <div class="form-group">
+        <label asp-for="EndDate">End Date (Can be left blank):</label>
+        <input asp-for="EndDate" type="date" class="form-control" />
+    </div>
+
+    <button type="submit" class="btn btn-success">Save</button>
+    <a asp-action="Index" class="btn btn-secondary">Back</a>
+</form>
