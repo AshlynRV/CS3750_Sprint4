@@ -1,6 +1,18 @@
-﻿@{
+@model SiteReservationSystem.Web.Models.SiteTypePricing
+
+@{
     ViewData["Title"] = "Site Types";
 }
 
-<h2>Site Types</h2>
-<p>This page will manage site types and pricing.</p>
+<h2>Adjust Price</h2>
+<form asp-action="Index" method="post">
+    <input type="hidden" asp-for="PricingID" />
+    <label asp-for="SiteTypeID">Select Site Type: </label>
+    <select asp-for="SiteTypeID" asp-items="ViewBag.SiteTypeList" class="form-control">
+        <option value="-- Required Field --"></option>
+    </select>
+    <span asp-validation-for="SiteTypeID" class="text-danger"></span>
+
+    <button type="submit" class="btn btn-primary">Next</button>
+</form>
+    
