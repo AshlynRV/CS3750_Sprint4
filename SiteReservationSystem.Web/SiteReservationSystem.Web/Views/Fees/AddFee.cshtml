@@ -41,11 +41,12 @@
         const feeData = @Html.Raw(Json.Serialize(ViewBag.allFees));
 
         document.getElementById("FeeID").addEventListener("change", function () {
-            const selectedId = this.ariaValueMax;
-            const selectedFee = feeData.find(f => f.FeeID == selectedId);
+            const selectedId = parseInt(this.value);
+            const selectedFee = feeData.find(f => f.feeID == selectedId || f.feeId == selectedId);
 
             if (selectedFee){
-                document.getElementById("Amount").value = selectedFee.defaultAmount;
+                const amount = selectedFee.defaultAmount;
+                document.getElementById("Amount").value = amount;
             }
             else{
                 document.getElementById("Amount").value = "";
