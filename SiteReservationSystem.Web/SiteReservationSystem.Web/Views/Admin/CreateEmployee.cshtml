@@ -1,4 +1,5 @@
 ﻿@model SiteReservationSystem.Web.ViewModels.EmployeeViewModel
+@using System.Linq
 
 @{
     ViewData["Title"] = "Create Employee";
@@ -32,9 +33,16 @@
     </div>
 
     <div class="form-group">
-        <label asp-for="AccessPermissions"></label>
-        <input asp-for="AccessPermissions" class="form-control" />
-        <span asp-validation-for="AccessPermissions" class="text-danger"></span>
+        <label style="font-weight: 600; font-size: 1.4rem;">Permissions</label>
+        @foreach (AccessPermissions perm in Enum.GetValues(typeof(AccessPermissions)).Cast<AccessPermissions>().Where(p => p != AccessPermissions.None))
+        {
+            <div class="form-check">
+                <input class="form-check-input" type="checkbox"
+                       name="SelectedPermissions"
+                       value="@perm" />
+                <label class="form-check-label">@perm</label>
+            </div>
+        }
     </div>
 
     <button type="submit" class="btn btn-success">Create</button>
