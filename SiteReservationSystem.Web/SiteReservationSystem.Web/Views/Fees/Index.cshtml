@@ -28,7 +28,7 @@
 
                     <form asp-action="ToggleActive" asp-route-id="@fee.FeeID" method="post" style="display:inline;">
                         <button type="submit" class="btn btn-sm btn-secondary">
-                            @(fee.IsActive ? "Inactive" : "Active")
+                            @(fee.IsActive ? "Active" : "Inactive")
                         </button>
                     </form>
                  <a asp-action="DeleteFee" asp-route-id="@fee.FeeID" class="btn btn-sm btn-danger">Delete</a>

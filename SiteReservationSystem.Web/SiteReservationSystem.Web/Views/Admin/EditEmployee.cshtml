@@ -27,10 +27,19 @@
         <span asp-validation-for="Email" class="text-danger"></span>
     </div>
 
+    <!-- Permissions checkboxes -->
     <div class="form-group">
-        <label asp-for="AccessPermissions"></label>
-        <input asp-for="AccessPermissions" class="form-control" />
-        <span asp-validation-for="AccessPermissions" class="text-danger"></span>
+        <label>Permissions</label>
+        @foreach (AccessPermissions perm in Enum.GetValues(typeof(AccessPermissions)))
+        {
+            <div class="form-check">
+                <input class="form-check-input" type="checkbox"
+                       name="SelectedPermissions"
+                       value="@perm"
+                @(Model.SelectedPermissions.Contains(perm) ? "checked" : "") />
+                <label class="form-check-label">@perm</label>
+            </div>
+        }
     </div>
 
     <div class="form-group form-check">
@@ -43,7 +52,5 @@
 </form>
 
 @section Scripts {
-    @{
-        await Html.RenderPartialAsync("_ValidationScriptsPartial");
-    }
+    @await Html.PartialAsync("_ValidationScriptsPartial")
 }

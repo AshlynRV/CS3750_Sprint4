@@ -39,7 +39,7 @@
                             @if (userRole == "Admin" || (perms & AccessPermissions.ManageEmployees) == AccessPermissions.ManageEmployees)
                             {
                                 <li class="nav-item">
-                                    <a class="nav-link text-dark" asp-controller="Employee" asp-action="Index">Employees</a>
+                                    <a class="nav-link text-dark" asp-controller="Admin" asp-action="Employees">Employees</a>
                                 </li>
                             }
                             @if (userRole == "Admin" || (perms & AccessPermissions.ManageSites) == AccessPermissions.ManageSites)
