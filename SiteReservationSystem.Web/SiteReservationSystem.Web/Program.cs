@@ -1,7 +1,6 @@
 using Microsoft.EntityFrameworkCore;
 using SiteReservationSystem.Web.Data;
 
-
 var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
@@ -41,8 +40,10 @@ app.MapControllerRoute(
     pattern: "{controller=Home}/{action=Index}/{id?}")
     .WithStaticAssets();
 
+// Migrate the database every time the app restarts
+using (var scope = app.Services.CreateScope())
+{
+    var db = scope.ServiceProvider.GetRequiredService<ApplicationDbContext>();
+    db.Database.Migrate();
+}
 app.Run();
-
-
-
-

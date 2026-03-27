@@ -1,4 +1,10 @@
 ﻿@using Microsoft.AspNetCore.Http
+@using SiteReservationSystem.Web.Models
+@{
+    var userId = Context.Session.GetInt32("UserID");
+    var userRole = Context.Session.GetString("UserRole");
+    var perms = (AccessPermissions)(Context.Session.GetInt32("Permissions") ?? 0);
+}
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -27,21 +33,39 @@
                         <li class="nav-item">
                             <a class="nav-link text-dark" asp-area="" asp-controller="Home" asp-action="Privacy">Privacy</a>
                         </li>
-                        <!-- Don't show admin/employee stuff for customers -->
-                        @if (Context.Session.GetString("UserRole") != "Customer")
+                        <!-- Only show employee panels to logged-in employees/admins -->
+                        @if (userId.HasValue && userRole != "Customer")
                         {
-                            <li class="nav-item">
-                                <a class="nav-link text-dark" asp-controller="Admin" asp-action="Index">Admin</a>
-                            </li>
-                            <li class="nav-item">
-                                <a class="nav-link text-dark" asp-controller="SiteTypes" asp-action="Index">Site Types</a>
-                            </li>
-                            <li class="nav-item">
-                                <a class="nav-link text-dark" asp-controller="Fees" asp-action="Index">Fees</a>
-                            </li>
-                            <li class="nav-item">
-                                <a class="nav-link text-dark" asp-controller="Reservations" asp-action="Index">Reservations</a>
-                            </li>
+                            @if (userRole == "Admin" || (perms & AccessPermissions.ManageEmployees) == AccessPermissions.ManageEmployees)
+                            {
+                                <li class="nav-item">
+                                    <a class="nav-link text-dark" asp-controller="Employee" asp-action="Index">Employees</a>
+                                </li>
+                            }
+                            @if (userRole == "Admin" || (perms & AccessPermissions.ManageSites) == AccessPermissions.ManageSites)
+                            {
+                                <li class="nav-item">
+                                    <a class="nav-link text-dark" asp-controller="Sites" asp-action="Index">Sites</a>
+                                </li>
+                            }
+                            @if (userRole == "Admin" || (perms & AccessPermissions.ManageSiteTypes) == AccessPermissions.ManageSiteTypes)
+                            {
+                                <li class="nav-item">
+                                    <a class="nav-link text-dark" asp-controller="SiteTypes" asp-action="Index">Site Types</a>
+                                </li>
+                            }
+                            @if (userRole == "Admin" || (perms & AccessPermissions.ManageFees) == AccessPermissions.ManageFees)
+                            {
+                                <li class="nav-item">
+                                    <a class="nav-link text-dark" asp-controller="Fees" asp-action="Index">Fees</a>
+                                </li>
+                            }
+                            @if (userRole == "Admin" || (perms & AccessPermissions.ManageReservations) == AccessPermissions.ManageReservations)
+                            {
+                                <li class="nav-item">
+                                    <a class="nav-link text-dark" asp-controller="Reservations" asp-action="Index">Reservations</a>
+                                </li>
+                            }
                         }
                     </ul>
                     <ul class="navbar-nav">

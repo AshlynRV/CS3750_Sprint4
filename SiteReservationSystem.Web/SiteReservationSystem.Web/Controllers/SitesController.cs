@@ -1,10 +1,12 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using SiteReservationSystem.Web.Data;
+using SiteReservationSystem.Web.Filters;
 using SiteReservationSystem.Web.Models;
 
 namespace SiteReservationSystem.Web.Controllers
 {
+    [Authorize(AccessPermissions.ManageSites)]
     public class SitesController : BaseController
     {
         // Declare DbContext
@@ -19,12 +21,6 @@ namespace SiteReservationSystem.Web.Controllers
         // Only admins and employees with ManageSites permission can access this page
         public async Task<IActionResult> Index()
         {
-            // Redirect to access denied page if user doesn't have ManageSites permission
-            // This is a function in BaseController.cs
-            var redirect = RequirePermission(AccessPermissions.ManageSites);
-            if (redirect != null)
-                // Redirects to access denied page
-                return redirect;
 
             // Get site type and photos from proper models
             var sites = await _context.Sites

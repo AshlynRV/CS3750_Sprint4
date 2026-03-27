@@ -28,3 +28,5 @@ publish/
 
 # Ignore appsettings.json
 appsettings.json
+
+.azure/

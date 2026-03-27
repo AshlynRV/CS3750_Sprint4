@@ -2,10 +2,12 @@
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using SiteReservationSystem.Web.Data;
+using SiteReservationSystem.Web.Filters;
 using SiteReservationSystem.Web.Models;
 
 namespace SiteReservationSystem.Web.Controllers
 {
+    [Authorize(AccessPermissions.ManageFees)]
     public class FeesController : BaseController
     {
         // Declare DbContext
@@ -20,12 +22,6 @@ namespace SiteReservationSystem.Web.Controllers
         // Only admins and employees with ManageFees permission can access this page
         public async Task<IActionResult> Index()
         {
-            // Redirect to access denied page if user doesn't have ManageFees permission
-            // This is a function in BaseController.cs
-            var redirect = RequirePermission(AccessPermissions.ManageFees);
-            if (redirect != null)
-                // Redirects to access denied page
-                return redirect;
 
             ViewBag.Fees = await _context.Fees.ToListAsync();
             return View();
