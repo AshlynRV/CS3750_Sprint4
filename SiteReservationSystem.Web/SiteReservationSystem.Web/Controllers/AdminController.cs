@@ -63,7 +63,9 @@ namespace SiteReservationSystem.Web.Controllers
                 UserID = user.UserID,
                 FirstName = model.FirstName,
                 LastName = model.LastName,
-                AccessPermissions = model.SelectedPermissions.Aggregate(AccessPermissions.None, (acc, perm) => acc | perm),
+                AccessPermissions = model.SelectedPermissions.Any() 
+                    ? model.SelectedPermissions.Aggregate(AccessPermissions.None, (acc, perm) => acc | perm)
+                    : 0,
                 IsLockedOut = false,
                 DateHired = DateTime.UtcNow,
                 IsActive = true
@@ -92,7 +94,7 @@ namespace SiteReservationSystem.Web.Controllers
                 IsLockedOut = employee.IsLockedOut,
                 SelectedPermissions = Enum.GetValues(typeof(AccessPermissions))
                                           .Cast<AccessPermissions>()
-                                          .Where(p => (employee.AccessPermissions & p) == p)
+                                          .Where(p => p != AccessPermissions.None && (employee.AccessPermissions & p) == p)
                                           .ToList()
             };
 
@@ -118,7 +120,9 @@ namespace SiteReservationSystem.Web.Controllers
             employee.User.Email = model.Email;
 
             // Convert selected checkboxes to AccessPermissions enum
-            employee.AccessPermissions = model.SelectedPermissions.Aggregate(AccessPermissions.None, (acc, perm) => acc | perm);
+            employee.AccessPermissions = model.SelectedPermissions.Any()
+                ? model.SelectedPermissions.Aggregate(AccessPermissions.None, (acc, perm) => acc | perm)
+                : 0;
 
             await _context.SaveChangesAsync();
             return RedirectToAction(nameof(Employees));
