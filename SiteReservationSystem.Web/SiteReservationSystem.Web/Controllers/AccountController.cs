@@ -79,10 +79,25 @@ namespace SiteReservationSystem.Web.Controllers
                     c.UserID == user.UserID
                 );
                 if (customer != null)
+                {
                     HttpContext.Session.SetString(
                         "Name",
                         $"{customer.FirstName} {customer.LastName}"
                     );
+                    // Store DoD status and military affiliation
+                    // Access later:
+                    // var isPCSOrders = HttpContext.Session.GetInt32("IsPCSOrders") == 1;
+                    // this sets it to true or false
+                    HttpContext.Session.SetInt32(
+                        "IsPCSOrders",
+                        customer.DoDStatus == DoDStatus.PCS_ORDERS ? 1 : 0
+                    );
+                    HttpContext.Session.SetString(
+                        "MilitaryAffiliation",
+                        customer.MilitaryAffiliation.ToString()
+                    );
+                    Console.WriteLine($"DoDStatus: {customer.DoDStatus}, MilitaryAffiliation: {customer.MilitaryAffiliation}, IsPCSOrders: {customer.DoDStatus == DoDStatus.PCS_ORDERS}");
+                }
             }
 
             // Redirect based on role can be done here if we want to change this later
