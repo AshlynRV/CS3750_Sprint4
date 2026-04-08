@@ -70,7 +70,7 @@
         @if (!Model.Any())
         {
             <tr>
-                <td colspan="8" class="text-center">
+                <td colspan="9" class="text-center">
                     No reservations found.
                 </td>
             </tr>
@@ -89,6 +89,12 @@
                     <td>@r.EndDate.ToShortDateString()</td>
                     <td>@r.ReservationStatus.StatusName</td>
                     <td>
+                        <a asp-action="Details"
+                               asp-route-id="@r.ReservationID"
+                               class="btn btn-info btn-sm">
+                            Details
+                        </a>
+
                         <a asp-action="Edit"
                                asp-route-id="@r.ReservationID"
                                class="btn btn-warning btn-sm">

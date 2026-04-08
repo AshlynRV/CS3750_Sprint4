@@ -48,6 +48,25 @@ namespace SiteReservationSystem.Web.Controllers
             return View(reservations);
         }
 
+        // Details Action
+        public IActionResult Details(int id)
+        {
+            var reservation = _context.Reservations
+                .Include(r => r.Customer)
+                    .ThenInclude(c => c.User)
+                .Include(r => r.Site)
+                    .ThenInclude(s => s.SiteType)
+                .Include(r => r.ReservationStatus)
+                .Include(r => r.ReservationFees)
+                    .ThenInclude(rf => rf.Fee)
+                .FirstOrDefault(r => r.ReservationID == id);
+
+            if (reservation == null)
+                return NotFound();
+
+            return View(reservation);
+        }
+
         // GET: Edit Reservation
         public IActionResult Edit(int id)
         {
@@ -71,20 +90,119 @@ namespace SiteReservationSystem.Web.Controllers
         public IActionResult Edit(Reservation updatedReservation)
         {
             var reservation = _context.Reservations
+                .Include(r => r.ReservationFees)
                 .FirstOrDefault(r => r.ReservationID == updatedReservation.ReservationID);
 
             if (reservation == null)
                 return NotFound();
 
+            if (updatedReservation.StartDate >= updatedReservation.EndDate)
+            {
+                ModelState.AddModelError("", "Check-out date must be after check-in date.");
+            }
+
+            var selectedSite = _context.Sites
+                .Include(s => s.SiteType)
+                .FirstOrDefault(s => s.SiteID == updatedReservation.SiteID);
+
+            if (selectedSite == null)
+            {
+                ModelState.AddModelError("", "Selected site was not found.");
+            }
+            else
+            {
+                if (updatedReservation.TrailerLengthFeet.HasValue &&
+                    updatedReservation.TrailerLengthFeet.Value > selectedSite.MaxLengthFeet)
+                {
+                    ModelState.AddModelError("", "The selected site cannot accommodate that trailer length.");
+                }
+
+                var cancelledStatusId = _context.ReservationStatuses
+                    .FirstOrDefault(rs => rs.StatusName == "Cancelled")?.ReservationStatusID;
+
+                bool hasConflict = _context.Reservations.Any(r =>
+                    r.SiteID == updatedReservation.SiteID &&
+                    r.ReservationID != updatedReservation.ReservationID &&
+                    r.ReservationStatusID != cancelledStatusId &&
+                    updatedReservation.StartDate < r.EndDate &&
+                    updatedReservation.EndDate > r.StartDate);
+
+                if (hasConflict)
+                {
+                    ModelState.AddModelError("", "That site is already reserved for the selected dates.");
+                }
+            }
+
+            if (!ModelState.IsValid)
+            {
+                ViewBag.Sites = _context.Sites.ToList();
+                ViewBag.Statuses = _context.ReservationStatuses.ToList();
+                return View(updatedReservation);
+            }
+
             reservation.StartDate = updatedReservation.StartDate;
             reservation.EndDate = updatedReservation.EndDate;
             reservation.SiteID = updatedReservation.SiteID;
             reservation.ReservationStatusID = updatedReservation.ReservationStatusID;
+            reservation.TrailerLengthFeet = updatedReservation.TrailerLengthFeet;
             reservation.LastUpdated = DateTime.UtcNow;
+
+            // Recalculate pricing
+            int numberOfNights = (updatedReservation.EndDate - updatedReservation.StartDate).Days;
+
+            var pricing = _context.SiteTypePricings
+                .Where(p => p.SiteTypeID == selectedSite.SiteTypeID &&
+                            p.StartDate <= updatedReservation.StartDate &&
+                            (p.EndDate == null || p.EndDate >= updatedReservation.StartDate))
+                .OrderByDescending(p => p.StartDate)
+                .FirstOrDefault();
+
+            decimal nightlyRate = pricing?.BasePrice ?? 0m;
+            decimal newBaseAmount = nightlyRate * numberOfNights;
+            decimal existingFees = reservation.ReservationFees.Sum(rf => rf.Amount);
+            decimal oldTotalAmount = reservation.TotalAmount;
+            decimal newTotalAmount = newBaseAmount + existingFees;
+            decimal priceDifference = newTotalAmount - oldTotalAmount;
+
+            reservation.BaseAmount = newBaseAmount;
+            reservation.TotalAmount = newTotalAmount;
+
+            TempData["OldTotalAmount"] = oldTotalAmount.ToString("F2");
+            TempData["NewTotalAmount"] = newTotalAmount.ToString("F2");
+            TempData["PriceDifference"] = priceDifference.ToString("F2");
 
             _context.SaveChanges();
 
-            return RedirectToAction("Index");
+            return RedirectToAction("Details", new { id = reservation.ReservationID });
+        }
+
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public IActionResult Cancel(int id)
+        {
+            var reservation = _context.Reservations
+                .FirstOrDefault(r => r.ReservationID == id);
+
+            if (reservation == null)
+                return NotFound();
+
+            var cancelledStatus = _context.ReservationStatuses
+                .FirstOrDefault(rs => rs.StatusName == "Cancelled");
+
+            if (cancelledStatus == null)
+                return NotFound();
+
+            reservation.ReservationStatusID = cancelledStatus.ReservationStatusID;
+            reservation.LastUpdated = DateTime.UtcNow;
+
+            if (string.IsNullOrWhiteSpace(reservation.Notes))
+                reservation.Notes = "Reservation cancelled by guest.";
+            else
+                reservation.Notes += " | Reservation cancelled by guest.";
+
+            _context.SaveChanges();
+
+            return RedirectToAction("Details", new { id = id });
         }
     }
 }
