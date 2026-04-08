@@ -6,45 +6,66 @@
 
 <h2>Edit Reservation</h2>
 
+<div class="mb-4">
+    <h5>Reservation #@Model.ReservationID</h5>
+    <p><strong>Current Total:</strong> @Model.TotalAmount.ToString("C")</p>
+</div>
+
 <form asp-action="Edit" method="post">
     <input type="hidden" asp-for="ReservationID" />
+
+    <div asp-validation-summary="All" class="text-danger mb-3"></div>
 
     <div class="mb-3">
         <label asp-for="StartDate" class="form-label"></label>
         <input asp-for="StartDate" type="date" class="form-control" />
+        <span asp-validation-for="StartDate" class="text-danger"></span>
     </div>
 
     <div class="mb-3">
         <label asp-for="EndDate" class="form-label"></label>
         <input asp-for="EndDate" type="date" class="form-control" />
+        <span asp-validation-for="EndDate" class="text-danger"></span>
     </div>
 
     <div class="mb-3">
-        <label>Site</label>
+        <label asp-for="TrailerLengthFeet" class="form-label">Trailer Length (feet)</label>
+        <input asp-for="TrailerLengthFeet" type="number" class="form-control" />
+        <span asp-validation-for="TrailerLengthFeet" class="text-danger"></span>
+    </div>
+
+    <div class="mb-3">
+        <label asp-for="SiteID" class="form-label">Site</label>
         <select asp-for="SiteID" class="form-control">
             @foreach (var site in ViewBag.Sites)
             {
-                <option value="@site.SiteID"
-                        selected="@(site.SiteID == Model.SiteID)">
-                    @site.SiteNumber
+                <option value="@site.SiteID" selected="@(site.SiteID == Model.SiteID)">
+                    Site @site.SiteNumber
                 </option>
             }
         </select>
+        <span asp-validation-for="SiteID" class="text-danger"></span>
     </div>
 
     <div class="mb-3">
-        <label>Status</label>
+        <label asp-for="ReservationStatusID" class="form-label">Status</label>
         <select asp-for="ReservationStatusID" class="form-control">
             @foreach (var status in ViewBag.Statuses)
             {
-                <option value="@status.ReservationStatusID"
-                        selected="@(status.ReservationStatusID == Model.ReservationStatusID)">
+                <option value="@status.ReservationStatusID" selected="@(status.ReservationStatusID == Model.ReservationStatusID)">
                     @status.StatusName
                 </option>
             }
         </select>
+        <span asp-validation-for="ReservationStatusID" class="text-danger"></span>
     </div>
 
     <button type="submit" class="btn btn-primary">Save Changes</button>
-    <a asp-action="Index" class="btn btn-secondary">Cancel</a>
+    <a asp-action="Details" asp-route-id="@Model.ReservationID" class="btn btn-secondary">Back to Details</a>
 </form>
+
+@section Scripts {
+    @{
+        await Html.RenderPartialAsync("_ValidationScriptsPartial");
+    }
+}
