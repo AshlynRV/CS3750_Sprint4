@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 ﻿@*
     For more information on enabling MVC for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
     @model IEnumerable<SiteReservationSystem.Web.Models.ReservationFee>
@@ -34,3 +35,81 @@
     </tbody>
 </table>
 <a asp-action="Index" class="btn btn-secondary">Cancel</a>
+=======
+﻿@model SiteReservationSystem.Web.Models.Reservation
+
+@{
+    ViewData["Title"] = "Reservation Details";
+}
+
+<h1>Reservation Details</h1>
+
+@if (TempData["PriceDifference"] != null)
+{
+    <div class="alert alert-info">
+        <strong>Pricing Updated:</strong><br />
+        Old Total: @decimal.Parse(TempData["OldTotalAmount"]!.ToString()!).ToString("C")<br />
+        New Total: @decimal.Parse(TempData["NewTotalAmount"]!.ToString()!).ToString("C")<br />
+        Difference: @decimal.Parse(TempData["PriceDifference"]!.ToString()!).ToString("C")
+    </div>
+}
+
+<div class="card p-3">
+    <h4>Reservation #@Model.ReservationID</h4>
+    <hr />
+
+    <dl class="row">
+        <dt class="col-sm-3">Customer</dt>
+        <dd class="col-sm-9">@Model.Customer.FirstName @Model.Customer.LastName</dd>
+
+        <dt class="col-sm-3">Email</dt>
+        <dd class="col-sm-9">@Model.Customer.User.Email</dd>
+
+        <dt class="col-sm-3">Site Number</dt>
+        <dd class="col-sm-9">@Model.Site.SiteNumber</dd>
+
+        <dt class="col-sm-3">Site Type</dt>
+        <dd class="col-sm-9">@Model.Site.SiteType.TypeName</dd>
+
+        <dt class="col-sm-3">Start Date</dt>
+        <dd class="col-sm-9">@Model.StartDate.ToShortDateString()</dd>
+
+        <dt class="col-sm-3">End Date</dt>
+        <dd class="col-sm-9">@Model.EndDate.ToShortDateString()</dd>
+
+        <dt class="col-sm-3">Trailer Length</dt>
+        <dd class="col-sm-9">
+            @(Model.TrailerLengthFeet.HasValue ? Model.TrailerLengthFeet + " ft" : "N/A")
+        </dd>
+
+        <dt class="col-sm-3">Status</dt>
+        <dd class="col-sm-9">@Model.ReservationStatus.StatusName</dd>
+
+        <dt class="col-sm-3">Base Amount</dt>
+        <dd class="col-sm-9">@Model.BaseAmount.ToString("C")</dd>
+
+        <dt class="col-sm-3">Total Amount</dt>
+        <dd class="col-sm-9">@Model.TotalAmount.ToString("C")</dd>
+
+        <dt class="col-sm-3">Balance Due</dt>
+        <dd class="col-sm-9">@Model.BalanceDue.ToString("C")</dd>
+
+        <dt class="col-sm-3">Notes</dt>
+        <dd class="col-sm-9">@(string.IsNullOrWhiteSpace(Model.Notes) ? "None" : Model.Notes)</dd>
+    </dl>
+
+    <div class="mt-3">
+        <a asp-action="Edit" asp-route-id="@Model.ReservationID" class="btn btn-primary">Edit Reservation</a>
+
+        <form asp-action="Cancel" asp-route-id="@Model.ReservationID" method="post" class="d-inline">
+            @Html.AntiForgeryToken()
+            <button type="submit" class="btn btn-danger"
+                    onclick="return confirm('Are you sure you want to cancel this reservation?');">
+                Cancel Reservation
+            </button>
+        </form>
+
+        <a asp-action="Index" class="btn btn-secondary">Back to Reservations</a>
+    </div>
+</div>
+>>>>>>> 1fa6f3d (Added reservation details, edit validation, cancel action, and price recalculation)
