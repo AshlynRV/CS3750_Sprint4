@@ -1,58 +1,15 @@
-<<<<<<< HEAD
-﻿@*
-    For more information on enabling MVC for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
-    @model IEnumerable<SiteReservationSystem.Web.Models.ReservationFee>
-*@
-
-@{
-    ViewData["Title"] = "Details";
-}
-<h2>Reservation Details</h2>
-
-<h3> Fees: </h3>
-<table class="table"> 
-    <thead>
-        <tr>
-            <th>Fee Name</th>
-            <th>Amount</th>
-            <th>Manage</th>
-        </tr>
-    </thead>
-    <tbody>
-        @foreach (var rf in Model.ReservationFees)
-        {
-            <tr>
-                <td>@rf.Fee.FeeName</td>
-                <td>@rf.Amount.ToString("C")</td>
-                <td>
-                    <form asp-action="DeleteReservationFee" asp-controller="Fees" asp-route-id="@rf.ReservationFeeID" method="post"
-                    onsubmit="return confirm('Remove this fee from this reservation?');">
-                    <button type="submit" class="btn btn-sm btn-danger">Delete</button>
-                </form>
-                </td>
-            </tr>
-        }
-    </tbody>
-</table>
-<a asp-action="Index" class="btn btn-secondary">Cancel</a>
-=======
-﻿@model SiteReservationSystem.Web.Models.Reservation
+@model SiteReservationSystem.Web.Models.Reservation
 
 @{
     ViewData["Title"] = "Reservation Details";
+    
+    var oldTotal = TempData["OldTotalAmount"] != null ? decimal.Parse(TempData["OldTotalAmount"]!.ToString()!) : (decimal?)null;
+    var priceDiff = TempData["PriceDifference"] != null ? decimal.Parse(TempData["PriceDifference"]!.ToString()!) : (decimal?)null;
+    var totalFees = Model.ReservationFees.Sum(rf => rf.Amount);
+    var nights = (Model.EndDate - Model.StartDate).Days;
 }
 
 <h1>Reservation Details</h1>
-
-@if (TempData["PriceDifference"] != null)
-{
-    <div class="alert alert-info">
-        <strong>Pricing Updated:</strong><br />
-        Old Total: @decimal.Parse(TempData["OldTotalAmount"]!.ToString()!).ToString("C")<br />
-        New Total: @decimal.Parse(TempData["NewTotalAmount"]!.ToString()!).ToString("C")<br />
-        Difference: @decimal.Parse(TempData["PriceDifference"]!.ToString()!).ToString("C")
-    </div>
-}
 
 <div class="card p-3">
     <h4>Reservation #@Model.ReservationID</h4>
@@ -84,16 +41,110 @@
 
         <dt class="col-sm-3">Status</dt>
         <dd class="col-sm-9">@Model.ReservationStatus.StatusName</dd>
+    </dl>
 
-        <dt class="col-sm-3">Base Amount</dt>
+    <hr />
+    <h5>Payment Summary</h5>
+    <dl class="row">
+        <dt class="col-sm-3">Base Amount (Original)</dt>
         <dd class="col-sm-9">@Model.BaseAmount.ToString("C")</dd>
 
+        <dt class="col-sm-3">Current Stay</dt>
+        <dd class="col-sm-9">@nights nights x @(((decimal)ViewBag.CurrentPricePerNight).ToString("C"))</dd>
+
         <dt class="col-sm-3">Total Amount</dt>
-        <dd class="col-sm-9">@Model.TotalAmount.ToString("C")</dd>
+        <dd class="col-sm-9">
+            @Model.TotalAmount.ToString("C")
+            @if (oldTotal.HasValue && priceDiff.HasValue && priceDiff != 0)
+            {
+                <span class="text-muted">
+                    (was @oldTotal.Value.ToString("C")
+                    @if (priceDiff > 0)
+                    {
+                        <span class="text-danger">+@priceDiff.Value.ToString("C")</span>
+                    }
+                    else
+                    {
+                        <span class="text-success">@priceDiff.Value.ToString("C")</span>
+                    })
+                </span>
+            }
+            <ul class="mb-0 mt-1 text-muted" style="font-size: 0.9em;">
+                <li>Site Total: @((Model.TotalAmount - totalFees).ToString("C"))</li>
+                @if (totalFees > 0)
+                {
+                    <li>Fees: @totalFees.ToString("C")</li>
+                }
+            </ul>
+        </dd>
+
+        @{
+            var amountPaid = Model.Invoice?.Payments?.Where(p => !p.IsRefund).Sum(p => p.Amount) ?? 0;
+            var actualBalanceDue = Model.TotalAmount - amountPaid;
+        }
+
+        @if (amountPaid > 0)
+        {
+            <dt class="col-sm-3">Amount Paid</dt>
+            <dd class="col-sm-9">@amountPaid.ToString("C")</dd>
+        }
 
         <dt class="col-sm-3">Balance Due</dt>
-        <dd class="col-sm-9">@Model.BalanceDue.ToString("C")</dd>
+        <dd class="col-sm-9">
+            @if (actualBalanceDue > 0)
+            {
+                <span class="text-danger fw-bold">@actualBalanceDue.ToString("C")</span>
+            }
+            else if (actualBalanceDue < 0)
+            {
+                <span class="text-success fw-bold">@actualBalanceDue.ToString("C") (Refund Owed)</span>
+            }
+            else
+            {
+                <span class="text-success fw-bold">$0.00 (Paid in Full)</span>
+            }
+        </dd>
+    </dl>
 
+    @if (Model.ReservationFees.Any())
+    {
+        <hr />
+        <h5>Fees</h5>
+        <table class="table table-sm">
+            <thead>
+                <tr>
+                    <th>Fee Name</th>
+                    <th>Amount</th>
+                    <th>Action</th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (var fee in Model.ReservationFees)
+                {
+                    <tr>
+                        <td>@fee.Fee.FeeName</td>
+                        <td>@fee.Amount.ToString("C")</td>
+                        <td>
+                            <form asp-action="DeleteReservationFee" asp-controller="Fees" asp-route-id="@fee.ReservationFeeID" method="post" class="d-inline"
+                                  onsubmit="return confirm('Remove this fee from the reservation?');">
+                                <button type="submit" class="btn btn-sm btn-danger">Delete</button>
+                            </form>
+                        </td>
+                    </tr>
+                }
+            </tbody>
+            <tfoot>
+                <tr class="table-secondary">
+                    <td><strong>Total Fees</strong></td>
+                    <td><strong>@totalFees.ToString("C")</strong></td>
+                    <td></td>
+                </tr>
+            </tfoot>
+        </table>
+    }
+
+    <hr />
+    <dl class="row">
         <dt class="col-sm-3">Notes</dt>
         <dd class="col-sm-9">@(string.IsNullOrWhiteSpace(Model.Notes) ? "None" : Model.Notes)</dd>
     </dl>
@@ -112,4 +163,3 @@
         <a asp-action="Index" class="btn btn-secondary">Back to Reservations</a>
     </div>
 </div>
->>>>>>> 1fa6f3d (Added reservation details, edit validation, cancel action, and price recalculation)

@@ -380,12 +380,12 @@ namespace SiteReservationSystem.Web.Data
             // DoDStatus note: Mike Williams = PCS_ORDERS, which exempts him from the
             // 14-day peak season limit (see Reservation 3 - 14-night stay during peak).
             modelBuilder.Entity<Customer>().HasData(
-                new Customer { CustomerID = 1, UserID = 7,  FirstName = "John",  LastName = "Smith",    PhoneNumber = "555-0101", MilitaryAffiliation = MilitaryAffiliation.AIR_FORCE,    DoDStatus = DoDStatus.ACTIVE_DUTY, DateCreated = new DateTime(2025, 1, 1) },
-                new Customer { CustomerID = 2, UserID = 8,  FirstName = "Sarah", LastName = "Johnson",  PhoneNumber = "555-0102", MilitaryAffiliation = MilitaryAffiliation.ARMY,         DoDStatus = DoDStatus.RETIRED,     DateCreated = new DateTime(2024, 12, 1) },
-                new Customer { CustomerID = 3, UserID = 9,  FirstName = "Mike",  LastName = "Williams", PhoneNumber = "555-0103", MilitaryAffiliation = MilitaryAffiliation.NAVY,         DoDStatus = DoDStatus.PCS_ORDERS,  DateCreated = new DateTime(2025, 2, 1) },
-                new Customer { CustomerID = 4, UserID = 10, FirstName = "Emily", LastName = "Davis",    PhoneNumber = "555-0104", MilitaryAffiliation = MilitaryAffiliation.MARINES,      DoDStatus = DoDStatus.ACTIVE_DUTY, DateCreated = new DateTime(2025, 2, 15) },
-                new Customer { CustomerID = 5, UserID = 11, FirstName = "David", LastName = "Martinez", PhoneNumber = "555-0105", MilitaryAffiliation = MilitaryAffiliation.COAST_GUARD,  DoDStatus = DoDStatus.RESERVIST,   DateCreated = new DateTime(2024, 11, 1) },
-                new Customer { CustomerID = 6, UserID = 12, FirstName = "Lisa",  LastName = "Anderson", PhoneNumber = "555-0106", MilitaryAffiliation = MilitaryAffiliation.DOD_CIVILIAN, DoDStatus = DoDStatus.ACTIVE_DUTY, DateCreated = new DateTime(2025, 2, 19) }
+                new Customer { CustomerID = 1, UserID = 7,  FirstName = "John",  LastName = "Smith",    PhoneNumber = "111-111-1111", MilitaryAffiliation = MilitaryAffiliation.AIR_FORCE,    DoDStatus = DoDStatus.ACTIVE_DUTY, DateCreated = new DateTime(2025, 1, 1) },
+                new Customer { CustomerID = 2, UserID = 8,  FirstName = "Sarah", LastName = "Johnson",  PhoneNumber = "222-222-2222", MilitaryAffiliation = MilitaryAffiliation.ARMY,         DoDStatus = DoDStatus.RETIRED,     DateCreated = new DateTime(2024, 12, 1) },
+                new Customer { CustomerID = 3, UserID = 9,  FirstName = "Mike",  LastName = "Williams", PhoneNumber = "333-333-3333", MilitaryAffiliation = MilitaryAffiliation.NAVY,         DoDStatus = DoDStatus.PCS_ORDERS,  DateCreated = new DateTime(2025, 2, 1) },
+                new Customer { CustomerID = 4, UserID = 10, FirstName = "Emily", LastName = "Davis",    PhoneNumber = "444-444-4444", MilitaryAffiliation = MilitaryAffiliation.MARINES,      DoDStatus = DoDStatus.ACTIVE_DUTY, DateCreated = new DateTime(2025, 2, 15) },
+                new Customer { CustomerID = 5, UserID = 11, FirstName = "David", LastName = "Martinez", PhoneNumber = "555-555-5555", MilitaryAffiliation = MilitaryAffiliation.COAST_GUARD,  DoDStatus = DoDStatus.RESERVIST,   DateCreated = new DateTime(2024, 11, 1) },
+                new Customer { CustomerID = 6, UserID = 12, FirstName = "Lisa",  LastName = "Anderson", PhoneNumber = "666-666-6666", MilitaryAffiliation = MilitaryAffiliation.DOD_CIVILIAN, DoDStatus = DoDStatus.ACTIVE_DUTY, DateCreated = new DateTime(2025, 2, 19) }
             );
 
             // ============================================================================
@@ -408,7 +408,7 @@ namespace SiteReservationSystem.Web.Data
                 {
                     ReservationID = 2, CustomerID = 2, SiteID = 27, ReservationStatusID = 2,
                     StartDate = new DateTime(2025, 2, 27), EndDate = new DateTime(2025, 3, 8),
-                    TrailerLengthFeet = 60, BaseAmount = 175.00m, TotalAmount = 200.00m, BalanceDue = 0m,
+                    TrailerLengthFeet = 60, BaseAmount = 225.00m, TotalAmount = 250.00m, BalanceDue = 0m,
                     ScheduledCheckInTime  = new DateTime(2025, 2, 27, 13, 0, 0),
                     ActualCheckInTime     = new DateTime(2025, 2, 27, 14, 30, 0),
                     ScheduledCheckOutTime = new DateTime(2025, 3, 8, 12, 0, 0),
@@ -479,7 +479,7 @@ namespace SiteReservationSystem.Web.Data
 
             modelBuilder.Entity<Invoice>().HasData(
                 new Invoice { InvoiceID = 1, ReservationID = 1, CustomerID = 1, SubTotal = 75.00m,  TotalFees = 0m,     TotalAmount = 75.00m,  InvoiceDate = new DateTime(2025, 2, 14), DueDate = new DateTime(2025, 2, 19), IsPaid = true, DatePaid = new DateTime(2025, 2, 14) },
-                new Invoice { InvoiceID = 2, ReservationID = 2, CustomerID = 2, SubTotal = 175.00m, TotalFees = 25.00m, TotalAmount = 200.00m, InvoiceDate = new DateTime(2025, 2, 19), DueDate = new DateTime(2025, 2, 27), IsPaid = true, DatePaid = new DateTime(2025, 2, 19) },
+                new Invoice { InvoiceID = 2, ReservationID = 2, CustomerID = 2, SubTotal = 225.00m, TotalFees = 25.00m, TotalAmount = 250.00m, InvoiceDate = new DateTime(2025, 2, 19), DueDate = new DateTime(2025, 2, 27), IsPaid = true, DatePaid = new DateTime(2025, 2, 19) },
                 new Invoice { InvoiceID = 3, ReservationID = 3, CustomerID = 3, SubTotal = 350.00m, TotalFees = 0m,     TotalAmount = 350.00m, InvoiceDate = new DateTime(2025, 2, 24), DueDate = new DateTime(2025, 3, 8),  IsPaid = true, DatePaid = new DateTime(2025, 2, 24) },
                 new Invoice { InvoiceID = 4, ReservationID = 4, CustomerID = 4, SubTotal = 100.00m, TotalFees = 10.00m, TotalAmount = 110.00m, InvoiceDate = new DateTime(2025, 2, 9),  DueDate = new DateTime(2025, 3, 11), IsPaid = true, DatePaid = new DateTime(2025, 2, 9) },
                 new Invoice { InvoiceID = 5, ReservationID = 5, CustomerID = 5, SubTotal = 90.00m,  TotalFees = 15.00m, TotalAmount = 105.00m, InvoiceDate = new DateTime(2025, 2, 22), DueDate = new DateTime(2025, 3, 4),  IsPaid = true, DatePaid = new DateTime(2025, 2, 22) },
@@ -488,7 +488,7 @@ namespace SiteReservationSystem.Web.Data
 
             modelBuilder.Entity<Payment>().HasData(
                 new Payment { PaymentID = 1, InvoiceID = 1, PaymentMethodID = 1, Amount = 75.00m,   PaymentDate = new DateTime(2025, 2, 14), StripeTransactionID = "txn_1ABC123",        PaymentStatus = "Completed", IsRefund = false },
-                new Payment { PaymentID = 2, InvoiceID = 2, PaymentMethodID = 2, Amount = 200.00m,  PaymentDate = new DateTime(2025, 2, 19), StripeTransactionID = "txn_2DEF456",        PaymentStatus = "Completed", IsRefund = false },
+                new Payment { PaymentID = 2, InvoiceID = 2, PaymentMethodID = 2, Amount = 250.00m,  PaymentDate = new DateTime(2025, 2, 19), StripeTransactionID = "txn_2DEF456",        PaymentStatus = "Completed", IsRefund = false },
                 new Payment { PaymentID = 3, InvoiceID = 3, PaymentMethodID = 1, Amount = 350.00m,  PaymentDate = new DateTime(2025, 2, 24), StripeTransactionID = "txn_3GHI789",        PaymentStatus = "Completed", IsRefund = false },
                 new Payment { PaymentID = 4, InvoiceID = 4, PaymentMethodID = 1, Amount = 110.00m,  PaymentDate = new DateTime(2025, 2, 9),  StripeTransactionID = "txn_4JKL012",        PaymentStatus = "Completed", IsRefund = false },
                 new Payment { PaymentID = 5, InvoiceID = 4, PaymentMethodID = 1, Amount = -100.00m, PaymentDate = new DateTime(2025, 2, 26), StripeTransactionID = "txn_4JKL012_refund", PaymentStatus = "Refunded",  IsRefund = true,  Notes = "Refund issued: $100.00 (Original $110.00 - $10.00 cancellation fee)" },
