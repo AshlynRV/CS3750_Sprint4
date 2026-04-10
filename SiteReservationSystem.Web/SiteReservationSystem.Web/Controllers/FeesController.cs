@@ -188,9 +188,9 @@ namespace SiteReservationSystem.Web.Controllers
 
             var model = new ReservationFee { ReservationID = reservationId , Reservation =reservation };
 
-            var fees = _context.Fees.ToList();
+            var fees = _context.Fees.Where(f => f.IsActive).ToList();
             ViewBag.AllFees = fees;
-            ViewBag.FeeList = new SelectList(_context.Fees,"FeeID", "FeeName");
+            ViewBag.FeeList = new SelectList(_context.Fees.Where(f => f.IsActive),"FeeID", "FeeName");
 
             return View(model);
         }
@@ -204,17 +204,31 @@ namespace SiteReservationSystem.Web.Controllers
 
             if (ModelState.IsValid)
             { 
-                var reservation = await _context.Reservations.FindAsync(reservationfee.ReservationID);
+                // Match the reservation with invoice
+                var reservation = await _context.Reservations
+                    .Include(r => r.Invoice)
+                    .FirstOrDefaultAsync(r => r.ReservationID == reservationfee.ReservationID);
+
+                // Update reservation
                 if( reservation !=null) 
                 {
+                    reservation.TotalAmount += reservationfee.Amount;
                     reservation.BalanceDue += reservationfee.Amount;
+
+                    // Update invoice
+                    if (reservation.Invoice != null)
+                    {
+                        reservation.Invoice.TotalAmount = reservation.TotalAmount;
+                        reservation.Invoice.IsPaid = false;
+                        reservation.Invoice.DatePaid = null;
+                    }
 
                     _context.ReservationFees.Add(reservationfee);
                     await _context.SaveChangesAsync();
 
                     TempData["FeeMessage"] = $"Fee successfully applied to the reservation! New balance: ${reservation.BalanceDue:N2}";
 
-                    return RedirectToAction("Index", "Reservations", new { id = reservationfee.ReservationID });
+                    return RedirectToAction("Details", "Reservations", new { id = reservationfee.ReservationID });
                 }
             }
             reservationfee.Reservation = await _context.Reservations
@@ -230,13 +244,25 @@ namespace SiteReservationSystem.Web.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> DeleteReservationFee(int id)
         {
+            // Match reservation with invoice
             var reservationFee = await _context.ReservationFees
                 .Include(r => r.Reservation)
+                    .ThenInclude(r => r.Invoice)
                 .FirstOrDefaultAsync(r => r.ReservationFeeID == id);
 
             if (reservationFee == null) return NotFound();
 
+            // Update reservation
+            reservationFee.Reservation.TotalAmount -= reservationFee.Amount;
             reservationFee.Reservation.BalanceDue -= reservationFee.Amount;
+
+            // Update invoice
+            if (reservationFee.Reservation.Invoice != null)
+            {
+                reservationFee.Reservation.Invoice.TotalAmount = reservationFee.Reservation.TotalAmount;
+                reservationFee.Reservation.Invoice.IsPaid = false;
+                reservationFee.Reservation.Invoice.DatePaid = null;
+            }
 
             _context.ReservationFees.Remove(reservationFee);
             await _context.SaveChangesAsync();
