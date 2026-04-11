@@ -67,7 +67,7 @@ namespace SiteReservationSystem.Web.Controllers
             return View(reservation);
         }
 
-        // ✅ POST: Edit Reservation
+
         [HttpPost]
         [ValidateAntiForgeryToken]
         public IActionResult Edit(Reservation updatedReservation)

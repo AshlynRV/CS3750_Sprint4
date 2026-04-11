@@ -19,8 +19,8 @@ namespace SiteReservationSystem.Web.Filters
         {
             var httpContext = context.HttpContext;
             var session = httpContext.Session;
-
             var userId = session.GetInt32("UserID");
+
             if (!userId.HasValue)
             {
                 context.Result = new RedirectToActionResult("Login", "Account", null);
@@ -28,24 +28,29 @@ namespace SiteReservationSystem.Web.Filters
             }
 
             var userRole = session.GetString("UserRole");
-            if (userRole == "Admin")
+            if (string.IsNullOrEmpty(userRole))
             {
+                context.Result = new RedirectToActionResult("AccessDenied", "Account", null);
                 return;
             }
 
+            // Admin always has full access
+            if (userRole == "Admin")
+                return;
+
+            // If a specific permission is required
             if (RequiredPermission != AccessPermissions.None)
             {
-                var permissions = session.GetInt32("Permissions");
-                if (permissions == null || ((AccessPermissions)permissions & RequiredPermission) != RequiredPermission)
+                var permissions = session.GetInt32("Permissions") ?? 0;
+                if (((AccessPermissions)permissions & RequiredPermission) != RequiredPermission)
                 {
                     context.Result = new RedirectToActionResult("AccessDenied", "Account", null);
                     return;
                 }
             }
-            else if (userRole != "Admin")
-            {
-                context.Result = new RedirectToActionResult("AccessDenied", "Account", null);
-            }
+
+            // If no specific permission required → allow Customers and Employees
+            // (only Admins were previously allowed here)
         }
     }
 }

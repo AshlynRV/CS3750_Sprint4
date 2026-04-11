@@ -78,11 +78,14 @@ namespace SiteReservationSystem.Web.Controllers
                 var customer = await _context.Customers.FirstOrDefaultAsync(c =>
                     c.UserID == user.UserID
                 );
+
                 if (customer != null)
                     HttpContext.Session.SetString(
                         "Name",
                         $"{customer.FirstName} {customer.LastName}"
                     );
+
+                HttpContext.Session.SetInt32("Permissions", 0);
             }
 
             // Redirect based on role can be done here if we want to change this later

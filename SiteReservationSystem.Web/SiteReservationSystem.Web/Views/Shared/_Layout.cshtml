@@ -21,8 +21,7 @@
         <nav class="navbar navbar-expand-sm navbar-toggleable-sm navbar-light bg-white border-bottom box-shadow mb-3">
             <div class="container-fluid">
                 <a class="navbar-brand" asp-area="" asp-controller="Home" asp-action="Index">SiteReservationSystem.Web</a>
-                <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target=".navbar-collapse" aria-controls="navbarSupportedContent"
-                        aria-expanded="false" aria-label="Toggle navigation">
+                <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target=".navbar-collapse" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
                     <span class="navbar-toggler-icon"></span>
                 </button>
                 <div class="navbar-collapse collapse d-sm-inline-flex justify-content-between">
@@ -33,6 +32,13 @@
                         <li class="nav-item">
                             <a class="nav-link text-dark" asp-area="" asp-controller="Home" asp-action="Privacy">Privacy</a>
                         </li>
+                        <!-- CUSTOMER ACCESS -->
+                        @if (userRole == "Customer")
+                        {
+                            <li class="nav-item">
+                                <a class="nav-link text-dark" asp-controller="Sites" asp-action="Index"> Browse Sites </a>
+                            </li>
+                        }
                         <!-- Only show employee panels to logged-in employees/admins -->
                         @if (userId.HasValue && userRole != "Customer")
                         {
@@ -47,6 +53,14 @@
                                 <li class="nav-item">
                                     <a class="nav-link text-dark" asp-controller="Sites" asp-action="Index">Sites</a>
                                 </li>
+
+                                <!-- Admin-only Create New Site link (only visible to Admins) -->
+                                @if (userRole == "Admin")
+                                {
+                                    <li class="nav-item">
+                                        <a class="nav-link text-dark" asp-controller="Sites" asp-action="CreateSite">Create New Site</a>
+                                    </li>
+                                }
                             }
                             @if (userRole == "Admin" || (perms & AccessPermissions.ManageSiteTypes) == AccessPermissions.ManageSiteTypes)
                             {
@@ -94,7 +108,6 @@
             @RenderBody()
         </main>
     </div>
-
     <footer class="border-top footer text-muted">
         <div class="container">
             &copy; 2026 - SiteReservationSystem.Web - <a asp-area="" asp-controller="Home" asp-action="Privacy">Privacy</a>

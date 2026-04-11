@@ -63,5 +63,12 @@ namespace SiteReservationSystem.Web.Models
         public ReservationStatus ReservationStatus { get; set; } = null!;
         public ICollection<ReservationFee> ReservationFees { get; set; } = new List<ReservationFee>();
         public Invoice? Invoice { get; set; }
+
+        public int NumberOfGuests { get; set; }
+
+        public int NumberOfPets { get; set; }
+
+        [StringLength(500)]
+        public string? SpecialRequests { get; set; }
     }
 }
