@@ -27,14 +27,12 @@ namespace SiteReservationSystem.Web.Controllers
             var user = await _context.Users.FirstOrDefaultAsync(u => u.Email == email);
 
             // Use Bcrypt later
-            // If password doesn't match, return error to login page
             if (user == null || user.PasswordHash != password)
             {
                 ViewBag.Error = "Invalid email or password.";
                 return View();
             }
 
-            // If user is not active, return error to login page and don't log them in
             if (!user.IsActive)
             {
                 ViewBag.Error = "Your account has been disabled. Contact an administrator.";
@@ -42,13 +40,10 @@ namespace SiteReservationSystem.Web.Controllers
             }
 
             // Store user info in session
-            if (user != null)
-            {
-                HttpContext.Session.SetInt32("UserID", user.UserID);
-                HttpContext.Session.SetString("UserRole", user.Role.ToString());
-            }
+            HttpContext.Session.SetInt32("UserID", user.UserID);
+            HttpContext.Session.SetString("UserRole", user.Role.ToString());
 
-            // Store name based on role
+            // Store name + role-based session data
             if (user.Role == UserRole.Admin)
             {
                 var admin = await _context.Admins.FirstOrDefaultAsync(a => a.UserID == user.UserID);
@@ -78,15 +73,18 @@ namespace SiteReservationSystem.Web.Controllers
 
                 if (customer != null)
                 {
+                    // IMPORTANT: link customer to session
+                    HttpContext.Session.SetInt32("CustomerID", customer.CustomerID);
+
                     HttpContext.Session.SetString(
                         "Name",
                         $"{customer.FirstName} {customer.LastName}"
                     );
 
-                    // REQUIRED so Authorize filter does NOT block customers
+                    // REQUIRED so authorization does not block customer routes
                     HttpContext.Session.SetInt32("Permissions", 0);
 
-                    // Military / DoD tracking (from main branch)
+                    // Military / DoD tracking
                     HttpContext.Session.SetInt32(
                         "IsPCSOrders",
                         customer.DoDStatus == DoDStatus.PCS_ORDERS ? 1 : 0

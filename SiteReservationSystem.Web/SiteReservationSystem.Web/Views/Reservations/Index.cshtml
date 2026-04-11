@@ -1,19 +1,45 @@
-﻿@model IEnumerable<SiteReservationSystem.Web.Models.Reservation>
+@model IEnumerable<SiteReservationSystem.Web.Models.Reservation>
 
 @{
     ViewData["Title"] = "Reservations";
 }
+<style>
+    .table thead th {
+        white-space: nowrap;
+        vertical-align: middle;
+        text-align: center;
+    }
+    .table tbody td {
+        vertical-align: middle;
+        text-align: center;
+    }
+    .table td:nth-child(3), .table td:nth-child(4), .table td:last-child, .table th:last-child {
+        white-space: nowrap;
+    }
+    .btn-sm {
+        white-space: nowrap;
+        margin: 2px;
+    }
+</style>
 <h2>Reservations</h2>
 
-<a asp-action="Index"
-       asp-route-reservationId="@Context.Request.Query["reservationId"]"
-       asp-route-customerName="@Context.Request.Query["customerName"]"
-       asp-route-startDate="@Context.Request.Query["startDate"]"
-       asp-route-endDate="@Context.Request.Query["endDate"]"
-       asp-route-sortOrder="status"
-       class="btn btn-info mb-2">
-    Sort by Status
-</a>
+<div class="row mb-3">
+    <div class="col-md-3">
+        <form method="get" class="d-flex gap-2">
+            <input type="hidden" name="reservationId" value="@Context.Request.Query["reservationId"]" />
+            <input type="hidden" name="customerName" value="@Context.Request.Query["customerName"]" />
+            <input type="hidden" name="startDate" value="@Context.Request.Query["startDate"]" />
+            <input type="hidden" name="endDate" value="@Context.Request.Query["endDate"]" />
+            <select name="filterStatus" class="form-select" onchange="this.form.submit()">
+                <option value="">All Statuses</option>
+                <option value="1" selected="@(Context.Request.Query["filterStatus"] == "1")">Upcoming</option>
+                <option value="2" selected="@(Context.Request.Query["filterStatus"] == "2")">In Progress</option>
+                <option value="3" selected="@(Context.Request.Query["filterStatus"] == "3")">Completed</option>
+                <option value="4" selected="@(Context.Request.Query["filterStatus"] == "4")">Cancelled</option>
+            </select>
+        </form>
+    </div>
+</div>
 
 @* Search form for filtering reservations by ID, customer name, and date range *@
 <form method="get" class="row mb-3">
@@ -70,7 +96,7 @@
         @if (!Model.Any())
         {
             <tr>
-                <td colspan="9" class="text-center">
+                <td colspan="10" class="text-center">
                     No reservations found.
                 </td>
             </tr>
@@ -89,23 +115,26 @@
                     <td>@r.EndDate.ToShortDateString()</td>
                     <td>@r.ReservationStatus.StatusName</td>
                     <td>
-<<<<<<< HEAD
-                        <a asp-action="Details" asp-route-id="@r.ReservationID" class="btn btn-secondary btn-sm">View Details</a>
-=======
                         <a asp-action="Details"
                                asp-route-id="@r.ReservationID"
                                class="btn btn-info btn-sm">
                             Details
                         </a>
-
->>>>>>> 1fa6f3d (Added reservation details, edit validation, cancel action, and price recalculation)
                         <a asp-action="Edit"
                                asp-route-id="@r.ReservationID"
                                class="btn btn-warning btn-sm">
                             Edit
                         </a>
                         <a asp-action="AddFee" asp-controller="Fees" asp-route-reservationId="@r.ReservationID" class="btn btn-danger btn-sm">Add Fee</a>
-                        
+                        @if (r.Invoice != null)
+                        {
+                            <a asp-controller="Payments" asp-action="Index" 
+                               asp-route-reservationId="@r.ReservationID"
+                               asp-route-invoiceId="@r.Invoice.InvoiceID"
+                               class="btn btn-success btn-sm">
+                                Invoice
+                            </a>
+                        }
                     </td>
                 </tr>
             }

@@ -3,6 +3,7 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using SiteReservationSystem.Web.Data;
 
@@ -11,9 +12,11 @@ using SiteReservationSystem.Web.Data;
 namespace SiteReservationSystem.Web.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    partial class ApplicationDbContextModelSnapshot : ModelSnapshot
+    [Migration("20260410004343_ResetToDefaults")]
+    partial class ResetToDefaults
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -427,8 +430,8 @@ namespace SiteReservationSystem.Web.Migrations
                             InvoiceDate = new DateTime(2025, 2, 19, 0, 0, 0, 0, DateTimeKind.Unspecified),
                             IsPaid = true,
                             ReservationID = 2,
-                            SubTotal = 225.00m,
-                            TotalAmount = 250.00m,
+                            SubTotal = 175.00m,
+                            TotalAmount = 200.00m,
                             TotalFees = 25.00m
                         },
                         new
@@ -549,7 +552,7 @@ namespace SiteReservationSystem.Web.Migrations
                         new
                         {
                             PaymentID = 2,
-                            Amount = 250.00m,
+                            Amount = 200.00m,
                             InvoiceID = 2,
                             IsRefund = false,
                             PaymentDate = new DateTime(2025, 2, 19, 0, 0, 0, 0, DateTimeKind.Unspecified),
@@ -708,12 +711,6 @@ namespace SiteReservationSystem.Web.Migrations
                         .HasMaxLength(500)
                         .HasColumnType("nvarchar(500)");
 
-                    b.Property<int>("NumberOfGuests")
-                        .HasColumnType("int");
-
-                    b.Property<int>("NumberOfPets")
-                        .HasColumnType("int");
-
                     b.Property<int>("ReservationStatusID")
                         .HasColumnType("int");
 
@@ -725,10 +722,6 @@ namespace SiteReservationSystem.Web.Migrations
 
                     b.Property<int>("SiteID")
                         .HasColumnType("int");
-
-                    b.Property<string>("SpecialRequests")
-                        .HasMaxLength(500)
-                        .HasColumnType("nvarchar(500)");
 
                     b.Property<DateTime>("StartDate")
                         .HasColumnType("datetime2");
@@ -761,8 +754,6 @@ namespace SiteReservationSystem.Web.Migrations
                             DateCreated = new DateTime(2025, 2, 14, 0, 0, 0, 0, DateTimeKind.Unspecified),
                             EndDate = new DateTime(2025, 2, 22, 0, 0, 0, 0, DateTimeKind.Unspecified),
                             LastUpdated = new DateTime(2025, 2, 22, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            NumberOfGuests = 0,
-                            NumberOfPets = 0,
                             ReservationStatusID = 3,
                             ScheduledCheckInTime = new DateTime(2025, 2, 19, 13, 0, 0, 0, DateTimeKind.Unspecified),
                             ScheduledCheckOutTime = new DateTime(2025, 2, 22, 12, 0, 0, 0, DateTimeKind.Unspecified),
@@ -776,19 +767,17 @@ namespace SiteReservationSystem.Web.Migrations
                             ReservationID = 2,
                             ActualCheckInTime = new DateTime(2025, 2, 27, 14, 30, 0, 0, DateTimeKind.Unspecified),
                             BalanceDue = 0m,
-                            BaseAmount = 225.00m,
+                            BaseAmount = 175.00m,
                             CustomerID = 2,
                             DateCreated = new DateTime(2025, 2, 19, 0, 0, 0, 0, DateTimeKind.Unspecified),
                             EndDate = new DateTime(2025, 3, 8, 0, 0, 0, 0, DateTimeKind.Unspecified),
                             LastUpdated = new DateTime(2025, 2, 27, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            NumberOfGuests = 0,
-                            NumberOfPets = 0,
                             ReservationStatusID = 2,
                             ScheduledCheckInTime = new DateTime(2025, 2, 27, 13, 0, 0, 0, DateTimeKind.Unspecified),
                             ScheduledCheckOutTime = new DateTime(2025, 3, 8, 12, 0, 0, 0, DateTimeKind.Unspecified),
                             SiteID = 27,
                             StartDate = new DateTime(2025, 2, 27, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            TotalAmount = 250.00m,
+                            TotalAmount = 200.00m,
                             TrailerLengthFeet = 60
                         },
                         new
@@ -800,8 +789,6 @@ namespace SiteReservationSystem.Web.Migrations
                             DateCreated = new DateTime(2025, 2, 24, 0, 0, 0, 0, DateTimeKind.Unspecified),
                             EndDate = new DateTime(2025, 3, 22, 0, 0, 0, 0, DateTimeKind.Unspecified),
                             LastUpdated = new DateTime(2025, 2, 24, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            NumberOfGuests = 0,
-                            NumberOfPets = 0,
                             ReservationStatusID = 1,
                             ScheduledCheckInTime = new DateTime(2025, 3, 8, 13, 0, 0, 0, DateTimeKind.Unspecified),
                             ScheduledCheckOutTime = new DateTime(2025, 3, 22, 12, 0, 0, 0, DateTimeKind.Unspecified),
@@ -820,8 +807,6 @@ namespace SiteReservationSystem.Web.Migrations
                             EndDate = new DateTime(2025, 3, 15, 0, 0, 0, 0, DateTimeKind.Unspecified),
                             LastUpdated = new DateTime(2025, 2, 26, 0, 0, 0, 0, DateTimeKind.Unspecified),
                             Notes = "Cancelled due to change in travel plans",
-                            NumberOfGuests = 0,
-                            NumberOfPets = 0,
                             ReservationStatusID = 4,
                             ScheduledCheckInTime = new DateTime(2025, 3, 11, 13, 0, 0, 0, DateTimeKind.Unspecified),
                             ScheduledCheckOutTime = new DateTime(2025, 3, 15, 12, 0, 0, 0, DateTimeKind.Unspecified),
@@ -839,8 +824,6 @@ namespace SiteReservationSystem.Web.Migrations
                             DateCreated = new DateTime(2025, 2, 22, 0, 0, 0, 0, DateTimeKind.Unspecified),
                             EndDate = new DateTime(2025, 3, 7, 0, 0, 0, 0, DateTimeKind.Unspecified),
                             LastUpdated = new DateTime(2025, 2, 22, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            NumberOfGuests = 0,
-                            NumberOfPets = 0,
                             ReservationStatusID = 1,
                             ScheduledCheckInTime = new DateTime(2025, 3, 4, 8, 0, 0, 0, DateTimeKind.Unspecified),
                             ScheduledCheckOutTime = new DateTime(2025, 3, 7, 12, 0, 0, 0, DateTimeKind.Unspecified),
@@ -857,8 +840,6 @@ namespace SiteReservationSystem.Web.Migrations
                             DateCreated = new DateTime(2025, 2, 27, 0, 0, 0, 0, DateTimeKind.Unspecified),
                             EndDate = new DateTime(2025, 3, 4, 0, 0, 0, 0, DateTimeKind.Unspecified),
                             LastUpdated = new DateTime(2025, 2, 27, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            NumberOfGuests = 0,
-                            NumberOfPets = 0,
                             ReservationStatusID = 1,
                             ScheduledCheckInTime = new DateTime(2025, 3, 2, 13, 0, 0, 0, DateTimeKind.Unspecified),
                             ScheduledCheckOutTime = new DateTime(2025, 3, 4, 12, 0, 0, 0, DateTimeKind.Unspecified),

@@ -1,4 +1,4 @@
-﻿@using Microsoft.AspNetCore.Http
+@using Microsoft.AspNetCore.Http
 @using SiteReservationSystem.Web.Models
 @{
     var userId = Context.Session.GetInt32("UserID");
@@ -32,13 +32,15 @@
                         <li class="nav-item">
                             <a class="nav-link text-dark" asp-area="" asp-controller="Home" asp-action="Privacy">Privacy</a>
                         </li>
+
                         <!-- CUSTOMER ACCESS -->
                         @if (userRole == "Customer")
                         {
                             <li class="nav-item">
-                                <a class="nav-link text-dark" asp-controller="Sites" asp-action="Index"> Browse Sites </a>
+                                <a class="nav-link text-dark" asp-controller="Sites" asp-action="Index">Browse Sites</a>
                             </li>
                         }
+
                         <!-- Only show employee panels to logged-in employees/admins -->
                         @if (userId.HasValue && userRole != "Customer")
                         {
@@ -48,12 +50,12 @@
                                     <a class="nav-link text-dark" asp-controller="Admin" asp-action="Employees">Employees</a>
                                 </li>
                             }
+
                             @if (userRole == "Admin" || (perms & AccessPermissions.ManageSites) == AccessPermissions.ManageSites)
                             {
                                 <li class="nav-item">
                                     <a class="nav-link text-dark" asp-controller="Sites" asp-action="Index">Sites</a>
                                 </li>
-
                                 <!-- Admin-only Create New Site link (only visible to Admins) -->
                                 @if (userRole == "Admin")
                                 {
@@ -62,18 +64,21 @@
                                     </li>
                                 }
                             }
+
                             @if (userRole == "Admin" || (perms & AccessPermissions.ManageSiteTypes) == AccessPermissions.ManageSiteTypes)
                             {
                                 <li class="nav-item">
                                     <a class="nav-link text-dark" asp-controller="SiteTypes" asp-action="Index">Site Types</a>
                                 </li>
                             }
+
                             @if (userRole == "Admin" || (perms & AccessPermissions.ManageFees) == AccessPermissions.ManageFees)
                             {
                                 <li class="nav-item">
                                     <a class="nav-link text-dark" asp-controller="Fees" asp-action="Index">Fees</a>
                                 </li>
                             }
+
                             @if (userRole == "Admin" || (perms & AccessPermissions.ManageReservations) == AccessPermissions.ManageReservations)
                             {
                                 <li class="nav-item">
@@ -82,6 +87,7 @@
                             }
                         }
                     </ul>
+
                     <ul class="navbar-nav">
                         @if (Context.Session.GetInt32("UserID").HasValue)
                         {
@@ -103,16 +109,19 @@
             </div>
         </nav>
     </header>
+
     <div class="container">
         <main role="main" class="pb-3">
             @RenderBody()
         </main>
     </div>
+
     <footer class="border-top footer text-muted">
         <div class="container">
             &copy; 2026 - SiteReservationSystem.Web - <a asp-area="" asp-controller="Home" asp-action="Privacy">Privacy</a>
         </div>
     </footer>
+
     <script src="~/lib/jquery/dist/jquery.min.js"></script>
     <script src="~/lib/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
     <script src="~/js/site.js" asp-append-version="true"></script>
