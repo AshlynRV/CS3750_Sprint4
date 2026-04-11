@@ -37,14 +37,8 @@ namespace SiteReservationSystem.Web.Controllers
         {
             if (model.SiteTypeID == 0)
             {
-                var siteTypes = _context.SiteTypes
-                    .Select(s => new SelectListItem
-                    {
-                        Value = s.SiteTypeID.ToString(),
-                        Text = s.Description
-                    }).ToList();
-                ViewBag.SiteTypeList = siteTypes;
-                return View(model);
+                TempData["ErrorMessage"] = "Please select a valid site type.";
+                return RedirectToAction("Index");
             }
 
             return RedirectToAction("UpdatePrice", new { siteTypeId = model.SiteTypeID });
@@ -53,6 +47,14 @@ namespace SiteReservationSystem.Web.Controllers
         //Fill out page with information from SiteTypeID
         public IActionResult UpdatePrice(int siteTypeId)
         {
+            // Verify site type exists before allowing access
+            var siteType = _context.SiteTypes.Find(siteTypeId);
+            if (siteType == null)
+            {
+                TempData["ErrorMessage"] = "Site type not found.";
+                return RedirectToAction("Index");
+            }
+
             var pricing = _context.SiteTypePricings
                 .FirstOrDefault(p => p.SiteTypeID == siteTypeId);
 
@@ -61,10 +63,7 @@ namespace SiteReservationSystem.Web.Controllers
                 pricing = new SiteTypePricing { SiteTypeID = siteTypeId };
             }
 
-            ViewBag.SiteTypeName = _context.SiteTypes
-                .Where(s => s.SiteTypeID == siteTypeId)
-                .Select(s => s.Description)
-                .FirstOrDefault();
+            ViewBag.SiteTypeName = siteType.Description;
 
             return View(pricing);
         }
@@ -78,12 +77,13 @@ namespace SiteReservationSystem.Web.Controllers
 
             if (ModelState.IsValid)
             {
-                if (model.StartDate == null)
-                {
-                    model.StartDate = DateTime.Today;
-                }
+                // Check if this is a new pricing record or an existing one to update
                 if (model.PricingID == 0) // No existing record
                 {
+                    if (model.StartDate == default)
+                    {
+                        model.StartDate = DateTime.Today;
+                    }
                     _context.SiteTypePricings.Add(model);
                 }
                 else // Existing record found
@@ -91,31 +91,21 @@ namespace SiteReservationSystem.Web.Controllers
                     var existing = _context.SiteTypePricings.Find(model.PricingID);
                     if (existing != null)
                     {
-                        _context.Update(existing);
+                        existing.BasePrice = model.BasePrice;
+                        existing.StartDate = model.StartDate == default ? existing.StartDate : model.StartDate;
+                        existing.EndDate = model.EndDate;
                     }
-
-                    var newPricing = new SiteTypePricing
-                    {
-                        SiteTypeID = model.SiteTypeID,
-                        BasePrice = model.BasePrice,
-                        Description = model.Description,
-                        StartDate = model.StartDate,
-                        EndDate = model.EndDate
-                    };
-                    _context.SiteTypePricings.Add(newPricing);
                 }
 
                 _context.SaveChanges();
+                TempData["SuccessMessage"] = "Site Type updated successfully.";
+                TempData.Remove("ErrorMessage");
                 return RedirectToAction("Index");
             }
 
-            // If validation fails, repopulate ViewBag
-            ViewBag.SiteTypeName = _context.SiteTypes
-                .Where(s => s.SiteTypeID == model.SiteTypeID)
-                .Select(s => s.Description)
-                .FirstOrDefault();
-
-            return View(model);
+            TempData["ErrorMessage"] = "Please fill in all required fields correctly.";
+            TempData.Remove("SuccessMessage");
+            return RedirectToAction("UpdatePrice", new { siteTypeId = model.SiteTypeID });
         }
     }
 }

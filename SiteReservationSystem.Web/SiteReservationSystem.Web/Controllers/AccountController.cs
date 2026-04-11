@@ -80,6 +80,8 @@ namespace SiteReservationSystem.Web.Controllers
                 );
                 if (customer != null)
                 {
+                    // Store customer ID in session
+                    HttpContext.Session.SetInt32("CustomerID", customer.CustomerID);
                     HttpContext.Session.SetString(
                         "Name",
                         $"{customer.FirstName} {customer.LastName}"
@@ -96,7 +98,9 @@ namespace SiteReservationSystem.Web.Controllers
                         "MilitaryAffiliation",
                         customer.MilitaryAffiliation.ToString()
                     );
-                    Console.WriteLine($"DoDStatus: {customer.DoDStatus}, MilitaryAffiliation: {customer.MilitaryAffiliation}, IsPCSOrders: {customer.DoDStatus == DoDStatus.PCS_ORDERS}");
+                    Console.WriteLine(
+                        $"DoDStatus: {customer.DoDStatus}, MilitaryAffiliation: {customer.MilitaryAffiliation}, IsPCSOrders: {customer.DoDStatus == DoDStatus.PCS_ORDERS}"
+                    );
                 }
             }
 

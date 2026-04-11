@@ -19,15 +19,23 @@ namespace SiteReservationSystem.Web.Controllers
         /// <summary>
         /// Displays all reservations and supports filtering and sorting.
         /// </summary>
-        public IActionResult Index(int? reservationId, string? customerName, DateTime? startDate, DateTime? endDate, string? sortOrder)
+        public IActionResult Index(int? reservationId, string? customerName, DateTime? startDate, DateTime? endDate, string? sortOrder, int? filterStatus)
         {
+            // Clear TempData messages so they don't show again on page refresh
+            TempData.Remove("FeeMessage");
+            TempData.Remove("OldTotalAmount");
+            TempData.Remove("PriceDifference");
+
+            // Build query with includes for related data
             var query = _context.Reservations
                 .Include(r => r.Customer)
                     .ThenInclude(c => c.User)
                 .Include(r => r.Site)
                 .Include(r => r.ReservationStatus)
+                .Include(r => r.Invoice)
                 .AsQueryable();
 
+            // Apply filters based on query parameters
             if (reservationId.HasValue)
                 query = query.Where(r => r.ReservationID == reservationId.Value);
 
@@ -42,6 +50,10 @@ namespace SiteReservationSystem.Web.Controllers
             if (endDate.HasValue)
                 query = query.Where(r => r.EndDate <= endDate.Value);
 
+            // Filter by reservation status (dropdown filter: Upcoming, In Progress, Completed, Cancelled)
+            if (filterStatus.HasValue)
+                query = query.Where(r => r.ReservationStatusID == filterStatus.Value);
+
             if (sortOrder == "status")
                 query = query.OrderBy(r => r.ReservationStatus.StatusName);
 
@@ -53,18 +65,31 @@ namespace SiteReservationSystem.Web.Controllers
         // Details Action
         public IActionResult Details(int id)
         {
+            // Fetch reservation with all related data needed for display
             var reservation = _context.Reservations
                 .Include(r => r.Customer)
                     .ThenInclude(c => c.User)
                 .Include(r => r.Site)
                     .ThenInclude(s => s.SiteType)
+                        .ThenInclude(st => st.SiteTypePricings)  // For Current Stay display
                 .Include(r => r.ReservationStatus)
                 .Include(r => r.ReservationFees)
-                    .ThenInclude(rf => rf.Fee)
+                    .ThenInclude(rf => rf.Fee)  // For fee breakdown div
+                .Include(r => r.Invoice)
+                    .ThenInclude(i => i!.Payments)  // For balance calculation
                 .FirstOrDefault(r => r.ReservationID == id);
 
             if (reservation == null)
                 return NotFound();
+
+            // Get current price per night based on reservation start date
+            // This is used in the view to show "num nights x $price"
+            var pricing = reservation.Site.SiteType.SiteTypePricings
+                .Where(p => p.StartDate <= reservation.StartDate && (p.EndDate == null || p.EndDate >= reservation.StartDate))
+                .OrderByDescending(p => p.StartDate)
+                .FirstOrDefault();
+
+            ViewBag.CurrentPricePerNight = pricing?.BasePrice ?? 0;
 
             return View(reservation);
         }
@@ -86,13 +111,27 @@ namespace SiteReservationSystem.Web.Controllers
             return View(reservation);
         }
 
-        // ✅ POST: Edit Reservation
+        // POST: Edit Reservation
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public IActionResult Edit(Reservation updatedReservation)
+        public IActionResult Edit([Bind("ReservationID,StartDate,EndDate,SiteID,ReservationStatusID,TrailerLengthFeet,Notes")] Reservation updatedReservation)
         {
+            // Skip validation for navigation/computed properties 
+            ModelState.Remove("Customer");
+            ModelState.Remove("Site");
+            ModelState.Remove("ReservationStatus");
+            ModelState.Remove("ReservationFees");
+            ModelState.Remove("Invoice");
+            // We calculate these fields
+            ModelState.Remove("BaseAmount");
+            ModelState.Remove("TotalAmount");
+            ModelState.Remove("BalanceDue");
+
+            // Fetch existing reservation with fees and invoice for recalculation
             var reservation = _context.Reservations
                 .Include(r => r.ReservationFees)
+                .Include(r => r.Invoice)
+                    .ThenInclude(i => i!.Payments)
                 .FirstOrDefault(r => r.ReservationID == updatedReservation.ReservationID);
 
             if (reservation == null)
@@ -142,6 +181,7 @@ namespace SiteReservationSystem.Web.Controllers
                 return View(updatedReservation);
             }
 
+            // Update basic reservation fields
             reservation.StartDate = updatedReservation.StartDate;
             reservation.EndDate = updatedReservation.EndDate;
             reservation.SiteID = updatedReservation.SiteID;
@@ -149,9 +189,11 @@ namespace SiteReservationSystem.Web.Controllers
             reservation.TrailerLengthFeet = updatedReservation.TrailerLengthFeet;
             reservation.LastUpdated = DateTime.UtcNow;
 
-            // Recalculate pricing
+            // Recalculate Total Amount: TotalAmount = (current nights × current price) + fees
+            // BaseAmount stays the same (original booking price never changes)
             int numberOfNights = (updatedReservation.EndDate - updatedReservation.StartDate).Days;
 
+            // Get current price for this site type based on reservation start date
             var pricing = _context.SiteTypePricings
                 .Where(p => p.SiteTypeID == selectedSite.SiteTypeID &&
                             p.StartDate <= updatedReservation.StartDate &&
@@ -160,15 +202,37 @@ namespace SiteReservationSystem.Web.Controllers
                 .FirstOrDefault();
 
             decimal nightlyRate = pricing?.BasePrice ?? 0m;
-            decimal newBaseAmount = nightlyRate * numberOfNights;
+            decimal newTotalForNights = nightlyRate * numberOfNights;
             decimal existingFees = reservation.ReservationFees.Sum(rf => rf.Amount);
             decimal oldTotalAmount = reservation.TotalAmount;
-            decimal newTotalAmount = newBaseAmount + existingFees;
+            decimal newTotalAmount = newTotalForNights + existingFees;
             decimal priceDifference = newTotalAmount - oldTotalAmount;
 
-            reservation.BaseAmount = newBaseAmount;
+            // Update reservation with new total
             reservation.TotalAmount = newTotalAmount;
 
+            // Recalculate BalanceDue: AmountPaid = sum of all non-refund payments
+            decimal amountPaid = 0;
+            if (reservation.Invoice?.Payments != null)
+            {
+                amountPaid = reservation.Invoice.Payments.Where(p => !p.IsRefund).Sum(p => p.Amount);
+            }
+            reservation.BalanceDue = reservation.TotalAmount - amountPaid;
+
+            // Sync Invoice with Reservation
+            // When totals change, the invoice must be updated:
+            // - TotalAmount: sync with the reservation
+            // - IsPaid: reset to false
+            // - DatePaid: clear since balance is now owed
+            // =====================================================
+            if (reservation.Invoice != null)
+            {
+                reservation.Invoice.TotalAmount = reservation.TotalAmount;
+                reservation.Invoice.IsPaid = false;
+                reservation.Invoice.DatePaid = null;
+            }
+
+            // Store values for display message on Details page
             TempData["OldTotalAmount"] = oldTotalAmount.ToString("F2");
             TempData["NewTotalAmount"] = newTotalAmount.ToString("F2");
             TempData["PriceDifference"] = priceDifference.ToString("F2");
@@ -205,19 +269,6 @@ namespace SiteReservationSystem.Web.Controllers
             _context.SaveChanges();
 
             return RedirectToAction("Details", new { id = id });
-        }
-
-        public async Task<IActionResult> Details(int? id) 
-        { 
-            if (id == null) return NotFound();
-
-            var reservation = await _context.Reservations
-                .Include(r => r.ReservationFees)
-                .ThenInclude(rf => rf.Fee)
-                .FirstOrDefaultAsync(m => m.ReservationID == id);
-            if (reservation == null ) return NotFound();
-
-            return View(reservation);
         }
     }
 }

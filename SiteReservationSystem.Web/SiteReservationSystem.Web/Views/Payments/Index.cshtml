@@ -1,0 +1,532 @@
+@model SiteReservationSystem.Web.ViewModels.PaymentViewModel
+
+@{
+    ViewData["Title"] = "Payment";
+}
+
+<div class="row justify-content-center">
+    <div class="col-md-8">
+        @if (TempData["ErrorMessage"] != null)
+        {
+            <div class="alert alert-danger alert-dismissible fade show" role="alert">
+                @TempData["ErrorMessage"]
+                <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+            </div>
+        }
+
+        @if (ViewBag.ShowInvalidParamsPopup == true || ViewBag.ShowNotFoundPopup == true)
+        {
+            <div class="alert alert-warning">
+                <h4 class="alert-heading">Invalid Parameters</h4>
+                <p>The reservation or invoice ID provided does not exist.</p>
+                <hr />
+                <a href="javascript:history.back()" class="btn btn-primary">Go Back</a>
+            </div>
+        }
+        else
+        {
+        @if ((TempData["SuccessMessage"] != null || Model.IsAlreadyPaid) && ViewBag.ShowInvoiceList != true)
+        {
+            <div class="alert alert-success alert-dismissible fade show" role="alert">
+                @if (TempData["SuccessMessage"] != null)
+                {
+                    @TempData["SuccessMessage"]
+                }
+                else if (Model.DatePaid.HasValue)
+                {
+                    <strong>This reservation was paid in full on @Model.DatePaid.Value.ToShortDateString().</strong>
+                }
+                else
+                {
+                    <strong>This reservation was paid in full.</strong>
+                }
+                <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+            </div>
+        }
+        else if (Model.NeedsRefund && ViewBag.ShowInvoiceList != true && !ViewBag.IsAdmin)
+        {
+            <div class="alert alert-warning alert-dismissible fade show" role="alert">
+                <strong>A refund of @Math.Abs(Model.BalanceDue).ToString("C") is available. Please enter your card information below to claim your refund.</strong>
+                <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+            </div>
+        }
+        @if (ViewBag.ShowInvoiceList == true && ViewBag.InvoiceList != null)
+        {
+            <div class="alert alert-info">
+                <strong>Select an invoice below to view payment details.</strong>
+            </div>
+            
+            var invoiceList = (List<SiteReservationSystem.Web.ViewModels.InvoiceItemViewModel>)ViewBag.InvoiceList;
+            
+            @if (invoiceList.Any())
+            {
+                <table class="table table-bordered table-hover text-center">
+                    <thead class="table-light">
+                        <tr>
+                            <th class="text-center">Invoice #</th>
+                            <th class="text-center">Site</th>
+                            <th class="text-center">Dates</th>
+                            <th class="text-center">Total</th>
+                            <th class="text-center">Status</th>
+                            <th class="text-center">Action</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @foreach (var invoice in invoiceList)
+                        {
+                            <tr>
+                                <td>@invoice.InvoiceID</td>
+                                <td>@invoice.SiteNumber (@invoice.SiteTypeName)</td>
+                                <td>@invoice.StartDate.ToShortDateString() - @invoice.EndDate.ToShortDateString()</td>
+                                <td>$@invoice.TotalAmount.ToString("F2")</td>
+                                <td>
+                                    @if (invoice.NeedsRefund)
+                                    {
+                                        <span class="badge bg-info">Refund Owed</span>
+                                    }
+                                    else if (invoice.IsPaid)
+                                    {
+                                        <span class="badge bg-success">Paid</span>
+                                    }
+                                    else
+                                    {
+                                        <span class="badge bg-warning text-dark">Unpaid</span>
+                                    }
+                                </td>
+                                <td>
+                                    <a asp-controller="Payments" asp-action="Index" 
+                                       asp-route-reservationId="@invoice.ReservationID" 
+                                       asp-route-invoiceId="@invoice.InvoiceID" 
+                                       class="btn btn-sm btn-primary">
+                                        View
+                                    </a>
+                                </td>
+                            </tr>
+                        }
+                    </tbody>
+                </table>
+            }
+            else
+            {
+                <p class="text-muted">No invoices found.</p>
+            }
+        }
+        else if (ViewBag.AccessDenied == true)
+        {
+            <div class="alert alert-danger">
+                <h4 class="alert-heading">Access Denied</h4>
+                <p>You do not have access to this invoice. Please ensure you are logged into the correct account.</p>
+                <hr />
+                <a asp-controller="Home" asp-action="Index" class="btn btn-primary">Back to Home</a>
+            </div>
+        }
+        else if (ViewBag.ShowInvalidParamsPopup != true && ViewBag.ShowNotFoundPopup != true)
+        {
+            <div class="card mb-4">
+                <div class="card-header bg-primary text-white">
+                    <h5 class="mb-0">Reservation Summary</h5>
+                </div>
+                <div class="card-body">
+
+                    @* Top info grid: site + dates + customer details *@
+                    <div class="row g-3 mb-3">
+                        <div class="col-6 col-md-2">
+                            <div class="text-muted small mb-1">Site Number</div>
+                            <div class="fw-semibold">@Model.SiteNumber</div>
+                        </div>
+                        <div class="col-6 col-md-4">
+                            <div class="text-muted small mb-1">Site Type</div>
+                            <div class="fw-semibold">@Model.SiteTypeName</div>
+                        </div>
+                        <div class="col-6 col-md-2">
+                            <div class="text-muted small mb-1">Check-in</div>
+                            <div class="fw-semibold">@Model.StartDate.ToShortDateString()</div>
+                        </div>
+                        <div class="col-6 col-md-2">
+                            <div class="text-muted small mb-1">Check-out</div>
+                            <div class="fw-semibold">@Model.EndDate.ToShortDateString()</div>
+                        </div>
+                    </div>
+                    <div class="row g-3 mb-3">
+                        <div class="col-6 col-md-2">
+                            <div class="text-muted small mb-1">Customer</div>
+                            <div class="fw-semibold">@Model.CustomerName</div>
+                        </div>
+                        <div class="col-6 col-md-4">
+                            <div class="text-muted small mb-1">Email</div>
+                            <div class="fw-semibold">@Model.CustomerEmail</div>
+                        </div>
+                        <div class="col-6 col-md-3">
+                            <div class="text-muted small mb-1">Phone</div>
+                            <div class="fw-semibold">@Model.CustomerPhone</div>
+                        </div>
+                    </div>
+
+                    <hr class="my-3" />
+
+                    @* Pricing breakdown *@
+                    <div class="row">
+                        @* Left: line-item costs *@
+                        <div class="col-md-6">
+                            <table class="table table-sm table-borderless mb-0">
+                                <tbody>
+                                    <tr>
+                                        <td class="text-muted ps-0 py-1">Nights</td>
+                                        <td class="text-end fw-semibold py-1">@Model.NumberOfNights &times; @(((decimal)ViewBag.PricePerNight).ToString("C"))</td>
+                                    </tr>
+                                    <tr>
+                                        <td class="text-muted ps-0 py-1">Base Amount</td>
+                                        <td class="text-end fw-semibold py-1">$@Model.BaseAmount.ToString("F2")</td>
+                                    </tr>
+                                    @if (Model.Fees.Any())
+                                    {
+                                        @foreach (var fee in Model.Fees)
+                                        {
+                                            <tr>
+                                                <td class="text-muted ps-0 py-1">@fee.FeeName</td>
+                                                <td class="text-end fw-semibold py-1">$@fee.Amount.ToString("F2")</td>
+                                            </tr>
+                                        }
+                                        <tr class="border-top">
+                                            <td class="text-muted ps-0 py-1">Total Fees</td>
+                                            <td class="text-end fw-semibold py-1">$@Model.TotalFees.ToString("F2")</td>
+                                        </tr>
+                                    }
+                                </tbody>
+                            </table>
+                        </div>
+
+                        @* Right: totals summary *@
+                        <div class="col-md-4 offset-md-2">
+                            <table class="table table-sm table-borderless mb-0">
+                                <tbody>
+                                    <tr>
+                                        <td class="ps-0 py-2 fw-bold text-primary fs-6">Total</td>
+                                        <td class="text-end py-2"><span class="fw-bold text-primary fs-5">$@Model.TotalAmount.ToString("F2")</span></td>
+                                    </tr>
+                                    @if (Model.AmountPaid > 0)
+                                    {
+                                        <tr>
+                                            <td class="text-muted ps-0 py-1">Amount Paid</td>
+                                            <td class="text-end fw-semibold py-1 text-success">$@Model.AmountPaid.ToString("F2")</td>
+                                        </tr>
+                                    }
+                                    @if (Model.BalanceDue != 0)
+                                    {
+                                        <tr class="border-top">
+                                            @if (Model.BalanceDue > 0)
+                                            {
+                                                <td class="ps-0 py-2 fw-bold text-danger">Balance Due</td>
+                                                <td class="text-end py-2 fw-bold text-danger">$@Model.BalanceDue.ToString("F2")</td>
+                                            }
+                                            else
+                                            {
+                                                <td class="ps-0 py-2 fw-bold text-success">Refund Owed</td>
+                                                <td class="text-end py-2 fw-bold text-success">$@Math.Abs(Model.BalanceDue).ToString("F2")</td>
+                                            }
+                                        </tr>
+                                    }
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+
+                </div>
+            </div>
+
+            @if (!ViewBag.IsAdmin && (!Model.IsAlreadyPaid || Model.NeedsRefund))
+            {
+                <div class="card">
+                    <div class="card-header bg-primary text-white">
+                        <h5 class="mb-0">@(Model.NeedsRefund ? "Refund Information" : "Payment Information")</h5>
+                    </div>
+                    <div class="card-body">
+                        <form id="paymentForm" method="post">
+                            @Html.AntiForgeryToken()
+                            <input type="hidden" asp-for="ReservationID" />
+                            <input type="hidden" asp-for="InvoiceID" />
+
+                            <div class="mb-3">
+                                <label asp-for="CustomerEmail" class="form-label">Email Address</label>
+                                <input type="email" asp-for="CustomerEmail" class="form-control" required />
+                                <span asp-validation-for="CustomerEmail" class="text-danger"></span>
+                            </div>
+
+                            <div class="mb-3">
+                                <label asp-for="CustomerPhone" class="form-label">Phone Number</label>
+                                <input type="tel" asp-for="CustomerPhone" class="form-control" pattern="^\d{3}-\d{3}-\d{4}$" placeholder="555-123-4567" required />
+                                <span asp-validation-for="CustomerPhone" class="text-danger"></span>
+                                <small class="form-text text-muted">Format: 555-123-4567</small>
+                            </div>
+
+                            <div class="mb-3">
+                                <label class="form-label">Card Number</label>
+                                <input type="text" class="form-control" id="cardNumber" name="cardNumber" 
+                                       pattern="^\d{16}$" placeholder="1234567890123456" maxlength="16" required />
+                                <span class="text-danger" id="cardError"></span>
+                                <small class="form-text text-muted">Enter 16 digit card number</small>
+                            </div>
+
+                            <div class="row">
+                                <div class="col-md-6 mb-3">
+                                    <label class="form-label">Expiry Date</label>
+                                    <input type="text" class="form-control" id="expiryDate" placeholder="MM/YY" 
+                                           pattern="^(0[1-9]|1[0-2])\/\d{2}$" maxlength="5" required />
+                                    <span class="text-danger" id="expiryError"></span>
+                                </div>
+                                <div class="col-md-6 mb-3">
+                                    <label class="form-label">CVV</label>
+                                    <input type="text" class="form-control" id="cvv" placeholder="123" 
+                                           pattern="^\d{3,4}$" maxlength="4" required />
+                                    <span class="text-danger" id="cvvError"></span>
+                                </div>
+                            </div>
+
+                            @if (Model.NeedsRefund)
+                            {
+                                <button type="button" class="btn btn-warning w-100" onclick="processRefund()">
+                                    Claim Refund (@Math.Abs(Model.BalanceDue).ToString("C"))
+                                </button>
+                            }
+                            else if (!Model.CanPay)
+                            {
+                                <div class="alert alert-warning">
+                                    <strong>Note:</strong> Only customers who have completed the reservation process can make payments online.
+                                </div>
+                                <button type="button" class="btn btn-primary w-100" disabled>
+                                    Pay Now ($@Model.BalanceDue.ToString("F2"))
+                                </button>
+                            }
+                            else
+                            {
+                                <button type="button" class="btn btn-primary w-100" onclick="processPayment()">
+                                    Pay Now ($@Model.BalanceDue.ToString("F2"))
+                                </button>
+                            }
+                        </form>
+                    </div>
+                </div>
+            }
+        }
+        }
+    </div>
+</div>
+
+<!-- Modals -->
+<div class="modal fade" id="paymentModal" tabindex="-1" aria-labelledby="paymentModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered">
+        <div class="modal-content">
+            <div class="modal-header bg-primary text-white">
+                <h5 class="modal-title" id="paymentModalLabel">Processing Payment</h5>
+                <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body text-center">
+                <div id="processingContent">
+                    <div class="spinner-border text-primary mb-3" role="status">
+                        <span class="visually-hidden">Loading...</span>
+                    </div>
+                    <p>Connecting to Stripe...</p>
+                </div>
+                <div id="successContent" style="display: none;">
+                    <div class="text-success mb-3">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="64" height="64" fill="currentColor" class="bi bi-check-circle-fill" viewBox="0 0 16 16">
+                            <path d="M16 8A8 8 0 1 1 0 8a8 8 0 0 1 16 0zm-3.97-3.03a.75.75 0 0 0-1.08.022L7.477 9.417 5.384 7.323a.75.75 0 0 0-1.06 1.06L6.97 11.03a.75.75 0 0 0 1.079-.02l3.992-4.99a.75.75 0 0 0-.01-1.05z"/>
+                        </svg>
+                    </div>
+                    <h4 class="text-success" id="successTitle">Payment Successful!</h4>
+                    <p id="successMessage">A confirmation email has been sent to <span id="confirmationEmail"></span></p>
+                </div>
+                <div id="refundContent" style="display: none;">
+                    <div class="text-success mb-3">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="64" height="64" fill="currentColor" class="bi bi-check-circle-fill" viewBox="0 0 16 16">
+                            <path d="M16 8A8 8 0 1 1 0 8a8 8 0 0 1 16 0zm-3.97-3.03a.75.75 0 0 0-1.08.022L7.477 9.417 5.384 7.323a.75.75 0 0 0-1.06 1.06L6.97 11.03a.75.75 0 0 0 1.079-.02l3.992-4.99a.75.75 0 0 0-.01-1.05z"/>
+                        </svg>
+                    </div>
+                    <h4 class="text-success">Refund Successful!</h4>
+                    <p>We've refunded <span id="refundAmount"></span> to your card.</p>
+                </div>
+                <div id="errorContent" style="display: none;">
+                    <div class="text-danger mb-3">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="64" height="64" fill="currentColor" class="bi bi-x-circle-fill" viewBox="0 0 16 16">
+                            <path d="M16 8A8 8 0 1 1 0 8a8 8 0 0 1 16 0zM5.354 4.646a.5.5 0 1 0-.708.708L7.293 8l-2.647 2.646a.5.5 0 0 0 .708.708L8 8.707l2.646 2.647a.5.5 0 0 0 .708-.708L8.707 8l2.647-2.646a.5.5 0 0 0-.708-.708L8 7.293 5.354 4.646z"/>
+                        </svg>
+                    </div>
+                    <h4 class="text-danger">Payment Failed</h4>
+                    <p id="errorMessage">An error occurred while processing your payment.</p>
+                </div>
+            </div>
+            <div class="modal-footer" id="successFooter" style="display: none;">
+                <button type="button" class="btn btn-primary" onclick="submitPayment()">Confirm</button>
+            </div>
+            <div class="modal-footer" id="errorFooter" style="display: none;">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+@section Scripts {
+    @if (Model.ReservationID > 0)
+    {
+    <script>
+        let paymentData = {
+            reservationId: @Model.ReservationID,
+            email: '',
+            totalAmount: @Model.TotalAmount
+        };
+
+        function validateForm() {
+            let isValid = true;
+            
+            const email = document.querySelector('input[id="CustomerEmail"]');
+            const phone = document.querySelector('input[id="CustomerPhone"]');
+            const cardNumber = document.getElementById('cardNumber');
+            const expiryDate = document.getElementById('expiryDate');
+            const cvv = document.getElementById('cvv');
+            
+            document.getElementById('cardError').textContent = '';
+            document.getElementById('expiryError').textContent = '';
+            document.getElementById('cvvError').textContent = '';
+
+            const phonePattern = /^\d{3}-\d{3}-\d{4}$/;
+            if (!phonePattern.test(phone.value)) {
+                document.getElementById('cardError').textContent = 'Please enter a valid phone number (555-123-4567)';
+                isValid = false;
+            }
+
+            const cardPattern = /^\d{16}$/;
+            if (!cardPattern.test(cardNumber.value)) {
+                document.getElementById('cardError').textContent = 'Card number must be 16 digits';
+                isValid = false;
+            }
+
+            const expiryPattern = /^(0[1-9]|1[0-2])\/\d{2}$/;
+            if (!expiryPattern.test(expiryDate.value)) {
+                document.getElementById('expiryError').textContent = 'Enter valid expiry (MM/YY)';
+                isValid = false;
+            } else {
+                const [month, year] = expiryDate.value.split('/');
+                const expDate = new Date(2000 + parseInt(year), parseInt(month) - 1);
+                if (expDate < new Date()) {
+                    document.getElementById('expiryError').textContent = 'Card has expired';
+                    isValid = false;
+                }
+            }
+
+            const cvvPattern = /^\d{3,4}$/;
+            if (!cvvPattern.test(cvv.value)) {
+                document.getElementById('cvvError').textContent = 'CVV must be 3-4 digits';
+                isValid = false;
+            }
+
+            return isValid;
+        }
+
+        function formatPhone(input) {
+            let value = input.value.replace(/\D/g, '');
+            if (value.length >= 6) {
+                value = value.slice(0, 3) + '-' + value.slice(3, 6) + '-' + value.slice(6, 10);
+            } else if (value.length >= 3) {
+                value = value.slice(0, 3) + '-' + value.slice(3);
+            }
+            input.value = value;
+        }
+
+        function formatExpiry(input) {
+            let value = input.value.replace(/\D/g, '');
+            if (value.length >= 2) {
+                value = value.slice(0, 2) + '/' + value.slice(2, 4);
+            }
+            input.value = value;
+        }
+
+        document.getElementById('CustomerPhone')?.addEventListener('input', function() {
+            formatPhone(this);
+        });
+
+        document.getElementById('expiryDate')?.addEventListener('input', function() {
+            formatExpiry(this);
+        });
+
+        document.getElementById('cardNumber')?.addEventListener('input', function() {
+            this.value = this.value.replace(/\D/g, '').slice(0, 16);
+        });
+
+        document.getElementById('cvv')?.addEventListener('input', function() {
+            this.value = this.value.replace(/\D/g, '').slice(0, 4);
+        });
+
+        function processPayment() {
+            if (!validateForm()) {
+                return;
+            }
+
+            paymentData.email = document.getElementById('CustomerEmail').value;
+
+            document.getElementById('processingContent').style.display = 'block';
+            document.getElementById('successContent').style.display = 'none';
+            document.getElementById('refundContent').style.display = 'none';
+            document.getElementById('errorContent').style.display = 'none';
+            document.getElementById('successFooter').style.display = 'none';
+            document.getElementById('errorFooter').style.display = 'none';
+
+            var modal = new bootstrap.Modal(document.getElementById('paymentModal'));
+            modal.show();
+
+            setTimeout(function() {
+                document.getElementById('processingContent').style.display = 'none';
+                document.getElementById('successContent').style.display = 'block';
+                document.getElementById('successTitle').textContent = 'Payment Successful!';
+                document.getElementById('successMessage').innerHTML = 'A confirmation email has been sent to <span id="confirmationEmail"></span>';
+                document.getElementById('confirmationEmail').textContent = paymentData.email;
+                document.getElementById('successFooter').style.display = 'block';
+            }, 2000);
+        }
+
+        function processRefund() {
+            if (!validateForm()) {
+                return;
+            }
+
+            paymentData.email = document.getElementById('CustomerEmail').value;
+            var refundAmount = '@Math.Abs(Model.BalanceDue).ToString("C")';
+
+            document.getElementById('processingContent').style.display = 'block';
+            document.getElementById('successContent').style.display = 'none';
+            document.getElementById('refundContent').style.display = 'none';
+            document.getElementById('errorContent').style.display = 'none';
+            document.getElementById('successFooter').style.display = 'none';
+            document.getElementById('errorFooter').style.display = 'none';
+
+            var modal = new bootstrap.Modal(document.getElementById('paymentModal'));
+            modal.show();
+
+            setTimeout(function() {
+                document.getElementById('processingContent').style.display = 'none';
+                document.getElementById('refundContent').style.display = 'block';
+                document.getElementById('refundAmount').textContent = refundAmount;
+                document.getElementById('successFooter').style.display = 'block';
+                document.getElementById('successFooter').innerHTML = '<button type="button" class="btn btn-primary" onclick="submitRefund()">Confirm</button>';
+            }, 2000);
+        }
+
+        function submitPayment() {
+            var form = document.getElementById('paymentForm');
+            form.action = '/Payments/ProcessPayment';
+            form.submit();
+        }
+
+        function submitRefund() {
+            var form = document.getElementById('paymentForm');
+            form.action = '/Payments/ProcessRefund';
+            form.submit();
+        }
+
+        document.addEventListener('DOMContentLoaded', function() {
+            if (document.getElementById('CustomerPhone')) {
+                formatPhone(document.getElementById('CustomerPhone'));
+            }
+        });
+    </script>
+    }
+}

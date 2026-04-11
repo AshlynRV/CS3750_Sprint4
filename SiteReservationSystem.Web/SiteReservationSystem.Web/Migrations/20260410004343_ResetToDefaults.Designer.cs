@@ -3,6 +3,7 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using SiteReservationSystem.Web.Data;
 
@@ -11,9 +12,11 @@ using SiteReservationSystem.Web.Data;
 namespace SiteReservationSystem.Web.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    partial class ApplicationDbContextModelSnapshot : ModelSnapshot
+    [Migration("20260410004343_ResetToDefaults")]
+    partial class ResetToDefaults
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -427,8 +430,8 @@ namespace SiteReservationSystem.Web.Migrations
                             InvoiceDate = new DateTime(2025, 2, 19, 0, 0, 0, 0, DateTimeKind.Unspecified),
                             IsPaid = true,
                             ReservationID = 2,
-                            SubTotal = 225.00m,
-                            TotalAmount = 250.00m,
+                            SubTotal = 175.00m,
+                            TotalAmount = 200.00m,
                             TotalFees = 25.00m
                         },
                         new
@@ -549,7 +552,7 @@ namespace SiteReservationSystem.Web.Migrations
                         new
                         {
                             PaymentID = 2,
-                            Amount = 250.00m,
+                            Amount = 200.00m,
                             InvoiceID = 2,
                             IsRefund = false,
                             PaymentDate = new DateTime(2025, 2, 19, 0, 0, 0, 0, DateTimeKind.Unspecified),
@@ -764,7 +767,7 @@ namespace SiteReservationSystem.Web.Migrations
                             ReservationID = 2,
                             ActualCheckInTime = new DateTime(2025, 2, 27, 14, 30, 0, 0, DateTimeKind.Unspecified),
                             BalanceDue = 0m,
-                            BaseAmount = 225.00m,
+                            BaseAmount = 175.00m,
                             CustomerID = 2,
                             DateCreated = new DateTime(2025, 2, 19, 0, 0, 0, 0, DateTimeKind.Unspecified),
                             EndDate = new DateTime(2025, 3, 8, 0, 0, 0, 0, DateTimeKind.Unspecified),
@@ -774,7 +777,7 @@ namespace SiteReservationSystem.Web.Migrations
                             ScheduledCheckOutTime = new DateTime(2025, 3, 8, 12, 0, 0, 0, DateTimeKind.Unspecified),
                             SiteID = 27,
                             StartDate = new DateTime(2025, 2, 27, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            TotalAmount = 250.00m,
+                            TotalAmount = 200.00m,
                             TrailerLengthFeet = 60
                         },
                         new

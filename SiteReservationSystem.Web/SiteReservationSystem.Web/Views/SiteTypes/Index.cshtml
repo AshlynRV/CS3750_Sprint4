@@ -4,15 +4,29 @@
     ViewData["Title"] = "Site Types";
 }
 
+@if (TempData["ErrorMessage"] != null)
+{
+    <div class="alert alert-danger alert-dismissible fade show" role="alert">
+        @TempData["ErrorMessage"]
+        <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+    </div>
+}
+
+@if (TempData["SuccessMessage"] != null)
+{
+    <div class="alert alert-success alert-dismissible fade show" role="alert">
+        @TempData["SuccessMessage"]
+        <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+    </div>
+}
+
 <h2>Adjust Price</h2>
 <form asp-action="Index" method="post">
     <input type="hidden" asp-for="PricingID" />
     <label asp-for="SiteTypeID">Select Site Type: </label>
     <select asp-for="SiteTypeID" asp-items="ViewBag.SiteTypeList" class="form-control">
-        <option value="-- Required Field --"></option>
+        <option value="">-- Select Site Type --</option>
     </select>
-    <span asp-validation-for="SiteTypeID" class="text-danger"></span>
-
     <button type="submit" class="btn btn-primary">Next</button>
 </form>
     
