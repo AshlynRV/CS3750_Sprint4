@@ -42,8 +42,6 @@ namespace SiteReservationSystem.Web.Controllers
             }
 
             // Store user info in session
-            // Can be accesses through HttpContext.Session.GetInt32("UserID")
-            // Can be accesses through HttpContext.Session.GetString("UserRole")
             if (user != null)
             {
                 HttpContext.Session.SetInt32("UserID", user.UserID);
@@ -51,25 +49,24 @@ namespace SiteReservationSystem.Web.Controllers
             }
 
             // Store name based on role
-            // Stores permissions for employees
-            // Can be accesses through HttpContext.Session.GetString("Name")
             if (user.Role == UserRole.Admin)
             {
                 var admin = await _context.Admins.FirstOrDefaultAsync(a => a.UserID == user.UserID);
                 if (admin != null)
                     HttpContext.Session.SetString("Name", $"{admin.FirstName} {admin.LastName}");
             }
-            // Can be accesses through HttpContext.Session.GetInt32("Permissions")
             else if (user.Role == UserRole.Employee)
             {
                 var employee = await _context.Employees.FirstOrDefaultAsync(e =>
                     e.UserID == user.UserID
                 );
+
                 if (employee == null || employee.IsLockedOut)
                 {
                     ViewBag.Error = "Your account has been locked. Contact an administrator.";
                     return View();
                 }
+
                 HttpContext.Session.SetString("Name", $"{employee.FirstName} {employee.LastName}");
                 HttpContext.Session.SetInt32("Permissions", (int)employee.AccessPermissions);
             }
@@ -80,15 +77,33 @@ namespace SiteReservationSystem.Web.Controllers
                 );
 
                 if (customer != null)
+                {
                     HttpContext.Session.SetString(
                         "Name",
                         $"{customer.FirstName} {customer.LastName}"
                     );
 
-                HttpContext.Session.SetInt32("Permissions", 0);
+                    // REQUIRED so Authorize filter does NOT block customers
+                    HttpContext.Session.SetInt32("Permissions", 0);
+
+                    // Military / DoD tracking (from main branch)
+                    HttpContext.Session.SetInt32(
+                        "IsPCSOrders",
+                        customer.DoDStatus == DoDStatus.PCS_ORDERS ? 1 : 0
+                    );
+
+                    HttpContext.Session.SetString(
+                        "MilitaryAffiliation",
+                        customer.MilitaryAffiliation.ToString()
+                    );
+
+                    Console.WriteLine(
+                        $"DoDStatus: {customer.DoDStatus}, MilitaryAffiliation: {customer.MilitaryAffiliation}, IsPCSOrders: {customer.DoDStatus == DoDStatus.PCS_ORDERS}"
+                    );
+                }
             }
 
-            // Redirect based on role can be done here if we want to change this later
+            // Redirect based on role
             return user.Role switch
             {
                 UserRole.Admin => RedirectToAction("Index", "Admin"),
@@ -104,8 +119,7 @@ namespace SiteReservationSystem.Web.Controllers
             return RedirectToAction("Login");
         }
 
-        // This is for when a user tries to access a page they don't have permission for
-        // Route is /Account/AccessDenied
+        // Access denied page
         [HttpGet]
         public IActionResult AccessDenied()
         {

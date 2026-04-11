@@ -70,7 +70,7 @@
         @if (!Model.Any())
         {
             <tr>
-                <td colspan="8" class="text-center">
+                <td colspan="9" class="text-center">
                     No reservations found.
                 </td>
             </tr>
@@ -89,7 +89,16 @@
                     <td>@r.EndDate.ToShortDateString()</td>
                     <td>@r.ReservationStatus.StatusName</td>
                     <td>
+<<<<<<< HEAD
                         <a asp-action="Details" asp-route-id="@r.ReservationID" class="btn btn-secondary btn-sm">View Details</a>
+=======
+                        <a asp-action="Details"
+                               asp-route-id="@r.ReservationID"
+                               class="btn btn-info btn-sm">
+                            Details
+                        </a>
+
+>>>>>>> 1fa6f3d (Added reservation details, edit validation, cancel action, and price recalculation)
                         <a asp-action="Edit"
                                asp-route-id="@r.ReservationID"
                                class="btn btn-warning btn-sm">
