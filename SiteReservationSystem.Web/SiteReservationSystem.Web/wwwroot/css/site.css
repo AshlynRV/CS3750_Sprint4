@@ -34,3 +34,80 @@ body {
     transform: scale(1.5);
     //margin-left:0.5rem;
 }
+
+
+
+
+.reservation-wrapper {
+    max-width: 900px;
+    margin: 40px auto;
+    padding: 20px;
+}
+
+.page-title {
+    font-size: 28px;
+    margin-bottom: 5px;
+}
+
+.subtitle {
+    color: #666;
+    margin-bottom: 20px;
+}
+
+.reservation-grid {
+    display: flex;
+    gap: 20px;
+    flex-wrap: wrap;
+}
+
+/* Card styling only for this page */
+.form-card,
+.summary-card {
+    flex: 1;
+    min-width: 300px;
+    background: #ffffff;
+    border: 1px solid #ddd;
+    border-radius: 12px;
+    padding: 20px;
+}
+
+/* Scoped inputs so we DON'T affect other pages */
+.reservation-wrapper input,
+.reservation-wrapper textarea {
+    width: 100%;
+    padding: 10px;
+    margin-top: 5px;
+    margin-bottom: 12px;
+    border: 1px solid #ccc;
+    border-radius: 8px;
+    font-size: 14px;
+}
+
+/* Scoped labels only here */
+.reservation-wrapper label {
+    display: block;
+    margin-top: 10px;
+    font-weight: 600;
+}
+
+/* Scoped button ONLY in reservation page */
+.reservation-wrapper button {
+    margin-top: 15px;
+    width: 100%;
+    padding: 12px;
+    background: #2e7d32;
+    color: white;
+    border: none;
+    border-radius: 8px;
+    font-size: 16px;
+    cursor: pointer;
+}
+
+    .reservation-wrapper button:hover {
+        background: #256428;
+    }
+
+.hint {
+    color: #777;
+    font-size: 13px;
+}

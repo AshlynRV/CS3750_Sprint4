@@ -1,4 +1,4 @@
-﻿@using Microsoft.AspNetCore.Http
+@using Microsoft.AspNetCore.Http
 @using SiteReservationSystem.Web.Models
 @{
     var userId = Context.Session.GetInt32("UserID");
@@ -21,8 +21,7 @@
         <nav class="navbar navbar-expand-sm navbar-toggleable-sm navbar-light bg-white border-bottom box-shadow mb-3">
             <div class="container-fluid">
                 <a class="navbar-brand" asp-area="" asp-controller="Home" asp-action="Index">SiteReservationSystem.Web</a>
-                <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target=".navbar-collapse" aria-controls="navbarSupportedContent"
-                        aria-expanded="false" aria-label="Toggle navigation">
+                <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target=".navbar-collapse" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
                     <span class="navbar-toggler-icon"></span>
                 </button>
                 <div class="navbar-collapse collapse d-sm-inline-flex justify-content-between">
@@ -33,12 +32,15 @@
                         <li class="nav-item">
                             <a class="nav-link text-dark" asp-area="" asp-controller="Home" asp-action="Privacy">Privacy</a>
                         </li>
+
+                        <!-- CUSTOMER ACCESS -->
                         @if (userRole == "Customer")
                         {
                             <li class="nav-item">
-                                <a class="nav-link text-dark" asp-controller="Payments" asp-action="Index">Invoices</a>
+                                <a class="nav-link text-dark" asp-controller="Sites" asp-action="Index">Browse Sites</a>
                             </li>
                         }
+
                         <!-- Only show employee panels to logged-in employees/admins -->
                         @if (userId.HasValue && userRole != "Customer")
                         {
@@ -48,24 +50,35 @@
                                     <a class="nav-link text-dark" asp-controller="Admin" asp-action="Employees">Employees</a>
                                 </li>
                             }
+
                             @if (userRole == "Admin" || (perms & AccessPermissions.ManageSites) == AccessPermissions.ManageSites)
                             {
                                 <li class="nav-item">
                                     <a class="nav-link text-dark" asp-controller="Sites" asp-action="Index">Sites</a>
                                 </li>
+                                <!-- Admin-only Create New Site link (only visible to Admins) -->
+                                @if (userRole == "Admin")
+                                {
+                                    <li class="nav-item">
+                                        <a class="nav-link text-dark" asp-controller="Sites" asp-action="CreateSite">Create New Site</a>
+                                    </li>
+                                }
                             }
+
                             @if (userRole == "Admin" || (perms & AccessPermissions.ManageSiteTypes) == AccessPermissions.ManageSiteTypes)
                             {
                                 <li class="nav-item">
                                     <a class="nav-link text-dark" asp-controller="SiteTypes" asp-action="Index">Site Types</a>
                                 </li>
                             }
+
                             @if (userRole == "Admin" || (perms & AccessPermissions.ManageFees) == AccessPermissions.ManageFees)
                             {
                                 <li class="nav-item">
                                     <a class="nav-link text-dark" asp-controller="Fees" asp-action="Index">Fees</a>
                                 </li>
                             }
+
                             @if (userRole == "Admin" || (perms & AccessPermissions.ManageReservations) == AccessPermissions.ManageReservations)
                             {
                                 <li class="nav-item">
@@ -74,6 +87,7 @@
                             }
                         }
                     </ul>
+
                     <ul class="navbar-nav">
                         @if (Context.Session.GetInt32("UserID").HasValue)
                         {
@@ -95,6 +109,7 @@
             </div>
         </nav>
     </header>
+
     <div class="container">
         <main role="main" class="pb-3">
             @RenderBody()
@@ -106,6 +121,7 @@
             &copy; 2026 - SiteReservationSystem.Web - <a asp-area="" asp-controller="Home" asp-action="Privacy">Privacy</a>
         </div>
     </footer>
+
     <script src="~/lib/jquery/dist/jquery.min.js"></script>
     <script src="~/lib/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
     <script src="~/js/site.js" asp-append-version="true"></script>

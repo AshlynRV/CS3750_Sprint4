@@ -3,6 +3,7 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using SiteReservationSystem.Web.Data;
 
@@ -11,9 +12,11 @@ using SiteReservationSystem.Web.Data;
 namespace SiteReservationSystem.Web.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    partial class ApplicationDbContextModelSnapshot : ModelSnapshot
+    [Migration("20260411034101_AddReservationExtras")]
+    partial class AddReservationExtras
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -155,7 +158,7 @@ namespace SiteReservationSystem.Web.Migrations
                             FirstName = "John",
                             LastName = "Smith",
                             MilitaryAffiliation = 0,
-                            PhoneNumber = "111-111-1111",
+                            PhoneNumber = "555-0101",
                             UserID = 7
                         },
                         new
@@ -166,7 +169,7 @@ namespace SiteReservationSystem.Web.Migrations
                             FirstName = "Sarah",
                             LastName = "Johnson",
                             MilitaryAffiliation = 1,
-                            PhoneNumber = "222-222-2222",
+                            PhoneNumber = "555-0102",
                             UserID = 8
                         },
                         new
@@ -177,7 +180,7 @@ namespace SiteReservationSystem.Web.Migrations
                             FirstName = "Mike",
                             LastName = "Williams",
                             MilitaryAffiliation = 2,
-                            PhoneNumber = "333-333-3333",
+                            PhoneNumber = "555-0103",
                             UserID = 9
                         },
                         new
@@ -188,7 +191,7 @@ namespace SiteReservationSystem.Web.Migrations
                             FirstName = "Emily",
                             LastName = "Davis",
                             MilitaryAffiliation = 4,
-                            PhoneNumber = "444-444-4444",
+                            PhoneNumber = "555-0104",
                             UserID = 10
                         },
                         new
@@ -199,7 +202,7 @@ namespace SiteReservationSystem.Web.Migrations
                             FirstName = "David",
                             LastName = "Martinez",
                             MilitaryAffiliation = 3,
-                            PhoneNumber = "555-555-5555",
+                            PhoneNumber = "555-0105",
                             UserID = 11
                         },
                         new
@@ -210,7 +213,7 @@ namespace SiteReservationSystem.Web.Migrations
                             FirstName = "Lisa",
                             LastName = "Anderson",
                             MilitaryAffiliation = 5,
-                            PhoneNumber = "666-666-6666",
+                            PhoneNumber = "555-0106",
                             UserID = 12
                         });
                 });
@@ -427,8 +430,8 @@ namespace SiteReservationSystem.Web.Migrations
                             InvoiceDate = new DateTime(2025, 2, 19, 0, 0, 0, 0, DateTimeKind.Unspecified),
                             IsPaid = true,
                             ReservationID = 2,
-                            SubTotal = 225.00m,
-                            TotalAmount = 250.00m,
+                            SubTotal = 175.00m,
+                            TotalAmount = 200.00m,
                             TotalFees = 25.00m
                         },
                         new
@@ -549,7 +552,7 @@ namespace SiteReservationSystem.Web.Migrations
                         new
                         {
                             PaymentID = 2,
-                            Amount = 250.00m,
+                            Amount = 200.00m,
                             InvoiceID = 2,
                             IsRefund = false,
                             PaymentDate = new DateTime(2025, 2, 19, 0, 0, 0, 0, DateTimeKind.Unspecified),
@@ -776,7 +779,7 @@ namespace SiteReservationSystem.Web.Migrations
                             ReservationID = 2,
                             ActualCheckInTime = new DateTime(2025, 2, 27, 14, 30, 0, 0, DateTimeKind.Unspecified),
                             BalanceDue = 0m,
-                            BaseAmount = 225.00m,
+                            BaseAmount = 175.00m,
                             CustomerID = 2,
                             DateCreated = new DateTime(2025, 2, 19, 0, 0, 0, 0, DateTimeKind.Unspecified),
                             EndDate = new DateTime(2025, 3, 8, 0, 0, 0, 0, DateTimeKind.Unspecified),
@@ -788,7 +791,7 @@ namespace SiteReservationSystem.Web.Migrations
                             ScheduledCheckOutTime = new DateTime(2025, 3, 8, 12, 0, 0, 0, DateTimeKind.Unspecified),
                             SiteID = 27,
                             StartDate = new DateTime(2025, 2, 27, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            TotalAmount = 250.00m,
+                            TotalAmount = 200.00m,
                             TrailerLengthFeet = 60
                         },
                         new

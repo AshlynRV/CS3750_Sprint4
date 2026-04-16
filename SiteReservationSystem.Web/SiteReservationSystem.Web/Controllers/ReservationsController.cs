@@ -1,4 +1,4 @@
-﻿using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using SiteReservationSystem.Web.Data;
 using SiteReservationSystem.Web.Filters;
@@ -58,7 +58,6 @@ namespace SiteReservationSystem.Web.Controllers
                 query = query.OrderBy(r => r.ReservationStatus.StatusName);
 
             var reservations = query.ToList();
-
             return View(reservations);
         }
 
@@ -71,12 +70,12 @@ namespace SiteReservationSystem.Web.Controllers
                     .ThenInclude(c => c.User)
                 .Include(r => r.Site)
                     .ThenInclude(s => s.SiteType)
-                        .ThenInclude(st => st.SiteTypePricings)  // For Current Stay display
+                        .ThenInclude(st => st.SiteTypePricings) // For Current Stay display
                 .Include(r => r.ReservationStatus)
                 .Include(r => r.ReservationFees)
-                    .ThenInclude(rf => rf.Fee)  // For fee breakdown div
+                    .ThenInclude(rf => rf.Fee) // For fee breakdown div
                 .Include(r => r.Invoice)
-                    .ThenInclude(i => i!.Payments)  // For balance calculation
+                    .ThenInclude(i => i!.Payments) // For balance calculation
                 .FirstOrDefault(r => r.ReservationID == id);
 
             if (reservation == null)
@@ -116,12 +115,13 @@ namespace SiteReservationSystem.Web.Controllers
         [ValidateAntiForgeryToken]
         public IActionResult Edit([Bind("ReservationID,StartDate,EndDate,SiteID,ReservationStatusID,TrailerLengthFeet,Notes")] Reservation updatedReservation)
         {
-            // Skip validation for navigation/computed properties 
+            // Skip validation for navigation/computed properties
             ModelState.Remove("Customer");
             ModelState.Remove("Site");
             ModelState.Remove("ReservationStatus");
             ModelState.Remove("ReservationFees");
             ModelState.Remove("Invoice");
+
             // We calculate these fields
             ModelState.Remove("BaseAmount");
             ModelState.Remove("TotalAmount");
@@ -220,11 +220,6 @@ namespace SiteReservationSystem.Web.Controllers
             reservation.BalanceDue = reservation.TotalAmount - amountPaid;
 
             // Sync Invoice with Reservation
-            // When totals change, the invoice must be updated:
-            // - TotalAmount: sync with the reservation
-            // - IsPaid: reset to false
-            // - DatePaid: clear since balance is now owed
-            // =====================================================
             if (reservation.Invoice != null)
             {
                 reservation.Invoice.TotalAmount = reservation.TotalAmount;
