@@ -2,6 +2,7 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using SiteReservationSystem.Web.Data;
 using SiteReservationSystem.Web.Models;
+using SiteReservationSystem.Web.ViewModels;
 
 namespace SiteReservationSystem.Web.Controllers
 {
@@ -18,6 +19,7 @@ namespace SiteReservationSystem.Web.Controllers
         // Route is /Account/Login
         [HttpGet]
         public IActionResult Login() => View();
+        public IActionResult Register() => View();
 
         // Checks if user is valid and logs them in, storing user info in session
         [HttpPost]
@@ -127,5 +129,64 @@ namespace SiteReservationSystem.Web.Controllers
         {
             return View();
         }
+
+        // POST: Accounts/Register
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> Register(RegisterViewModel regUser)
+        {
+
+            User user = new User();
+            Customer customer = new Customer();
+
+            if (ModelState.IsValid)
+            {
+                var existing = await _context.Users.FirstOrDefaultAsync(u => u.Email == regUser.Email);
+                if (existing != null)
+                {
+                    ViewBag.Error = "An account with that email already exists.";
+                    return View(regUser);
+                }
+
+                user.Email = regUser.Email;
+                user.PasswordHash = regUser.Password;
+                user.Role = UserRole.Customer;
+                _context.Add(user);
+                await _context.SaveChangesAsync();
+
+                string formattedPhone = FormatNumber(regUser.Phone);
+
+                customer.UserID = user.UserID;
+                customer.FirstName = regUser.FirstName;
+                customer.LastName = regUser.LastName;
+                customer.PhoneNumber = formattedPhone;
+                customer.MilitaryAffiliation = regUser.MilitaryAffiliation;
+                customer.DoDStatus = regUser.DoDStatus;
+
+                _context.Add(customer);
+                await _context.SaveChangesAsync();
+
+                return RedirectToAction("Login"); ;
+
+            }
+
+            return View(regUser);
+        }
+
+        public static string FormatNumber(string phone)
+        {
+            string digitsOnly = new string(phone.Where(char.IsDigit).ToArray());
+
+            if (digitsOnly.Length == 10)
+            {
+                return string.Format("{0}-{1}-{2}",
+                    digitsOnly.Substring(0, 3),
+                    digitsOnly.Substring(3, 3),
+                    digitsOnly.Substring(6, 4));
+            }
+
+            return digitsOnly;
+        }
+
     }
 }

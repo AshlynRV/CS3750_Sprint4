@@ -1,0 +1,70 @@
+@model SiteReservationSystem.Web.ViewModels.RegisterViewModel;
+
+@{
+    ViewData["Title"] = "Register";
+}
+
+<div style="max-width: 400px; margin: 80px auto;">
+    <h2>RV Park Registration</h2>
+    <p>Fill out the form to create an account.</p>
+
+    <!-- Display error if there is one -->
+    @if (ViewBag.Error != null)
+    {
+        <div style="color: red; margin-bottom: 12px;">@ViewBag.Error</div>
+    }
+
+    <form asp-action="Register" method="post" autocomplete="off" AutoCompleteType="Disabled">
+
+        <div class="form-group">
+            <label asp-for="Email">Email</label>
+            <input asp-for="Email" class="form-control" type="email" autocomplete="off" AutoCompleteType="Disabled" />
+            <span asp-validation-for="Email" class="text-danger"></span>
+        </div>
+
+        <div class="form-group">
+            <label asp-for="FirstName">First Name</label>
+            <input asp-for="FirstName" class="form-control" />
+            <span asp-validation-for="FirstName" class="text-danger"></span>
+        </div>
+
+        <div class="form-group">
+            <label asp-for="LastName">Last Name</label>
+            <input asp-for="LastName" class="form-control" />
+            <span asp-validation-for="LastName" class="text-danger"></span>
+        </div>
+
+        <div class="form-group">
+            <label asp-for="Phone">Phone Number</label>
+            <input asp-for="Phone" class="form-control" />
+            <span asp-validation-for="Phone" class="text-danger"></span>
+        </div>
+
+        <div class="form-group">
+            <label asp-for="MilitaryAffiliation" style="padding-top: 10px">Site Type</label>
+            <select asp-for="MilitaryAffiliation" class="form-control" asp-items="Html.GetEnumSelectList<MilitaryAffiliation>()"></select>
+        </div>
+
+        <div class="form-group">
+            <label asp-for="DoDStatus" style="padding-top: 10px">Site Type</label>
+            <select asp-for="DoDStatus" class="form-control" asp-items="Html.GetEnumSelectList<DoDStatus>()"></select>
+        </div>
+
+        <div class="form-group">
+            <label asp-for="Password" style="padding-top: 10px"></label>
+            <input asp-for="Password" class="form-control" type="password" autocomplete="off" AutoCompleteType="Disabled" />
+            <span asp-validation-for="Password" class="text-danger"></span>
+        </div>
+
+        <div class="form-group">
+            <label asp-for="ConfirmPassword" style="padding-top: 10px"></label>
+            <input asp-for="ConfirmPassword" class="form-control" type="password" autocomplete="off" AutoCompleteType="Disabled" />
+            <span asp-validation-for="ConfirmPassword" class="text-danger"></span>
+        </div>
+
+        <br />
+
+        <button type="submit" class="btn btn-primary">Create Account</button>
+    </form>
+    <div>Already have an account? <a asp-action="Login">Login here.</a></div>
+</div>
