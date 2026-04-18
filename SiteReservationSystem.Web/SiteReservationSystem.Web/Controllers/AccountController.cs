@@ -1,5 +1,6 @@
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
+using PostmarkDotNet;
 using SiteReservationSystem.Web.Data;
 using SiteReservationSystem.Web.Models;
 using SiteReservationSystem.Web.ViewModels;
@@ -9,10 +10,12 @@ namespace SiteReservationSystem.Web.Controllers
     public class AccountController : Controller
     {
         private readonly ApplicationDbContext _context;
+        private readonly IConfiguration _configuration;
 
-        public AccountController(ApplicationDbContext context)
+        public AccountController(ApplicationDbContext context, IConfiguration configuration)
         {
             _context = context;
+            _configuration = configuration;
         }
 
         // Login page
@@ -166,7 +169,18 @@ namespace SiteReservationSystem.Web.Controllers
                 _context.Add(customer);
                 await _context.SaveChangesAsync();
 
-                return RedirectToAction("Login"); ;
+                var client = new PostmarkClient(_configuration["Postmark:ServerToken"]);
+                var message = new PostmarkMessage()
+                {
+                    To = user.Email,
+                    From = "kelsiebridge@mail.weber.edu",
+                    Subject = "RV Park Registration",
+                    TextBody = $"Hello {customer.FirstName},\n\nYour account has been created. Thank you."
+                };
+                await client.SendMessageAsync(message);
+
+                TempData["Message"] = "Account created. Check your email for confirmation.";
+                return RedirectToAction("Login");
 
             }
 
