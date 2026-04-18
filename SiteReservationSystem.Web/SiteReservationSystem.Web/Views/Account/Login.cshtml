@@ -4,6 +4,12 @@
 
 <div style="max-width: 400px; margin: 80px auto;">
     <h2>RV Park Login</h2>
+
+    @if (TempData["Message"] != null)
+    {
+        <div style="color: green; margin-bottom: 12px;">@TempData["Message"]</div>
+    }
+
     <p>Sign in to continue.</p>
 
     <!-- Display error if there is one -->
@@ -23,5 +29,6 @@
         </div>
         <button type="submit" style="padding: 8px 20px; border:none;">Login</button>
     </form>
+    <div>Don't have an account? <a asp-action="Register">Create one</a></div>
 </div>
 
