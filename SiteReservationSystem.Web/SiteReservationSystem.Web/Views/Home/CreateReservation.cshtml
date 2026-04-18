@@ -1,0 +1,93 @@
+﻿@*
+    For more information on enabling MVC for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
+*@
+@model IEnumerable<SiteReservationSystem.Web.Models.Site>
+@{ ViewData["Title"] = "Create Reservation"; }
+
+<h2>Create Reservation</h2>
+
+<form asp-action="Search" method="get" >
+    <div class="col-md-3 gap-4 mt-3">
+        <label class="form-label">Start Date</label>
+        <input type="date" name="startDate" class="form-control" required value="@Context.Request.Query["startDate"]"/>
+    </div>
+    <div class="col-md-3 gap-2 mt-2">
+        <label class="form-label">End Date</label>
+        <input type="date" name="endDate" class="form-control" required value="@Context.Request.Query["endDate"]" />
+    </div>
+    <select id="filterSite" name="filterSite" class="form-select col-md-3 gap-4 mt-3" onchange="toggleLengthInput()">
+        <option>Selct Site Type</option>
+        <option value="1" selected="@(Context.Request.Query["filterSite"] == "1")">Bring own Unit</option>
+        <option value="2" selected="@(Context.Request.Query["filterSite"] == "2")">On site Unit</option>
+        <option value="3" selected="@(Context.Request.Query["filterSite"] == "3")">Tent</option>
+        <option value="4" selected="@(Context.Request.Query["filterSite"] == "4")">Dry Storage</option>
+    </select>
+    <!-- This will be hidden unless user selects bring own unit-->
+    <div class="col-md-3 gap-4 mt-3" id="lengthInputSection" style="display: none;">
+        <label class="form-label">Trailer Length (ft)</label>
+        <input id="TrailerLengthFeet" type="number" name="length" class="form-control" value="@Context.Request.Query["length"]" />
+    </div>
+    <div class="col-md-3 align-self-end gap-4 mt-3">
+        <button type="submit" class="btn btn-primary">Find Available Sites</button>
+    </div>
+</form>
+@if (Model != null)
+{
+    <table class="table">
+        <tbody>
+            @foreach (var site in Model)
+            {
+                <tr>
+                    <td>@site.SiteNumber</td>
+                    <td>
+                        @if (site.SitePhotos != null && site.SitePhotos.Any())
+                        {
+                           <div class="d-flex flex-wrap gap-2">
+                                @foreach (var photo in site.SitePhotos)
+                                {
+                                    <img src="@photo.PhotoURL" alt="Site Photo" style="width: 100px; height: auto;" class="img-thumbnail" />
+                                }
+
+                           </div>
+                        }
+                        else
+                        {
+                            <span>No Photo</span>
+                        }
+                    </td>
+                    <td style="padding: 10px">
+                        <a asp-action="Reserve" 
+                            asp-route-siteId="@site.SiteID"
+                            asp-route-startDate="@Context.Request.Query["startDate"]"
+                            asp-route-endDate="@Context.Request.Query["endDate"]"
+                            asp-route-length="@Context.Request.Query["TrailerLengthFeet"]"
+                            class="btn btn-success">
+                            Reserve Now
+                        </a>
+                    </td>
+                </tr>
+            }
+        </tbody>
+    </table>
+}
+
+
+<script>
+    function toggleLengthInput() {
+        var siteType = document.getElementById("filterSite").value;
+        var lengthSection = document.getElementById("lengthInputSection");
+        var lengthInput = document.getElementById("TrailerLengthFeet")
+        if (siteType === "1") {
+            lengthSection.style.setProperty("display", "block", "important");
+        } else {
+            lengthSection.style.display = "none";
+            if(lengthInput){
+                lengthInput.value ="";
+            }
+        }
+    }
+
+
+    // Run on page load to ensure correct state if the page refreshes
+    document.addEventListener("DOMContentLoaded", toggleLengthInput);
+</script>
