@@ -1,23 +1,28 @@
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
+using PostmarkDotNet;
 using SiteReservationSystem.Web.Data;
 using SiteReservationSystem.Web.Models;
+using SiteReservationSystem.Web.ViewModels;
 
 namespace SiteReservationSystem.Web.Controllers
 {
     public class AccountController : Controller
     {
         private readonly ApplicationDbContext _context;
+        private readonly IConfiguration _configuration;
 
-        public AccountController(ApplicationDbContext context)
+        public AccountController(ApplicationDbContext context, IConfiguration configuration)
         {
             _context = context;
+            _configuration = configuration;
         }
 
         // Login page
         // Route is /Account/Login
         [HttpGet]
         public IActionResult Login() => View();
+        public IActionResult Register() => View();
 
         // Checks if user is valid and logs them in, storing user info in session
         [HttpPost]
@@ -123,5 +128,75 @@ namespace SiteReservationSystem.Web.Controllers
         {
             return View();
         }
+
+        // POST: Accounts/Register
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> Register(RegisterViewModel regUser)
+        {
+
+            User user = new User();
+            Customer customer = new Customer();
+
+            if (ModelState.IsValid)
+            {
+                var existing = await _context.Users.FirstOrDefaultAsync(u => u.Email == regUser.Email);
+                if (existing != null)
+                {
+                    ViewBag.Error = "An account with that email already exists.";
+                    return View(regUser);
+                }
+
+                user.Email = regUser.Email;
+                user.PasswordHash = regUser.Password;
+                user.Role = UserRole.Customer;
+                _context.Add(user);
+                await _context.SaveChangesAsync();
+
+                string formattedPhone = FormatNumber(regUser.Phone);
+
+                customer.UserID = user.UserID;
+                customer.FirstName = regUser.FirstName;
+                customer.LastName = regUser.LastName;
+                customer.PhoneNumber = formattedPhone;
+                customer.MilitaryAffiliation = regUser.MilitaryAffiliation;
+                customer.DoDStatus = regUser.DoDStatus;
+
+                _context.Add(customer);
+                await _context.SaveChangesAsync();
+
+                var client = new PostmarkClient(_configuration["Postmark:ServerToken"]);
+                var message = new PostmarkMessage()
+                {
+                    To = user.Email,
+                    From = "kelsiebridge@mail.weber.edu",
+                    Subject = "RV Park Registration",
+                    TextBody = $"Hello {customer.FirstName},\n\nYour account has been created. Thank you."
+                };
+                await client.SendMessageAsync(message);
+
+                TempData["Message"] = "Account created. Check your email for confirmation.";
+                return RedirectToAction("Login");
+
+            }
+
+            return View(regUser);
+        }
+
+        public static string FormatNumber(string phone)
+        {
+            string digitsOnly = new string(phone.Where(char.IsDigit).ToArray());
+
+            if (digitsOnly.Length == 10)
+            {
+                return string.Format("{0}-{1}-{2}",
+                    digitsOnly.Substring(0, 3),
+                    digitsOnly.Substring(3, 3),
+                    digitsOnly.Substring(6, 4));
+            }
+
+            return digitsOnly;
+        }
+
     }
 }
