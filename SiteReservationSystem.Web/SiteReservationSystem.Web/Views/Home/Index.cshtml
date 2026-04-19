@@ -1,9 +1,11 @@
-﻿@{
+@model IEnumerable<SiteReservationSystem.Web.Models.Site>
+
+@{
     ViewData["Title"] = "Home Page";
 }
 
 <div class="text-center">
-    <h1 class="display-4">Welcome</h1>
+    <h1 class="display-4">Welcome to the RV park!</h1>
 </div>
 
 <h3>Quick Links:</h3>
@@ -12,3 +14,37 @@
     <li><a href="@Url.Action("MyReservations", "Home")">Manage My Reservations</a></li>
     <li><a href="@Url.Action("Index", "Sites")">Browse Sites</a></li>
 </ul>
+
+<h4>Currently available sites: </h4>
+<table class="table table-striped">
+    <thead>
+        <tr>
+            <th>Site Number</th>
+            <th>Maximum Trailer Size</th>
+            <th>Site Type</th>
+            <th>Status</th>
+        </tr>
+    </thead>
+    <tbody>
+            @foreach (var site in Model)
+            {
+                //Getting 
+                var reservation = site.Reservations.FirstOrDefault();
+                //Setting message for last column
+                var statusMessage = reservation?.ReservationStatusID switch
+                {
+                    1 => "Reserved at future time",
+                    2 => "Occupied",
+                    3 => "Available",
+                    4 => "Available",
+                    _ => "Available"
+                };
+                <tr>
+                    <td>@site.SiteNumber</td>
+                    <td>@site.MaxLengthFeet</td>
+                    <td>@site.SiteType.TypeName</td>
+                    <td>@statusMessage</td>
+                </tr>
+            }
+    </tbody>
+</table>
