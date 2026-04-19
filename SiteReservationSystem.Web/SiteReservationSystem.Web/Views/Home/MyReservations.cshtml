@@ -1,0 +1,72 @@
+﻿@model IEnumerable<SiteReservationSystem.Web.Models.Reservation>
+
+@{
+    ViewData["Title"] = "My Reservations";
+}
+
+<h2>My Reservations</h2>
+
+@if (TempData["PriceDifference"] != null)
+{
+    <div class="alert alert-info">
+        <strong>Pricing Updated:</strong><br />
+        Old Total: @decimal.Parse(TempData["OldTotalAmount"]!.ToString()!).ToString("C")<br />
+        New Total: @decimal.Parse(TempData["NewTotalAmount"]!.ToString()!).ToString("C")<br />
+        Difference: @decimal.Parse(TempData["PriceDifference"]!.ToString()!).ToString("C")
+    </div>
+}
+
+@if (!Model.Any())
+{
+    <p>You do not have any reservations yet.</p>
+}
+else
+{
+    <table class="table table-bordered">
+        <thead>
+            <tr>
+                <th>Reservation #</th>
+                <th>Site</th>
+                <th>Site Type</th>
+                <th>Start Date</th>
+                <th>End Date</th>
+                <th>Status</th>
+                <th>Total</th>
+                <th>Actions</th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var reservation in Model)
+            {
+                <tr>
+                    <td>@reservation.ReservationID</td>
+                    <td>@reservation.Site.SiteNumber</td>
+                    <td>@reservation.Site.SiteType.TypeName</td>
+                    <td>@reservation.StartDate.ToShortDateString()</td>
+                    <td>@reservation.EndDate.ToShortDateString()</td>
+                    <td>@reservation.ReservationStatus.StatusName</td>
+                    <td>@reservation.TotalAmount.ToString("C")</td>
+                    <td>
+                        <a asp-action="EditReservation"
+                               asp-route-id="@reservation.ReservationID"
+                               class="btn btn-primary btn-sm">
+                            Edit
+                        </a>
+
+                        <form asp-action="CancelReservation"
+                              asp-route-id="@reservation.ReservationID"
+                              method="post"
+                              class="d-inline">
+                            @Html.AntiForgeryToken()
+                            <button type="submit"
+                                    class="btn btn-danger btn-sm"
+                                    onclick="return confirm('Are you sure you want to cancel this reservation?');">
+                                Cancel
+                            </button>
+                        </form>
+                    </td>
+                </tr>
+            }
+        </tbody>
+    </table>
+}
