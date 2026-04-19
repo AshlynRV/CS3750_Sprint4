@@ -16,13 +16,21 @@ namespace SiteReservationSystem.Web.Controllers
             _context = context;
         }
 
-        public IActionResult Index()
+        public async Task<IActionResult> Index()
         {
+            // Redirect to login page if user is not logged in. This is a function in BaseController.cs
             var redirect = RequireLogin();
             if (redirect != null)
+                // Redirects to login page
                 return redirect;
+            // Now giving data for homepage
+            var sites = await _context.Sites
+            .Include(e => e.SiteType)
+            .Include(e => e.Reservations)
+            .ThenInclude(r => r.ReservationStatus)
+            .ToListAsync();
 
-            return View();
+            return View(sites);
         }
 
         public IActionResult Privacy()
