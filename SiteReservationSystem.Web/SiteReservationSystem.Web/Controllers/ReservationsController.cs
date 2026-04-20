@@ -11,7 +11,7 @@ namespace SiteReservationSystem.Web.Controllers
     {
         private readonly ApplicationDbContext _context;
 
-        public ReservationsController(ApplicationDbContext context)
+        public ReservationsController(ApplicationDbContext context) : base(context)
         {
             _context = context;
         }
@@ -19,10 +19,12 @@ namespace SiteReservationSystem.Web.Controllers
         /// <summary>
         /// Displays all reservations and supports filtering and sorting.
         /// </summary>
-        public IActionResult Index(int? reservationId, string? customerName, DateTime? startDate, DateTime? endDate, string? sortOrder, int? filterStatus)
+        public async Task<IActionResult> Index(int? reservationId, string? customerName, DateTime? startDate, DateTime? endDate, string? sortOrder, int? filterStatus)
         {
             // Clear TempData messages so they don't show again on page refresh
             TempData.Remove("FeeMessage");
+
+            await UpdateReservationStatuses();
             TempData.Remove("OldTotalAmount");
             TempData.Remove("PriceDifference");
 
@@ -257,9 +259,9 @@ namespace SiteReservationSystem.Web.Controllers
             reservation.LastUpdated = DateTime.UtcNow;
 
             if (string.IsNullOrWhiteSpace(reservation.Notes))
-                reservation.Notes = "Reservation cancelled by guest.";
+                reservation.Notes = "Reservation cancelled by admin/employee.";
             else
-                reservation.Notes += " | Reservation cancelled by guest.";
+                reservation.Notes += " | Reservation cancelled by admin/employee.";
 
             _context.SaveChanges();
 

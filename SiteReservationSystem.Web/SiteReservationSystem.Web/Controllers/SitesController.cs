@@ -1,4 +1,4 @@
-﻿using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using SiteReservationSystem.Web.Data;
 using SiteReservationSystem.Web.Filters;
@@ -14,7 +14,7 @@ namespace SiteReservationSystem.Web.Controllers
         private readonly ApplicationDbContext _context;
 
         // Inject DbContext into controller
-        public SitesController(ApplicationDbContext context)
+        public SitesController(ApplicationDbContext context) : base(context)
         {
             _context = context;
         }
@@ -24,6 +24,12 @@ namespace SiteReservationSystem.Web.Controllers
         // -------------------------
         public async Task<IActionResult> Index()
         {
+            var redirect = RequireLogin();
+            if (redirect != null) return redirect;
+            var userRole = HttpContext.Session.GetString("UserRole");
+            if (userRole != "Customer" && userRole != "Admin" && !HasPermission(AccessPermissions.ManageSites))
+                return RedirectToAction("AccessDenied", "Account");
+
             var sites = await _context.Sites
                 .Include(s => s.SiteType)
                 .Include(s => s.SitePhotos)
@@ -33,8 +39,16 @@ namespace SiteReservationSystem.Web.Controllers
 
         public async Task<IActionResult> Details(int? id)
         {
+            var redirect = RequireLogin();
+            if (redirect != null) return redirect;
+            var userRole = HttpContext.Session.GetString("UserRole");
+            if (userRole != "Customer" && userRole != "Admin" && !HasPermission(AccessPermissions.ManageSites))
+                return RedirectToAction("AccessDenied", "Account");
+
             if (id == null)
                 return NotFound();
+
+            await UpdateReservationStatuses();
 
             var site = await _context.Sites
                 .Include(s => s.SiteType)
@@ -54,14 +68,23 @@ namespace SiteReservationSystem.Web.Controllers
         [HttpGet]
         public async Task<IActionResult> Reserve(int id)
         {
+            var userRole = HttpContext.Session.GetString("UserRole");
+            if (userRole != "Customer")
+            {
+                return StatusCode(401, "Only customers can make reservations.");
+            }
+
             var site = await _context.Sites.FindAsync(id);
             if (site == null) return NotFound();
+
+            ViewBag.MaxLengthFeet = site.MaxLengthFeet;
 
             var model = new CreateReservationViewModel
             {
                 SiteID = id,
-                StartDate = DateTime.Today,
-                EndDate = DateTime.Today.AddDays(1)
+                SiteNumber = site.SiteNumber,
+                StartDate = DateTime.Today.AddDays(1),
+                EndDate = DateTime.Today.AddDays(2)
             };
 
             return View(model);
@@ -74,41 +97,80 @@ namespace SiteReservationSystem.Web.Controllers
             if (!ModelState.IsValid)
                 return View(model);
 
-            // Get UserID from Session (more reliable with your current setup)
+            var today = DateTime.Today;
+            if (model.StartDate < today)
+            {
+                ModelState.AddModelError("", "Start date cannot be in the past.");
+                return View(model);
+            }
+
+            if (model.StartDate >= model.EndDate)
+            {
+                ModelState.AddModelError("", "Check-out date must be after check-in date.");
+                return View(model);
+            }
+
+            var isPCS = HttpContext.Session.GetInt32("IsPCSOrders") == 1;
+            var stayLength = (model.EndDate - model.StartDate).Days;
+            var isPeakSeason = model.StartDate >= new DateTime(model.StartDate.Year, 4, 1) && model.StartDate <= new DateTime(model.StartDate.Year, 10, 15);
+
+            if (!isPCS && isPeakSeason && stayLength > 14)
+            {
+                ModelState.AddModelError("", "Maximum stay is 14 days during peak season.");
+                return View(model);
+            }
+
             var userId = HttpContext.Session.GetInt32("UserID");
             if (!userId.HasValue)
-                return Unauthorized();
+                return RedirectToAction("Login", "Account");
 
             var customer = await _context.Customers
+                .Include(c => c.User)
                 .FirstOrDefaultAsync(c => c.UserID == userId.Value);
 
             if (customer == null)
-                return Unauthorized();
+                return RedirectToAction("Login", "Account");
 
-            var reservation = new Reservation
+            var customerEmail = customer.User?.Email ?? "";
+            var customerPhone = customer.PhoneNumber ?? "";
+
+            var site = await _context.Sites
+                .Include(s => s.SiteType)
+                    .ThenInclude(st => st.SiteTypePricings)
+                .FirstOrDefaultAsync(s => s.SiteID == model.SiteID);
+
+            if (site == null)
+                return NotFound();
+
+            int numberOfNights = (model.EndDate - model.StartDate).Days;
+
+            var pricing = site.SiteType.SiteTypePricings
+                .Where(p => p.StartDate <= model.StartDate && (p.EndDate == null || p.EndDate >= model.StartDate))
+                .OrderByDescending(p => p.StartDate)
+                .FirstOrDefault();
+
+            decimal nightlyRate = pricing?.BasePrice ?? 0m;
+            decimal totalAmount = nightlyRate * numberOfNights;
+
+            HttpContext.Session.SetString("ReservationData", System.Text.Json.JsonSerializer.Serialize(new
             {
                 SiteID = model.SiteID,
+                SiteNumber = site.SiteNumber,
                 CustomerID = customer.CustomerID,
-                ReservationStatusID = 1,
                 StartDate = model.StartDate,
                 EndDate = model.EndDate,
                 TrailerLengthFeet = model.TrailerLengthFeet,
                 NumberOfGuests = model.NumberOfGuests,
                 NumberOfPets = model.NumberOfPets,
-                Notes = model.SpecialRequests,
-                BaseAmount = 0,
-                TotalAmount = 0,
-                BalanceDue = 0,
-                ScheduledCheckInTime = model.StartDate,
-                ScheduledCheckOutTime = model.EndDate,
-                DateCreated = DateTime.UtcNow,
-                LastUpdated = DateTime.UtcNow
-            };
+                SpecialRequests = model.SpecialRequests,
+                TotalAmount = totalAmount,
+                NumberOfNights = numberOfNights,
+                PricePerNight = nightlyRate,
+                CustomerEmail = customerEmail,
+                CustomerPhone = customerPhone
+            }));
 
-            _context.Reservations.Add(reservation);
-            await _context.SaveChangesAsync();
-
-            return RedirectToAction("Details", new { id = model.SiteID });
+            return RedirectToAction("CreateReservationPayment", "Payments");
         }
 
         // -------------------------

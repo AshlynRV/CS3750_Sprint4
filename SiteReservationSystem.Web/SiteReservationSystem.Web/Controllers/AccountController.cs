@@ -7,12 +7,12 @@ using SiteReservationSystem.Web.ViewModels;
 
 namespace SiteReservationSystem.Web.Controllers
 {
-    public class AccountController : Controller
+    public class AccountController : BaseController
     {
         private readonly ApplicationDbContext _context;
         private readonly IConfiguration _configuration;
 
-        public AccountController(ApplicationDbContext context, IConfiguration configuration)
+        public AccountController(ApplicationDbContext context, IConfiguration configuration) : base(context)
         {
             _context = context;
             _configuration = configuration;
@@ -107,6 +107,8 @@ namespace SiteReservationSystem.Web.Controllers
             }
 
             // Redirect based on role
+            await UpdateReservationStatuses();
+
             return user.Role switch
             {
                 UserRole.Admin => RedirectToAction("Index", "Admin"),
@@ -175,13 +177,23 @@ namespace SiteReservationSystem.Web.Controllers
                         Subject = "RV Park Registration",
                         TextBody = $"Hello {customer.FirstName},\n\nYour account has been created. Thank you."
                     };
-                    await client.SendMessageAsync(message);
+                    Console.WriteLine($"[EMAIL] Attempting to send to: {user.Email}");
+                    var result = await client.SendMessageAsync(message);
+                    Console.WriteLine($"[EMAIL] Postmark response - ErrorCode: {result.ErrorCode}, Message: {result.Message}");
+                    if (result.ErrorCode != 0)
+                    {
+                        Console.WriteLine($"[EMAIL] FAILED - ErrorCode: {result.ErrorCode}");
+                    }
                 }
                 catch (Exception ex)
                 {
-                    // TODO: remove this if postmark account gets verified
-                    // Log email send failure to emails that dont end in @mail.weber.edu
-                    Console.WriteLine($"Email send failed: {ex.Message}");
+                    Console.WriteLine($"[EMAIL] Exception: {ex.GetType().Name}");
+                    Console.WriteLine($"[EMAIL] Message: {ex.Message}");
+                    if (ex.InnerException != null)
+                    {
+                        Console.WriteLine($"[EMAIL] InnerException: {ex.InnerException.Message}");
+                    }
+                    Console.WriteLine($"[EMAIL] StackTrace: {ex.StackTrace}");
                 }
                 
                 TempData["Message"] = "Account created. Check your email for confirmation.";

@@ -57,50 +57,10 @@ namespace SiteReservationSystem.Web.Migrations
                         new
                         {
                             AdminID = 1,
-                            DateCreated = new DateTime(2025, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            FirstName = "Ashlyn",
-                            LastName = "Arave",
+                            DateCreated = new DateTime(2026, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            FirstName = "Demo",
+                            LastName = "Admin",
                             UserID = 1
-                        },
-                        new
-                        {
-                            AdminID = 2,
-                            DateCreated = new DateTime(2025, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            FirstName = "Kelise",
-                            LastName = "Bridge",
-                            UserID = 2
-                        },
-                        new
-                        {
-                            AdminID = 3,
-                            DateCreated = new DateTime(2025, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            FirstName = "Zachary",
-                            LastName = "Chamberlain",
-                            UserID = 3
-                        },
-                        new
-                        {
-                            AdminID = 4,
-                            DateCreated = new DateTime(2025, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            FirstName = "Tyler",
-                            LastName = "Fleischel",
-                            UserID = 4
-                        },
-                        new
-                        {
-                            AdminID = 5,
-                            DateCreated = new DateTime(2025, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            FirstName = "Nicole",
-                            LastName = "Gaddis",
-                            UserID = 5
-                        },
-                        new
-                        {
-                            AdminID = 6,
-                            DateCreated = new DateTime(2025, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            FirstName = "Luke",
-                            LastName = "Peterson",
-                            UserID = 6
                         });
                 });
 
@@ -150,68 +110,13 @@ namespace SiteReservationSystem.Web.Migrations
                         new
                         {
                             CustomerID = 1,
-                            DateCreated = new DateTime(2025, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            DateCreated = new DateTime(2026, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
                             DoDStatus = 0,
                             FirstName = "John",
                             LastName = "Smith",
                             MilitaryAffiliation = 0,
-                            PhoneNumber = "111-111-1111",
-                            UserID = 7
-                        },
-                        new
-                        {
-                            CustomerID = 2,
-                            DateCreated = new DateTime(2024, 12, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            DoDStatus = 2,
-                            FirstName = "Sarah",
-                            LastName = "Johnson",
-                            MilitaryAffiliation = 1,
-                            PhoneNumber = "222-222-2222",
-                            UserID = 8
-                        },
-                        new
-                        {
-                            CustomerID = 3,
-                            DateCreated = new DateTime(2025, 2, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            DoDStatus = 3,
-                            FirstName = "Mike",
-                            LastName = "Williams",
-                            MilitaryAffiliation = 2,
-                            PhoneNumber = "333-333-3333",
-                            UserID = 9
-                        },
-                        new
-                        {
-                            CustomerID = 4,
-                            DateCreated = new DateTime(2025, 2, 15, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            DoDStatus = 0,
-                            FirstName = "Emily",
-                            LastName = "Davis",
-                            MilitaryAffiliation = 4,
-                            PhoneNumber = "444-444-4444",
-                            UserID = 10
-                        },
-                        new
-                        {
-                            CustomerID = 5,
-                            DateCreated = new DateTime(2024, 11, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            DoDStatus = 1,
-                            FirstName = "David",
-                            LastName = "Martinez",
-                            MilitaryAffiliation = 3,
-                            PhoneNumber = "555-555-5555",
-                            UserID = 11
-                        },
-                        new
-                        {
-                            CustomerID = 6,
-                            DateCreated = new DateTime(2025, 2, 19, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            DoDStatus = 0,
-                            FirstName = "Lisa",
-                            LastName = "Anderson",
-                            MilitaryAffiliation = 5,
-                            PhoneNumber = "666-666-6666",
-                            UserID = 12
+                            PhoneNumber = "555-123-4567",
+                            UserID = 3
                         });
                 });
 
@@ -259,46 +164,13 @@ namespace SiteReservationSystem.Web.Migrations
                         new
                         {
                             EmployeeID = 1,
-                            AccessPermissions = 29,
-                            DateHired = new DateTime(2025, 1, 15, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            AccessPermissions = 24,
+                            DateHired = new DateTime(2026, 1, 15, 0, 0, 0, 0, DateTimeKind.Unspecified),
                             FirstName = "Jane",
                             IsActive = true,
                             IsLockedOut = false,
                             LastName = "Doe",
-                            UserID = 13
-                        },
-                        new
-                        {
-                            EmployeeID = 2,
-                            AccessPermissions = 24,
-                            DateHired = new DateTime(2025, 1, 15, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            FirstName = "Bob",
-                            IsActive = true,
-                            IsLockedOut = false,
-                            LastName = "Smith",
-                            UserID = 14
-                        },
-                        new
-                        {
-                            EmployeeID = 3,
-                            AccessPermissions = 16,
-                            DateHired = new DateTime(2025, 2, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            FirstName = "Carol",
-                            IsActive = true,
-                            IsLockedOut = false,
-                            LastName = "White",
-                            UserID = 15
-                        },
-                        new
-                        {
-                            EmployeeID = 4,
-                            AccessPermissions = 8,
-                            DateHired = new DateTime(2025, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            FirstName = "Dan",
-                            IsActive = false,
-                            IsLockedOut = true,
-                            LastName = "Locked",
-                            UserID = 16
+                            UserID = 2
                         });
                 });
 
@@ -409,9 +281,9 @@ namespace SiteReservationSystem.Web.Migrations
                         {
                             InvoiceID = 1,
                             CustomerID = 1,
-                            DatePaid = new DateTime(2025, 2, 14, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            DueDate = new DateTime(2025, 2, 19, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            InvoiceDate = new DateTime(2025, 2, 14, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            DatePaid = new DateTime(2026, 2, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            DueDate = new DateTime(2026, 2, 10, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            InvoiceDate = new DateTime(2026, 2, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
                             IsPaid = true,
                             ReservationID = 1,
                             SubTotal = 75.00m,
@@ -421,66 +293,144 @@ namespace SiteReservationSystem.Web.Migrations
                         new
                         {
                             InvoiceID = 2,
-                            CustomerID = 2,
-                            DatePaid = new DateTime(2025, 2, 19, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            DueDate = new DateTime(2025, 2, 27, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            InvoiceDate = new DateTime(2025, 2, 19, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            CustomerID = 1,
+                            DatePaid = new DateTime(2026, 2, 15, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            DueDate = new DateTime(2026, 3, 5, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            InvoiceDate = new DateTime(2026, 2, 15, 0, 0, 0, 0, DateTimeKind.Unspecified),
                             IsPaid = true,
                             ReservationID = 2,
-                            SubTotal = 225.00m,
-                            TotalAmount = 250.00m,
-                            TotalFees = 25.00m
-                        },
-                        new
-                        {
-                            InvoiceID = 3,
-                            CustomerID = 3,
-                            DatePaid = new DateTime(2025, 2, 24, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            DueDate = new DateTime(2025, 3, 8, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            InvoiceDate = new DateTime(2025, 2, 24, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            IsPaid = true,
-                            ReservationID = 3,
-                            SubTotal = 350.00m,
-                            TotalAmount = 350.00m,
-                            TotalFees = 0m
-                        },
-                        new
-                        {
-                            InvoiceID = 4,
-                            CustomerID = 4,
-                            DatePaid = new DateTime(2025, 2, 9, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            DueDate = new DateTime(2025, 3, 11, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            InvoiceDate = new DateTime(2025, 2, 9, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            IsPaid = true,
-                            ReservationID = 4,
                             SubTotal = 100.00m,
                             TotalAmount = 110.00m,
                             TotalFees = 10.00m
                         },
                         new
                         {
+                            InvoiceID = 3,
+                            CustomerID = 1,
+                            DatePaid = new DateTime(2026, 4, 10, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            DueDate = new DateTime(2026, 4, 25, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            InvoiceDate = new DateTime(2026, 4, 10, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            IsPaid = true,
+                            ReservationID = 3,
+                            SubTotal = 175.00m,
+                            TotalAmount = 175.00m,
+                            TotalFees = 0m
+                        },
+                        new
+                        {
+                            InvoiceID = 4,
+                            CustomerID = 1,
+                            DatePaid = new DateTime(2026, 2, 10, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            DueDate = new DateTime(2026, 2, 20, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            InvoiceDate = new DateTime(2026, 2, 10, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            IsPaid = true,
+                            ReservationID = 4,
+                            SubTotal = 90.00m,
+                            TotalAmount = 90.00m,
+                            TotalFees = 0m
+                        },
+                        new
+                        {
                             InvoiceID = 5,
-                            CustomerID = 5,
-                            DatePaid = new DateTime(2025, 2, 22, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            DueDate = new DateTime(2025, 3, 4, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            InvoiceDate = new DateTime(2025, 2, 22, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            CustomerID = 1,
+                            DatePaid = new DateTime(2026, 4, 5, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            DueDate = new DateTime(2026, 4, 18, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            InvoiceDate = new DateTime(2026, 4, 5, 0, 0, 0, 0, DateTimeKind.Unspecified),
                             IsPaid = true,
                             ReservationID = 5,
-                            SubTotal = 90.00m,
-                            TotalAmount = 105.00m,
+                            SubTotal = 150.00m,
+                            TotalAmount = 165.00m,
                             TotalFees = 15.00m
                         },
                         new
                         {
                             InvoiceID = 6,
-                            CustomerID = 6,
-                            DatePaid = new DateTime(2025, 2, 27, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            DueDate = new DateTime(2025, 3, 2, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            InvoiceDate = new DateTime(2025, 2, 27, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            CustomerID = 1,
+                            DatePaid = new DateTime(2026, 4, 20, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            DueDate = new DateTime(2026, 5, 10, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            InvoiceDate = new DateTime(2026, 4, 20, 0, 0, 0, 0, DateTimeKind.Unspecified),
                             IsPaid = true,
                             ReservationID = 6,
+                            SubTotal = 120.00m,
+                            TotalAmount = 120.00m,
+                            TotalFees = 0m
+                        },
+                        new
+                        {
+                            InvoiceID = 7,
+                            CustomerID = 1,
+                            DatePaid = new DateTime(2026, 1, 20, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            DueDate = new DateTime(2026, 2, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            InvoiceDate = new DateTime(2026, 1, 20, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            IsPaid = true,
+                            ReservationID = 7,
+                            SubTotal = 50.00m,
+                            TotalAmount = 50.00m,
+                            TotalFees = 0m
+                        },
+                        new
+                        {
+                            InvoiceID = 8,
+                            CustomerID = 1,
+                            DatePaid = new DateTime(2026, 3, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            DueDate = new DateTime(2026, 3, 15, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            InvoiceDate = new DateTime(2026, 3, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            IsPaid = true,
+                            ReservationID = 8,
+                            SubTotal = 30.00m,
+                            TotalAmount = 40.00m,
+                            TotalFees = 10.00m
+                        },
+                        new
+                        {
+                            InvoiceID = 9,
+                            CustomerID = 1,
+                            DatePaid = new DateTime(2026, 4, 15, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            DueDate = new DateTime(2026, 5, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            InvoiceDate = new DateTime(2026, 4, 15, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            IsPaid = true,
+                            ReservationID = 9,
+                            SubTotal = 150.00m,
+                            TotalAmount = 150.00m,
+                            TotalFees = 0m
+                        },
+                        new
+                        {
+                            InvoiceID = 10,
+                            CustomerID = 1,
+                            DatePaid = new DateTime(2026, 2, 18, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            DueDate = new DateTime(2026, 2, 28, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            InvoiceDate = new DateTime(2026, 2, 18, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            IsPaid = true,
+                            ReservationID = 10,
                             SubTotal = 34.00m,
                             TotalAmount = 34.00m,
+                            TotalFees = 0m
+                        },
+                        new
+                        {
+                            InvoiceID = 11,
+                            CustomerID = 1,
+                            DatePaid = new DateTime(2026, 4, 7, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            DueDate = new DateTime(2026, 4, 17, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            InvoiceDate = new DateTime(2026, 4, 7, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            IsPaid = true,
+                            ReservationID = 11,
+                            SubTotal = 51.00m,
+                            TotalAmount = 76.00m,
+                            TotalFees = 25.00m
+                        },
+                        new
+                        {
+                            InvoiceID = 12,
+                            CustomerID = 1,
+                            DatePaid = new DateTime(2026, 4, 22, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            DueDate = new DateTime(2026, 5, 5, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            InvoiceDate = new DateTime(2026, 4, 22, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            IsPaid = true,
+                            ReservationID = 12,
+                            SubTotal = 68.00m,
+                            TotalAmount = 68.00m,
                             TotalFees = 0m
                         });
                 });
@@ -541,76 +491,155 @@ namespace SiteReservationSystem.Web.Migrations
                             Amount = 75.00m,
                             InvoiceID = 1,
                             IsRefund = false,
-                            PaymentDate = new DateTime(2025, 2, 14, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            PaymentDate = new DateTime(2026, 2, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
                             PaymentMethodID = 1,
                             PaymentStatus = "Completed",
-                            StripeTransactionID = "txn_1ABC123"
+                            StripeTransactionID = "txn_demo_001"
                         },
                         new
                         {
                             PaymentID = 2,
-                            Amount = 250.00m,
+                            Amount = 110.00m,
                             InvoiceID = 2,
                             IsRefund = false,
-                            PaymentDate = new DateTime(2025, 2, 19, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            PaymentMethodID = 2,
+                            PaymentDate = new DateTime(2026, 2, 15, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            PaymentMethodID = 1,
                             PaymentStatus = "Completed",
-                            StripeTransactionID = "txn_2DEF456"
+                            StripeTransactionID = "txn_demo_002"
                         },
                         new
                         {
                             PaymentID = 3,
-                            Amount = 350.00m,
-                            InvoiceID = 3,
-                            IsRefund = false,
-                            PaymentDate = new DateTime(2025, 2, 24, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            Amount = -100.00m,
+                            InvoiceID = 2,
+                            IsRefund = true,
+                            Notes = "Refund: $100.00 (kept $10.00 cancellation fee)",
+                            PaymentDate = new DateTime(2026, 2, 28, 0, 0, 0, 0, DateTimeKind.Unspecified),
                             PaymentMethodID = 1,
-                            PaymentStatus = "Completed",
-                            StripeTransactionID = "txn_3GHI789"
+                            PaymentStatus = "Refunded",
+                            StripeTransactionID = "txn_demo_002_refund"
                         },
                         new
                         {
                             PaymentID = 4,
-                            Amount = 110.00m,
-                            InvoiceID = 4,
+                            Amount = 175.00m,
+                            InvoiceID = 3,
                             IsRefund = false,
-                            PaymentDate = new DateTime(2025, 2, 9, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            PaymentMethodID = 1,
+                            PaymentDate = new DateTime(2026, 4, 10, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            PaymentMethodID = 2,
                             PaymentStatus = "Completed",
-                            StripeTransactionID = "txn_4JKL012"
+                            StripeTransactionID = "txn_demo_003"
                         },
                         new
                         {
                             PaymentID = 5,
-                            Amount = -100.00m,
+                            Amount = 90.00m,
                             InvoiceID = 4,
-                            IsRefund = true,
-                            Notes = "Refund issued: $100.00 (Original $110.00 - $10.00 cancellation fee)",
-                            PaymentDate = new DateTime(2025, 2, 26, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            IsRefund = false,
+                            PaymentDate = new DateTime(2026, 2, 10, 0, 0, 0, 0, DateTimeKind.Unspecified),
                             PaymentMethodID = 1,
-                            PaymentStatus = "Refunded",
-                            StripeTransactionID = "txn_4JKL012_refund"
+                            PaymentStatus = "Completed",
+                            StripeTransactionID = "txn_demo_004"
                         },
                         new
                         {
                             PaymentID = 6,
-                            Amount = 105.00m,
+                            Amount = 165.00m,
                             InvoiceID = 5,
                             IsRefund = false,
-                            PaymentDate = new DateTime(2025, 2, 22, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            PaymentMethodID = 3,
-                            PaymentStatus = "Completed"
+                            PaymentDate = new DateTime(2026, 4, 5, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            PaymentMethodID = 1,
+                            PaymentStatus = "Completed",
+                            StripeTransactionID = "txn_demo_005"
                         },
                         new
                         {
                             PaymentID = 7,
-                            Amount = 34.00m,
+                            Amount = 120.00m,
                             InvoiceID = 6,
                             IsRefund = false,
-                            PaymentDate = new DateTime(2025, 2, 27, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            PaymentDate = new DateTime(2026, 4, 20, 0, 0, 0, 0, DateTimeKind.Unspecified),
                             PaymentMethodID = 2,
                             PaymentStatus = "Completed",
-                            StripeTransactionID = "txn_6MNO345"
+                            StripeTransactionID = "txn_demo_006"
+                        },
+                        new
+                        {
+                            PaymentID = 8,
+                            Amount = 50.00m,
+                            InvoiceID = 7,
+                            IsRefund = false,
+                            PaymentDate = new DateTime(2026, 1, 20, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            PaymentMethodID = 3,
+                            PaymentStatus = "Completed",
+                            ProcessedByEmployeeID = 1
+                        },
+                        new
+                        {
+                            PaymentID = 9,
+                            Amount = 40.00m,
+                            InvoiceID = 8,
+                            IsRefund = false,
+                            PaymentDate = new DateTime(2026, 3, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            PaymentMethodID = 1,
+                            PaymentStatus = "Completed",
+                            StripeTransactionID = "txn_demo_008"
+                        },
+                        new
+                        {
+                            PaymentID = 10,
+                            Amount = -30.00m,
+                            InvoiceID = 8,
+                            IsRefund = true,
+                            Notes = "Refund: $30.00 (kept $10.00 cancellation fee)",
+                            PaymentDate = new DateTime(2026, 3, 12, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            PaymentMethodID = 1,
+                            PaymentStatus = "Refunded",
+                            StripeTransactionID = "txn_demo_008_refund"
+                        },
+                        new
+                        {
+                            PaymentID = 11,
+                            Amount = 150.00m,
+                            InvoiceID = 9,
+                            IsRefund = false,
+                            PaymentDate = new DateTime(2026, 4, 15, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            PaymentMethodID = 3,
+                            PaymentStatus = "Completed",
+                            ProcessedByEmployeeID = 1
+                        },
+                        new
+                        {
+                            PaymentID = 12,
+                            Amount = 34.00m,
+                            InvoiceID = 10,
+                            IsRefund = false,
+                            PaymentDate = new DateTime(2026, 2, 18, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            PaymentMethodID = 2,
+                            PaymentStatus = "Completed",
+                            StripeTransactionID = "txn_demo_010"
+                        },
+                        new
+                        {
+                            PaymentID = 13,
+                            Amount = 76.00m,
+                            InvoiceID = 11,
+                            IsRefund = false,
+                            PaymentDate = new DateTime(2026, 4, 7, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            PaymentMethodID = 1,
+                            PaymentStatus = "Completed",
+                            StripeTransactionID = "txn_demo_011"
+                        },
+                        new
+                        {
+                            PaymentID = 14,
+                            Amount = 68.00m,
+                            InvoiceID = 12,
+                            IsRefund = false,
+                            PaymentDate = new DateTime(2026, 4, 22, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            PaymentMethodID = 1,
+                            PaymentStatus = "Completed",
+                            StripeTransactionID = "txn_demo_012"
                         });
                 });
 
@@ -753,118 +782,237 @@ namespace SiteReservationSystem.Web.Migrations
                         new
                         {
                             ReservationID = 1,
-                            ActualCheckInTime = new DateTime(2025, 2, 19, 13, 15, 0, 0, DateTimeKind.Unspecified),
-                            ActualCheckOutTime = new DateTime(2025, 2, 22, 11, 45, 0, 0, DateTimeKind.Unspecified),
+                            ActualCheckInTime = new DateTime(2026, 2, 10, 13, 20, 0, 0, DateTimeKind.Unspecified),
+                            ActualCheckOutTime = new DateTime(2026, 2, 13, 11, 50, 0, 0, DateTimeKind.Unspecified),
                             BalanceDue = 0m,
                             BaseAmount = 75.00m,
                             CustomerID = 1,
-                            DateCreated = new DateTime(2025, 2, 14, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            EndDate = new DateTime(2025, 2, 22, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            LastUpdated = new DateTime(2025, 2, 22, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            DateCreated = new DateTime(2026, 2, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            EndDate = new DateTime(2026, 2, 13, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            LastUpdated = new DateTime(2026, 2, 13, 0, 0, 0, 0, DateTimeKind.Unspecified),
                             NumberOfGuests = 0,
                             NumberOfPets = 0,
                             ReservationStatusID = 3,
-                            ScheduledCheckInTime = new DateTime(2025, 2, 19, 13, 0, 0, 0, DateTimeKind.Unspecified),
-                            ScheduledCheckOutTime = new DateTime(2025, 2, 22, 12, 0, 0, 0, DateTimeKind.Unspecified),
-                            SiteID = 14,
-                            StartDate = new DateTime(2025, 2, 19, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            ScheduledCheckInTime = new DateTime(2026, 2, 10, 13, 0, 0, 0, DateTimeKind.Unspecified),
+                            ScheduledCheckOutTime = new DateTime(2026, 2, 13, 12, 0, 0, 0, DateTimeKind.Unspecified),
+                            SiteID = 1,
+                            StartDate = new DateTime(2026, 2, 10, 0, 0, 0, 0, DateTimeKind.Unspecified),
                             TotalAmount = 75.00m,
-                            TrailerLengthFeet = 42
+                            TrailerLengthFeet = 38
                         },
                         new
                         {
                             ReservationID = 2,
-                            ActualCheckInTime = new DateTime(2025, 2, 27, 14, 30, 0, 0, DateTimeKind.Unspecified),
                             BalanceDue = 0m,
-                            BaseAmount = 225.00m,
-                            CustomerID = 2,
-                            DateCreated = new DateTime(2025, 2, 19, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            EndDate = new DateTime(2025, 3, 8, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            LastUpdated = new DateTime(2025, 2, 27, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            BaseAmount = 100.00m,
+                            CustomerID = 1,
+                            DateCreated = new DateTime(2026, 2, 15, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            EndDate = new DateTime(2026, 3, 9, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            LastUpdated = new DateTime(2026, 2, 28, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            Notes = "Cancelled - plans changed",
                             NumberOfGuests = 0,
                             NumberOfPets = 0,
-                            ReservationStatusID = 2,
-                            ScheduledCheckInTime = new DateTime(2025, 2, 27, 13, 0, 0, 0, DateTimeKind.Unspecified),
-                            ScheduledCheckOutTime = new DateTime(2025, 3, 8, 12, 0, 0, 0, DateTimeKind.Unspecified),
-                            SiteID = 27,
-                            StartDate = new DateTime(2025, 2, 27, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            TotalAmount = 250.00m,
-                            TrailerLengthFeet = 60
+                            ReservationStatusID = 4,
+                            ScheduledCheckInTime = new DateTime(2026, 3, 5, 13, 0, 0, 0, DateTimeKind.Unspecified),
+                            ScheduledCheckOutTime = new DateTime(2026, 3, 9, 12, 0, 0, 0, DateTimeKind.Unspecified),
+                            SiteID = 2,
+                            StartDate = new DateTime(2026, 3, 5, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            TotalAmount = 110.00m,
+                            TrailerLengthFeet = 42
                         },
                         new
                         {
                             ReservationID = 3,
                             BalanceDue = 0m,
-                            BaseAmount = 350.00m,
-                            CustomerID = 3,
-                            DateCreated = new DateTime(2025, 2, 24, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            EndDate = new DateTime(2025, 3, 22, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            LastUpdated = new DateTime(2025, 2, 24, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            BaseAmount = 175.00m,
+                            CustomerID = 1,
+                            DateCreated = new DateTime(2026, 4, 10, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            EndDate = new DateTime(2026, 5, 2, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            LastUpdated = new DateTime(2026, 4, 10, 0, 0, 0, 0, DateTimeKind.Unspecified),
                             NumberOfGuests = 0,
                             NumberOfPets = 0,
                             ReservationStatusID = 1,
-                            ScheduledCheckInTime = new DateTime(2025, 3, 8, 13, 0, 0, 0, DateTimeKind.Unspecified),
-                            ScheduledCheckOutTime = new DateTime(2025, 3, 22, 12, 0, 0, 0, DateTimeKind.Unspecified),
-                            SiteID = 20,
-                            StartDate = new DateTime(2025, 3, 8, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            TotalAmount = 350.00m,
-                            TrailerLengthFeet = 38
+                            ScheduledCheckInTime = new DateTime(2026, 4, 25, 13, 0, 0, 0, DateTimeKind.Unspecified),
+                            ScheduledCheckOutTime = new DateTime(2026, 5, 2, 12, 0, 0, 0, DateTimeKind.Unspecified),
+                            SiteID = 3,
+                            StartDate = new DateTime(2026, 4, 25, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            TotalAmount = 175.00m,
+                            TrailerLengthFeet = 60
                         },
                         new
                         {
                             ReservationID = 4,
+                            ActualCheckInTime = new DateTime(2026, 2, 20, 13, 10, 0, 0, DateTimeKind.Unspecified),
+                            ActualCheckOutTime = new DateTime(2026, 2, 23, 11, 30, 0, 0, DateTimeKind.Unspecified),
                             BalanceDue = 0m,
-                            BaseAmount = 100.00m,
-                            CustomerID = 4,
-                            DateCreated = new DateTime(2025, 2, 9, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            EndDate = new DateTime(2025, 3, 15, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            LastUpdated = new DateTime(2025, 2, 26, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            Notes = "Cancelled due to change in travel plans",
+                            BaseAmount = 90.00m,
+                            CustomerID = 1,
+                            DateCreated = new DateTime(2026, 2, 10, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            EndDate = new DateTime(2026, 2, 23, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            LastUpdated = new DateTime(2026, 2, 23, 0, 0, 0, 0, DateTimeKind.Unspecified),
                             NumberOfGuests = 0,
                             NumberOfPets = 0,
-                            ReservationStatusID = 4,
-                            ScheduledCheckInTime = new DateTime(2025, 3, 11, 13, 0, 0, 0, DateTimeKind.Unspecified),
-                            ScheduledCheckOutTime = new DateTime(2025, 3, 15, 12, 0, 0, 0, DateTimeKind.Unspecified),
-                            SiteID = 5,
-                            StartDate = new DateTime(2025, 3, 11, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            TotalAmount = 110.00m,
-                            TrailerLengthFeet = 35
+                            ReservationStatusID = 3,
+                            ScheduledCheckInTime = new DateTime(2026, 2, 20, 13, 0, 0, 0, DateTimeKind.Unspecified),
+                            ScheduledCheckOutTime = new DateTime(2026, 2, 23, 12, 0, 0, 0, DateTimeKind.Unspecified),
+                            SiteID = 4,
+                            StartDate = new DateTime(2026, 2, 20, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            TotalAmount = 90.00m
                         },
                         new
                         {
                             ReservationID = 5,
+                            ActualCheckInTime = new DateTime(2026, 4, 18, 8, 10, 0, 0, DateTimeKind.Unspecified),
                             BalanceDue = 0m,
-                            BaseAmount = 90.00m,
-                            CustomerID = 5,
-                            DateCreated = new DateTime(2025, 2, 22, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            EndDate = new DateTime(2025, 3, 7, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            LastUpdated = new DateTime(2025, 2, 22, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            BaseAmount = 150.00m,
+                            CustomerID = 1,
+                            DateCreated = new DateTime(2026, 4, 5, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            EndDate = new DateTime(2026, 4, 23, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            LastUpdated = new DateTime(2026, 4, 18, 0, 0, 0, 0, DateTimeKind.Unspecified),
                             NumberOfGuests = 0,
                             NumberOfPets = 0,
-                            ReservationStatusID = 1,
-                            ScheduledCheckInTime = new DateTime(2025, 3, 4, 8, 0, 0, 0, DateTimeKind.Unspecified),
-                            ScheduledCheckOutTime = new DateTime(2025, 3, 7, 12, 0, 0, 0, DateTimeKind.Unspecified),
-                            SiteID = 44,
-                            StartDate = new DateTime(2025, 3, 4, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            TotalAmount = 105.00m
+                            ReservationStatusID = 2,
+                            ScheduledCheckInTime = new DateTime(2026, 4, 18, 8, 0, 0, 0, DateTimeKind.Unspecified),
+                            ScheduledCheckOutTime = new DateTime(2026, 4, 23, 12, 0, 0, 0, DateTimeKind.Unspecified),
+                            SiteID = 5,
+                            StartDate = new DateTime(2026, 4, 18, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            TotalAmount = 165.00m
                         },
                         new
                         {
                             ReservationID = 6,
                             BalanceDue = 0m,
-                            BaseAmount = 34.00m,
-                            CustomerID = 6,
-                            DateCreated = new DateTime(2025, 2, 27, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            EndDate = new DateTime(2025, 3, 4, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            LastUpdated = new DateTime(2025, 2, 27, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            BaseAmount = 120.00m,
+                            CustomerID = 1,
+                            DateCreated = new DateTime(2026, 4, 20, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            EndDate = new DateTime(2026, 5, 14, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            LastUpdated = new DateTime(2026, 4, 20, 0, 0, 0, 0, DateTimeKind.Unspecified),
                             NumberOfGuests = 0,
                             NumberOfPets = 0,
                             ReservationStatusID = 1,
-                            ScheduledCheckInTime = new DateTime(2025, 3, 2, 13, 0, 0, 0, DateTimeKind.Unspecified),
-                            ScheduledCheckOutTime = new DateTime(2025, 3, 4, 12, 0, 0, 0, DateTimeKind.Unspecified),
-                            SiteID = 50,
-                            StartDate = new DateTime(2025, 3, 2, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            ScheduledCheckInTime = new DateTime(2026, 5, 10, 13, 0, 0, 0, DateTimeKind.Unspecified),
+                            ScheduledCheckOutTime = new DateTime(2026, 5, 14, 12, 0, 0, 0, DateTimeKind.Unspecified),
+                            SiteID = 4,
+                            StartDate = new DateTime(2026, 5, 10, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            TotalAmount = 120.00m
+                        },
+                        new
+                        {
+                            ReservationID = 7,
+                            ActualCheckInTime = new DateTime(2026, 2, 1, 13, 30, 0, 0, DateTimeKind.Unspecified),
+                            ActualCheckOutTime = new DateTime(2026, 2, 11, 12, 0, 0, 0, DateTimeKind.Unspecified),
+                            BalanceDue = 0m,
+                            BaseAmount = 50.00m,
+                            CustomerID = 1,
+                            DateCreated = new DateTime(2026, 1, 20, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            EndDate = new DateTime(2026, 2, 11, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            LastUpdated = new DateTime(2026, 2, 11, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            NumberOfGuests = 0,
+                            NumberOfPets = 0,
+                            ReservationStatusID = 3,
+                            ScheduledCheckInTime = new DateTime(2026, 2, 1, 13, 0, 0, 0, DateTimeKind.Unspecified),
+                            ScheduledCheckOutTime = new DateTime(2026, 2, 11, 12, 0, 0, 0, DateTimeKind.Unspecified),
+                            SiteID = 6,
+                            StartDate = new DateTime(2026, 2, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            TotalAmount = 50.00m,
+                            TrailerLengthFeet = 45
+                        },
+                        new
+                        {
+                            ReservationID = 8,
+                            BalanceDue = 0m,
+                            BaseAmount = 30.00m,
+                            CustomerID = 1,
+                            DateCreated = new DateTime(2026, 3, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            EndDate = new DateTime(2026, 3, 21, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            LastUpdated = new DateTime(2026, 3, 12, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            Notes = "Cancelled - vehicle sold",
+                            NumberOfGuests = 0,
+                            NumberOfPets = 0,
+                            ReservationStatusID = 4,
+                            ScheduledCheckInTime = new DateTime(2026, 3, 15, 13, 0, 0, 0, DateTimeKind.Unspecified),
+                            ScheduledCheckOutTime = new DateTime(2026, 3, 21, 12, 0, 0, 0, DateTimeKind.Unspecified),
+                            SiteID = 7,
+                            StartDate = new DateTime(2026, 3, 15, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            TotalAmount = 40.00m,
+                            TrailerLengthFeet = 50
+                        },
+                        new
+                        {
+                            ReservationID = 9,
+                            BalanceDue = 0m,
+                            BaseAmount = 150.00m,
+                            CustomerID = 1,
+                            DateCreated = new DateTime(2026, 4, 15, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            EndDate = new DateTime(2026, 5, 31, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            LastUpdated = new DateTime(2026, 4, 15, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            Notes = "30-day dry storage rental",
+                            NumberOfGuests = 0,
+                            NumberOfPets = 0,
+                            ReservationStatusID = 1,
+                            ScheduledCheckInTime = new DateTime(2026, 5, 1, 13, 0, 0, 0, DateTimeKind.Unspecified),
+                            ScheduledCheckOutTime = new DateTime(2026, 5, 31, 12, 0, 0, 0, DateTimeKind.Unspecified),
+                            SiteID = 6,
+                            StartDate = new DateTime(2026, 5, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            TotalAmount = 150.00m,
+                            TrailerLengthFeet = 48
+                        },
+                        new
+                        {
+                            ReservationID = 10,
+                            ActualCheckInTime = new DateTime(2026, 2, 28, 14, 0, 0, 0, DateTimeKind.Unspecified),
+                            ActualCheckOutTime = new DateTime(2026, 3, 2, 11, 45, 0, 0, DateTimeKind.Unspecified),
+                            BalanceDue = 0m,
+                            BaseAmount = 34.00m,
+                            CustomerID = 1,
+                            DateCreated = new DateTime(2026, 2, 18, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            EndDate = new DateTime(2026, 3, 2, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            LastUpdated = new DateTime(2026, 3, 2, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            NumberOfGuests = 0,
+                            NumberOfPets = 0,
+                            ReservationStatusID = 3,
+                            ScheduledCheckInTime = new DateTime(2026, 2, 28, 13, 0, 0, 0, DateTimeKind.Unspecified),
+                            ScheduledCheckOutTime = new DateTime(2026, 3, 2, 12, 0, 0, 0, DateTimeKind.Unspecified),
+                            SiteID = 8,
+                            StartDate = new DateTime(2026, 2, 28, 0, 0, 0, 0, DateTimeKind.Unspecified),
                             TotalAmount = 34.00m
+                        },
+                        new
+                        {
+                            ReservationID = 11,
+                            ActualCheckInTime = new DateTime(2026, 4, 17, 13, 5, 0, 0, DateTimeKind.Unspecified),
+                            BalanceDue = 0m,
+                            BaseAmount = 51.00m,
+                            CustomerID = 1,
+                            DateCreated = new DateTime(2026, 4, 7, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            EndDate = new DateTime(2026, 4, 20, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            LastUpdated = new DateTime(2026, 4, 17, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            NumberOfGuests = 0,
+                            NumberOfPets = 0,
+                            ReservationStatusID = 2,
+                            ScheduledCheckInTime = new DateTime(2026, 4, 17, 13, 0, 0, 0, DateTimeKind.Unspecified),
+                            ScheduledCheckOutTime = new DateTime(2026, 4, 20, 12, 0, 0, 0, DateTimeKind.Unspecified),
+                            SiteID = 8,
+                            StartDate = new DateTime(2026, 4, 17, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            TotalAmount = 76.00m
+                        },
+                        new
+                        {
+                            ReservationID = 12,
+                            BalanceDue = 0m,
+                            BaseAmount = 68.00m,
+                            CustomerID = 1,
+                            DateCreated = new DateTime(2026, 4, 22, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            EndDate = new DateTime(2026, 5, 9, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            LastUpdated = new DateTime(2026, 4, 22, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            NumberOfGuests = 0,
+                            NumberOfPets = 0,
+                            ReservationStatusID = 1,
+                            ScheduledCheckInTime = new DateTime(2026, 5, 5, 13, 0, 0, 0, DateTimeKind.Unspecified),
+                            ScheduledCheckOutTime = new DateTime(2026, 5, 9, 12, 0, 0, 0, DateTimeKind.Unspecified),
+                            SiteID = 8,
+                            StartDate = new DateTime(2026, 5, 5, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            TotalAmount = 68.00m
                         });
                 });
 
@@ -904,29 +1052,38 @@ namespace SiteReservationSystem.Web.Migrations
                         new
                         {
                             ReservationFeeID = 1,
-                            Amount = 25.00m,
-                            DateApplied = new DateTime(2025, 2, 27, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            FeeID = 1,
-                            Notes = "Requested late checkout until 3:00 PM",
+                            Amount = 10.00m,
+                            DateApplied = new DateTime(2026, 2, 28, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            FeeID = 3,
+                            Notes = "Cancellation fee applied",
                             ReservationID = 2
                         },
                         new
                         {
                             ReservationFeeID = 2,
-                            Amount = 10.00m,
-                            DateApplied = new DateTime(2025, 2, 26, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            FeeID = 3,
-                            Notes = "Cancelled more than 72 hours before arrival",
-                            ReservationID = 4
+                            Amount = 15.00m,
+                            DateApplied = new DateTime(2026, 4, 18, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            FeeID = 2,
+                            Notes = "Early check-in at 8:00 AM",
+                            ReservationID = 5
                         },
                         new
                         {
                             ReservationFeeID = 3,
-                            Amount = 15.00m,
-                            DateApplied = new DateTime(2025, 2, 22, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            FeeID = 2,
-                            Notes = "Early check-in requested for 8:00 AM",
-                            ReservationID = 5
+                            Amount = 10.00m,
+                            DateApplied = new DateTime(2026, 3, 12, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            FeeID = 3,
+                            Notes = "Cancellation fee applied",
+                            ReservationID = 8
+                        },
+                        new
+                        {
+                            ReservationFeeID = 4,
+                            Amount = 25.00m,
+                            DateApplied = new DateTime(2026, 4, 17, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            FeeID = 1,
+                            Notes = "Late checkout requested",
+                            ReservationID = 11
                         });
                 });
 
@@ -1026,205 +1183,13 @@ namespace SiteReservationSystem.Web.Migrations
                         {
                             SiteID = 2,
                             IsActive = true,
-                            MaxLengthFeet = 40,
-                            SiteNumber = "3",
-                            SiteTypeID = 1
-                        },
-                        new
-                        {
-                            SiteID = 3,
-                            IsActive = true,
-                            MaxLengthFeet = 40,
-                            SiteNumber = "4",
-                            SiteTypeID = 1
-                        },
-                        new
-                        {
-                            SiteID = 4,
-                            IsActive = true,
-                            MaxLengthFeet = 40,
-                            SiteNumber = "5",
-                            SiteTypeID = 1
-                        },
-                        new
-                        {
-                            SiteID = 5,
-                            IsActive = true,
-                            MaxLengthFeet = 40,
-                            SiteNumber = "6",
-                            SiteTypeID = 1
-                        },
-                        new
-                        {
-                            SiteID = 6,
-                            IsActive = true,
-                            MaxLengthFeet = 40,
-                            SiteNumber = "7",
-                            SiteTypeID = 1
-                        },
-                        new
-                        {
-                            SiteID = 7,
-                            IsActive = true,
-                            MaxLengthFeet = 40,
-                            SiteNumber = "8",
-                            SiteTypeID = 1
-                        },
-                        new
-                        {
-                            SiteID = 8,
-                            IsActive = true,
-                            MaxLengthFeet = 40,
-                            SiteNumber = "9",
-                            SiteTypeID = 1
-                        },
-                        new
-                        {
-                            SiteID = 9,
-                            IsActive = true,
-                            MaxLengthFeet = 40,
-                            SiteNumber = "10",
-                            SiteTypeID = 1
-                        },
-                        new
-                        {
-                            SiteID = 10,
-                            IsActive = true,
-                            MaxLengthFeet = 40,
-                            SiteNumber = "11",
-                            SiteTypeID = 1
-                        },
-                        new
-                        {
-                            SiteID = 11,
-                            IsActive = true,
-                            MaxLengthFeet = 40,
-                            SiteNumber = "12",
-                            SiteTypeID = 1
-                        },
-                        new
-                        {
-                            SiteID = 12,
-                            IsActive = true,
-                            MaxLengthFeet = 40,
-                            SiteNumber = "13",
-                            SiteTypeID = 1
-                        },
-                        new
-                        {
-                            SiteID = 13,
-                            IsActive = true,
-                            MaxLengthFeet = 40,
-                            SiteNumber = "14",
-                            SiteTypeID = 1
-                        },
-                        new
-                        {
-                            SiteID = 14,
-                            IsActive = true,
                             MaxLengthFeet = 45,
                             SiteNumber = "17",
                             SiteTypeID = 1
                         },
                         new
                         {
-                            SiteID = 15,
-                            IsActive = true,
-                            MaxLengthFeet = 45,
-                            SiteNumber = "18",
-                            SiteTypeID = 1
-                        },
-                        new
-                        {
-                            SiteID = 16,
-                            IsActive = true,
-                            MaxLengthFeet = 45,
-                            SiteNumber = "20",
-                            SiteTypeID = 1
-                        },
-                        new
-                        {
-                            SiteID = 17,
-                            IsActive = true,
-                            MaxLengthFeet = 45,
-                            SiteNumber = "22",
-                            SiteTypeID = 1
-                        },
-                        new
-                        {
-                            SiteID = 18,
-                            IsActive = true,
-                            MaxLengthFeet = 45,
-                            SiteNumber = "23",
-                            SiteTypeID = 1
-                        },
-                        new
-                        {
-                            SiteID = 19,
-                            IsActive = true,
-                            MaxLengthFeet = 45,
-                            SiteNumber = "24",
-                            SiteTypeID = 1
-                        },
-                        new
-                        {
-                            SiteID = 20,
-                            IsActive = true,
-                            MaxLengthFeet = 45,
-                            SiteNumber = "25",
-                            SiteTypeID = 1
-                        },
-                        new
-                        {
-                            SiteID = 21,
-                            IsActive = true,
-                            MaxLengthFeet = 45,
-                            SiteNumber = "26",
-                            SiteTypeID = 1
-                        },
-                        new
-                        {
-                            SiteID = 22,
-                            IsActive = true,
-                            MaxLengthFeet = 45,
-                            SiteNumber = "27",
-                            SiteTypeID = 1
-                        },
-                        new
-                        {
-                            SiteID = 23,
-                            IsActive = true,
-                            MaxLengthFeet = 45,
-                            SiteNumber = "28",
-                            SiteTypeID = 1
-                        },
-                        new
-                        {
-                            SiteID = 24,
-                            IsActive = true,
-                            MaxLengthFeet = 45,
-                            SiteNumber = "29",
-                            SiteTypeID = 1
-                        },
-                        new
-                        {
-                            SiteID = 25,
-                            IsActive = true,
-                            MaxLengthFeet = 45,
-                            SiteNumber = "30",
-                            SiteTypeID = 1
-                        },
-                        new
-                        {
-                            SiteID = 26,
-                            IsActive = true,
-                            MaxLengthFeet = 45,
-                            SiteNumber = "31",
-                            SiteTypeID = 1
-                        },
-                        new
-                        {
-                            SiteID = 27,
+                            SiteID = 3,
                             IsActive = true,
                             MaxLengthFeet = 65,
                             SiteNumber = "32",
@@ -1232,138 +1197,7 @@ namespace SiteReservationSystem.Web.Migrations
                         },
                         new
                         {
-                            SiteID = 28,
-                            IsActive = true,
-                            MaxLengthFeet = 65,
-                            SiteNumber = "33",
-                            SiteTypeID = 1
-                        },
-                        new
-                        {
-                            SiteID = 29,
-                            IsActive = true,
-                            MaxLengthFeet = 65,
-                            SiteNumber = "34",
-                            SiteTypeID = 1
-                        },
-                        new
-                        {
-                            SiteID = 30,
-                            IsActive = true,
-                            MaxLengthFeet = 65,
-                            SiteNumber = "35",
-                            SiteTypeID = 1
-                        },
-                        new
-                        {
-                            SiteID = 31,
-                            IsActive = true,
-                            MaxLengthFeet = 65,
-                            SiteNumber = "36",
-                            SiteTypeID = 1
-                        },
-                        new
-                        {
-                            SiteID = 32,
-                            IsActive = true,
-                            MaxLengthFeet = 65,
-                            SiteNumber = "37",
-                            SiteTypeID = 1
-                        },
-                        new
-                        {
-                            SiteID = 33,
-                            IsActive = true,
-                            MaxLengthFeet = 65,
-                            SiteNumber = "38",
-                            SiteTypeID = 1
-                        },
-                        new
-                        {
-                            SiteID = 34,
-                            IsActive = true,
-                            MaxLengthFeet = 65,
-                            SiteNumber = "39",
-                            SiteTypeID = 1
-                        },
-                        new
-                        {
-                            SiteID = 35,
-                            IsActive = true,
-                            MaxLengthFeet = 65,
-                            SiteNumber = "40",
-                            SiteTypeID = 1
-                        },
-                        new
-                        {
-                            SiteID = 36,
-                            IsActive = true,
-                            MaxLengthFeet = 65,
-                            SiteNumber = "41",
-                            SiteTypeID = 1
-                        },
-                        new
-                        {
-                            SiteID = 37,
-                            IsActive = true,
-                            MaxLengthFeet = 65,
-                            SiteNumber = "42",
-                            SiteTypeID = 1
-                        },
-                        new
-                        {
-                            SiteID = 38,
-                            IsActive = true,
-                            MaxLengthFeet = 65,
-                            SiteNumber = "43",
-                            SiteTypeID = 1
-                        },
-                        new
-                        {
-                            SiteID = 39,
-                            IsActive = true,
-                            MaxLengthFeet = 65,
-                            SiteNumber = "44",
-                            SiteTypeID = 1
-                        },
-                        new
-                        {
-                            SiteID = 40,
-                            IsActive = true,
-                            MaxLengthFeet = 65,
-                            SiteNumber = "45",
-                            SiteTypeID = 1
-                        },
-                        new
-                        {
-                            SiteID = 41,
-                            IsActive = true,
-                            MaxLengthFeet = 55,
-                            Notes = "Exception - 55 feet",
-                            SiteNumber = "1",
-                            SiteTypeID = 1
-                        },
-                        new
-                        {
-                            SiteID = 42,
-                            IsActive = true,
-                            MaxLengthFeet = 55,
-                            Notes = "Exception - 55 feet",
-                            SiteNumber = "19",
-                            SiteTypeID = 1
-                        },
-                        new
-                        {
-                            SiteID = 43,
-                            IsActive = true,
-                            MaxLengthFeet = 55,
-                            Notes = "Exception - 55 feet",
-                            SiteNumber = "21",
-                            SiteTypeID = 1
-                        },
-                        new
-                        {
-                            SiteID = 44,
+                            SiteID = 4,
                             IsActive = true,
                             MaxLengthFeet = 30,
                             Notes = "Walk-in trailer with linens",
@@ -1372,7 +1206,7 @@ namespace SiteReservationSystem.Web.Migrations
                         },
                         new
                         {
-                            SiteID = 45,
+                            SiteID = 5,
                             IsActive = true,
                             MaxLengthFeet = 30,
                             Notes = "Walk-in trailer with linens",
@@ -1381,7 +1215,7 @@ namespace SiteReservationSystem.Web.Migrations
                         },
                         new
                         {
-                            SiteID = 46,
+                            SiteID = 6,
                             IsActive = true,
                             MaxLengthFeet = 65,
                             Notes = "Dry storage site",
@@ -1390,7 +1224,7 @@ namespace SiteReservationSystem.Web.Migrations
                         },
                         new
                         {
-                            SiteID = 47,
+                            SiteID = 7,
                             IsActive = true,
                             MaxLengthFeet = 65,
                             Notes = "Dry storage site",
@@ -1399,25 +1233,7 @@ namespace SiteReservationSystem.Web.Migrations
                         },
                         new
                         {
-                            SiteID = 48,
-                            IsActive = true,
-                            MaxLengthFeet = 65,
-                            Notes = "Dry storage site",
-                            SiteNumber = "C",
-                            SiteTypeID = 3
-                        },
-                        new
-                        {
-                            SiteID = 49,
-                            IsActive = true,
-                            MaxLengthFeet = 65,
-                            Notes = "Dry storage site",
-                            SiteNumber = "D",
-                            SiteTypeID = 3
-                        },
-                        new
-                        {
-                            SiteID = 50,
+                            SiteID = 8,
                             IsActive = true,
                             MaxLengthFeet = 0,
                             Notes = "Tent site near Dog Park",
@@ -1462,8 +1278,8 @@ namespace SiteReservationSystem.Web.Migrations
                         new
                         {
                             PhotoID = 1,
-                            Caption = "Site 2 - Overview",
-                            DateUploaded = new DateTime(2025, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            Caption = "Site 2 - 40ft Trailer",
+                            DateUploaded = new DateTime(2026, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
                             DisplayOrder = 1,
                             PhotoURL = "https://i0.wp.com/pointofrocksrvcampground.com/wp-content/uploads/2019/05/IMG_0694.jpg?w=4032&ssl=1",
                             SiteID = 1
@@ -1471,452 +1287,74 @@ namespace SiteReservationSystem.Web.Migrations
                         new
                         {
                             PhotoID = 2,
-                            Caption = "Site 2 - Hookup View",
-                            DateUploaded = new DateTime(2025, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            DisplayOrder = 2,
-                            PhotoURL = "https://i0.wp.com/pointofrocksrvcampground.com/wp-content/uploads/2019/09/IMG_1864.jpg?w=4032&ssl=1",
-                            SiteID = 1
-                        },
-                        new
-                        {
-                            PhotoID = 3,
-                            Caption = "Site 3",
-                            DateUploaded = new DateTime(2025, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            Caption = "Site 17 - 45ft Trailer",
+                            DateUploaded = new DateTime(2026, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
                             DisplayOrder = 1,
-                            PhotoURL = "https://i0.wp.com/pointofrocksrvcampground.com/wp-content/uploads/2019/09/IMG_1843.jpg?w=4032&ssl=1",
+                            PhotoURL = "https://i0.wp.com/pointofrocksrvcampground.com/wp-content/uploads/2019/05/IMG_0954.jpg?w=4032&ssl=1",
                             SiteID = 2
                         },
                         new
                         {
-                            PhotoID = 4,
-                            Caption = "Site 4",
-                            DateUploaded = new DateTime(2025, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            PhotoID = 9,
+                            Caption = "Site 17 - Hookup View",
+                            DateUploaded = new DateTime(2026, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            DisplayOrder = 2,
+                            PhotoURL = "https://i0.wp.com/pointofrocksrvcampground.com/wp-content/uploads/2019/05/IMG_0512.jpg?w=4032&ssl=1",
+                            SiteID = 2
+                        },
+                        new
+                        {
+                            PhotoID = 3,
+                            Caption = "Site 32 - 65ft Trailer",
+                            DateUploaded = new DateTime(2026, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
                             DisplayOrder = 1,
-                            PhotoURL = "https://i0.wp.com/pointofrocksrvcampground.com/wp-content/uploads/2019/09/IMG_1844.jpg?w=4032&ssl=1",
+                            PhotoURL = "https://i0.wp.com/pointofrocksrvcampground.com/wp-content/uploads/2019/06/IMG_1226.jpg?w=4032&ssl=1",
                             SiteID = 3
                         },
                         new
                         {
-                            PhotoID = 5,
-                            Caption = "Site 5",
-                            DateUploaded = new DateTime(2025, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            PhotoID = 4,
+                            Caption = "Site 11B - Walk-in Trailer",
+                            DateUploaded = new DateTime(2026, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
                             DisplayOrder = 1,
-                            PhotoURL = "https://i0.wp.com/pointofrocksrvcampground.com/wp-content/uploads/2019/10/IMG_2113.jpg?w=4032&ssl=1",
+                            PhotoURL = "https://i0.wp.com/pointofrocksrvcampground.com/wp-content/uploads/2019/06/IMG_1309.jpg?w=4032&ssl=1",
                             SiteID = 4
                         },
                         new
                         {
-                            PhotoID = 6,
-                            Caption = "Site 6",
-                            DateUploaded = new DateTime(2025, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            PhotoID = 5,
+                            Caption = "Site 12B - Walk-in Trailer",
+                            DateUploaded = new DateTime(2026, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
                             DisplayOrder = 1,
-                            PhotoURL = "https://i0.wp.com/pointofrocksrvcampground.com/wp-content/uploads/2019/05/IMG_0401.jpg?w=4032&ssl=1",
+                            PhotoURL = "https://i0.wp.com/pointofrocksrvcampground.com/wp-content/uploads/2019/05/IMG_0439.jpg?w=4032&ssl=1",
                             SiteID = 5
                         },
                         new
                         {
-                            PhotoID = 7,
-                            Caption = "Site 7",
-                            DateUploaded = new DateTime(2025, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            PhotoID = 6,
+                            Caption = "Dry Storage A",
+                            DateUploaded = new DateTime(2026, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
                             DisplayOrder = 1,
-                            PhotoURL = "https://i0.wp.com/pointofrocksrvcampground.com/wp-content/uploads/2019/05/IMG_0710.jpg?w=4032&ssl=1",
+                            PhotoURL = "https://i0.wp.com/pointofrocksrvcampground.com/wp-content/uploads/2019/05/IMG_0603.jpg?w=4032&ssl=1",
                             SiteID = 6
                         },
                         new
                         {
-                            PhotoID = 8,
-                            Caption = "Site 8",
-                            DateUploaded = new DateTime(2025, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            PhotoID = 7,
+                            Caption = "Dry Storage B",
+                            DateUploaded = new DateTime(2026, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
                             DisplayOrder = 1,
-                            PhotoURL = "https://i0.wp.com/pointofrocksrvcampground.com/wp-content/uploads/2019/09/IMG_1855-1.jpg?w=4032&ssl=1",
+                            PhotoURL = "https://i0.wp.com/pointofrocksrvcampground.com/wp-content/uploads/2019/05/IMG_0444.jpg?w=4032&ssl=1",
                             SiteID = 7
                         },
                         new
                         {
-                            PhotoID = 9,
-                            Caption = "Site 9",
-                            DateUploaded = new DateTime(2025, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            DisplayOrder = 1,
-                            PhotoURL = "https://i0.wp.com/pointofrocksrvcampground.com/wp-content/uploads/2019/06/IMG_1345.jpg?w=4032&ssl=1",
-                            SiteID = 8
-                        },
-                        new
-                        {
-                            PhotoID = 10,
-                            Caption = "Site 10",
-                            DateUploaded = new DateTime(2025, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            DisplayOrder = 1,
-                            PhotoURL = "https://i0.wp.com/pointofrocksrvcampground.com/wp-content/uploads/2019/05/IMG_1054.jpg?w=4032&ssl=1",
-                            SiteID = 9
-                        },
-                        new
-                        {
-                            PhotoID = 11,
-                            Caption = "Site 11",
-                            DateUploaded = new DateTime(2025, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            DisplayOrder = 1,
-                            PhotoURL = "https://i0.wp.com/pointofrocksrvcampground.com/wp-content/uploads/2019/05/IMG_1039.jpg?w=4032&ssl=1",
-                            SiteID = 10
-                        },
-                        new
-                        {
-                            PhotoID = 12,
-                            Caption = "Site 12",
-                            DateUploaded = new DateTime(2025, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            DisplayOrder = 1,
-                            PhotoURL = "https://i0.wp.com/pointofrocksrvcampground.com/wp-content/uploads/2019/09/IMG_1860.jpg?w=4032&ssl=1",
-                            SiteID = 11
-                        },
-                        new
-                        {
-                            PhotoID = 13,
-                            Caption = "Site 13",
-                            DateUploaded = new DateTime(2025, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            DisplayOrder = 1,
-                            PhotoURL = "https://i0.wp.com/pointofrocksrvcampground.com/wp-content/uploads/2019/05/IMG_1141.jpg?w=4032&ssl=1",
-                            SiteID = 12
-                        },
-                        new
-                        {
-                            PhotoID = 14,
-                            Caption = "Site 14",
-                            DateUploaded = new DateTime(2025, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            DisplayOrder = 1,
-                            PhotoURL = "https://i0.wp.com/pointofrocksrvcampground.com/wp-content/uploads/2019/05/IMG_0419.jpg?w=4032&ssl=1",
-                            SiteID = 13
-                        },
-                        new
-                        {
-                            PhotoID = 15,
-                            Caption = "Site 17",
-                            DateUploaded = new DateTime(2025, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            DisplayOrder = 1,
-                            PhotoURL = "https://i0.wp.com/pointofrocksrvcampground.com/wp-content/uploads/2019/05/IMG_0954.jpg?w=4032&ssl=1",
-                            SiteID = 14
-                        },
-                        new
-                        {
-                            PhotoID = 16,
-                            Caption = "Site 18",
-                            DateUploaded = new DateTime(2025, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            DisplayOrder = 1,
-                            PhotoURL = "https://i0.wp.com/pointofrocksrvcampground.com/wp-content/uploads/2019/05/IMG_0512.jpg?w=4032&ssl=1",
-                            SiteID = 15
-                        },
-                        new
-                        {
-                            PhotoID = 17,
-                            Caption = "Site 20",
-                            DateUploaded = new DateTime(2025, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            DisplayOrder = 1,
-                            PhotoURL = "https://i0.wp.com/pointofrocksrvcampground.com/wp-content/uploads/2019/05/IMG_0596.jpg?w=4032&ssl=1",
-                            SiteID = 16
-                        },
-                        new
-                        {
-                            PhotoID = 18,
-                            Caption = "Site 22",
-                            DateUploaded = new DateTime(2025, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            DisplayOrder = 1,
-                            PhotoURL = "https://i0.wp.com/pointofrocksrvcampground.com/wp-content/uploads/2019/05/IMG_0659.jpg?w=4032&ssl=1",
-                            SiteID = 17
-                        },
-                        new
-                        {
-                            PhotoID = 19,
-                            Caption = "Site 23",
-                            DateUploaded = new DateTime(2025, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            DisplayOrder = 1,
-                            PhotoURL = "https://i0.wp.com/pointofrocksrvcampground.com/wp-content/uploads/2019/05/IMG_0408.jpg?w=4032&ssl=1",
-                            SiteID = 18
-                        },
-                        new
-                        {
-                            PhotoID = 20,
-                            Caption = "Site 24",
-                            DateUploaded = new DateTime(2025, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            DisplayOrder = 1,
-                            PhotoURL = "https://i0.wp.com/pointofrocksrvcampground.com/wp-content/uploads/2019/06/IMG_1321.jpg?w=4032&ssl=1",
-                            SiteID = 19
-                        },
-                        new
-                        {
-                            PhotoID = 21,
-                            Caption = "Site 25",
-                            DateUploaded = new DateTime(2025, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            DisplayOrder = 1,
-                            PhotoURL = "https://i0.wp.com/pointofrocksrvcampground.com/wp-content/uploads/2019/05/IMG_0409.jpg?w=4032&ssl=1",
-                            SiteID = 20
-                        },
-                        new
-                        {
-                            PhotoID = 22,
-                            Caption = "Site 26",
-                            DateUploaded = new DateTime(2025, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            DisplayOrder = 1,
-                            PhotoURL = "https://i0.wp.com/pointofrocksrvcampground.com/wp-content/uploads/2019/05/IMG_0403.jpg?w=4032&ssl=1",
-                            SiteID = 21
-                        },
-                        new
-                        {
-                            PhotoID = 23,
-                            Caption = "Site 27",
-                            DateUploaded = new DateTime(2025, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            DisplayOrder = 1,
-                            PhotoURL = "https://i0.wp.com/pointofrocksrvcampground.com/wp-content/uploads/2019/06/IMG_1223-1.jpg?w=4032&ssl=1",
-                            SiteID = 22
-                        },
-                        new
-                        {
-                            PhotoID = 24,
-                            Caption = "Site 28",
-                            DateUploaded = new DateTime(2025, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            DisplayOrder = 1,
-                            PhotoURL = "https://i0.wp.com/pointofrocksrvcampground.com/wp-content/uploads/2019/05/IMG_0407.jpg?w=4032&ssl=1",
-                            SiteID = 23
-                        },
-                        new
-                        {
-                            PhotoID = 25,
-                            Caption = "Site 29",
-                            DateUploaded = new DateTime(2025, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            DisplayOrder = 1,
-                            PhotoURL = "https://i0.wp.com/pointofrocksrvcampground.com/wp-content/uploads/2019/05/IMG_1164.jpg?w=4032&ssl=1",
-                            SiteID = 24
-                        },
-                        new
-                        {
-                            PhotoID = 26,
-                            Caption = "Site 30",
-                            DateUploaded = new DateTime(2025, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            DisplayOrder = 1,
-                            PhotoURL = "https://i0.wp.com/pointofrocksrvcampground.com/wp-content/uploads/2019/04/IMG_20190422_100028.jpg?w=4032&ssl=1",
-                            SiteID = 25
-                        },
-                        new
-                        {
-                            PhotoID = 27,
-                            Caption = "Site 31",
-                            DateUploaded = new DateTime(2025, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            DisplayOrder = 1,
-                            PhotoURL = "https://i0.wp.com/pointofrocksrvcampground.com/wp-content/uploads/2019/05/IMG_1065.jpg?w=4032&ssl=1",
-                            SiteID = 26
-                        },
-                        new
-                        {
-                            PhotoID = 28,
-                            Caption = "Site 32",
-                            DateUploaded = new DateTime(2025, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            DisplayOrder = 1,
-                            PhotoURL = "https://i0.wp.com/pointofrocksrvcampground.com/wp-content/uploads/2019/06/IMG_1226.jpg?w=4032&ssl=1",
-                            SiteID = 27
-                        },
-                        new
-                        {
-                            PhotoID = 29,
-                            Caption = "Site 33",
-                            DateUploaded = new DateTime(2025, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            DisplayOrder = 1,
-                            PhotoURL = "https://i0.wp.com/pointofrocksrvcampground.com/wp-content/uploads/2019/05/IMG_0982.jpg?w=4032&ssl=1",
-                            SiteID = 28
-                        },
-                        new
-                        {
-                            PhotoID = 30,
-                            Caption = "Site 34",
-                            DateUploaded = new DateTime(2025, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            DisplayOrder = 1,
-                            PhotoURL = "https://i0.wp.com/pointofrocksrvcampground.com/wp-content/uploads/2019/05/IMG_0988.jpg?w=4032&ssl=1",
-                            SiteID = 29
-                        },
-                        new
-                        {
-                            PhotoID = 31,
-                            Caption = "Site 35",
-                            DateUploaded = new DateTime(2025, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            DisplayOrder = 1,
-                            PhotoURL = "https://i0.wp.com/pointofrocksrvcampground.com/wp-content/uploads/2019/05/IMG_1173.jpg?w=4032&ssl=1",
-                            SiteID = 30
-                        },
-                        new
-                        {
-                            PhotoID = 32,
-                            Caption = "Site 36",
-                            DateUploaded = new DateTime(2025, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            DisplayOrder = 1,
-                            PhotoURL = "https://i0.wp.com/pointofrocksrvcampground.com/wp-content/uploads/2019/06/IMG_1269.jpg?w=4032&ssl=1",
-                            SiteID = 31
-                        },
-                        new
-                        {
-                            PhotoID = 33,
-                            Caption = "Site 37",
-                            DateUploaded = new DateTime(2025, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            DisplayOrder = 1,
-                            PhotoURL = "https://i0.wp.com/pointofrocksrvcampground.com/wp-content/uploads/2019/05/IMG_0640.jpg?w=4032&ssl=1",
-                            SiteID = 32
-                        },
-                        new
-                        {
-                            PhotoID = 34,
-                            Caption = "Site 38",
-                            DateUploaded = new DateTime(2025, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            DisplayOrder = 1,
-                            PhotoURL = "https://i0.wp.com/pointofrocksrvcampground.com/wp-content/uploads/2019/05/IMG_1199.jpg?w=4032&ssl=1",
-                            SiteID = 33
-                        },
-                        new
-                        {
-                            PhotoID = 35,
-                            Caption = "Site 39",
-                            DateUploaded = new DateTime(2025, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            DisplayOrder = 1,
-                            PhotoURL = "https://i0.wp.com/pointofrocksrvcampground.com/wp-content/uploads/2019/06/IMG_1377.jpg?w=4032&ssl=1",
-                            SiteID = 34
-                        },
-                        new
-                        {
-                            PhotoID = 36,
-                            Caption = "Site 40",
-                            DateUploaded = new DateTime(2025, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            DisplayOrder = 1,
-                            PhotoURL = "https://i0.wp.com/pointofrocksrvcampground.com/wp-content/uploads/2019/05/IMG_0617.jpg?w=4032&ssl=1",
-                            SiteID = 35
-                        },
-                        new
-                        {
-                            PhotoID = 37,
-                            Caption = "Site 41",
-                            DateUploaded = new DateTime(2025, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            DisplayOrder = 1,
-                            PhotoURL = "https://i0.wp.com/pointofrocksrvcampground.com/wp-content/uploads/2019/05/IMG_1004.jpg?w=4032&ssl=1",
-                            SiteID = 36
-                        },
-                        new
-                        {
-                            PhotoID = 38,
-                            Caption = "Site 42",
-                            DateUploaded = new DateTime(2025, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            DisplayOrder = 1,
-                            PhotoURL = "https://i0.wp.com/pointofrocksrvcampground.com/wp-content/uploads/2019/06/IMG_1315.jpg?w=4032&ssl=1",
-                            SiteID = 37
-                        },
-                        new
-                        {
-                            PhotoID = 39,
-                            Caption = "Site 43",
-                            DateUploaded = new DateTime(2025, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            DisplayOrder = 1,
-                            PhotoURL = "https://i0.wp.com/pointofrocksrvcampground.com/wp-content/uploads/2019/05/IMG_0390.jpg?w=4032&ssl=1",
-                            SiteID = 38
-                        },
-                        new
-                        {
-                            PhotoID = 40,
-                            Caption = "Site 44",
-                            DateUploaded = new DateTime(2025, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            DisplayOrder = 1,
-                            PhotoURL = "https://i0.wp.com/pointofrocksrvcampground.com/wp-content/uploads/2019/05/IMG_0612.jpg?w=4032&ssl=1",
-                            SiteID = 39
-                        },
-                        new
-                        {
-                            PhotoID = 41,
-                            Caption = "Site 45",
-                            DateUploaded = new DateTime(2025, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            DisplayOrder = 1,
-                            PhotoURL = "https://i0.wp.com/pointofrocksrvcampground.com/wp-content/uploads/2019/05/IMG_20190430_100259.jpg?w=4032&ssl=1",
-                            SiteID = 40
-                        },
-                        new
-                        {
-                            PhotoID = 42,
-                            Caption = "Site 1 (55ft exception)",
-                            DateUploaded = new DateTime(2025, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            DisplayOrder = 1,
-                            PhotoURL = "https://i0.wp.com/pointofrocksrvcampground.com/wp-content/uploads/2019/06/IMG_1304.jpg?w=4032&ssl=1",
-                            SiteID = 41
-                        },
-                        new
-                        {
-                            PhotoID = 43,
-                            Caption = "Site 19 (55ft exception)",
-                            DateUploaded = new DateTime(2025, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            DisplayOrder = 1,
-                            PhotoURL = "https://i0.wp.com/pointofrocksrvcampground.com/wp-content/uploads/2019/05/IMG_20190430_100506.jpg?w=4032&ssl=1",
-                            SiteID = 42
-                        },
-                        new
-                        {
-                            PhotoID = 44,
-                            Caption = "Site 21 (55ft exception)",
-                            DateUploaded = new DateTime(2025, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            DisplayOrder = 1,
-                            PhotoURL = "https://i0.wp.com/pointofrocksrvcampground.com/wp-content/uploads/2019/05/IMG_1019.jpg?w=4032&ssl=1",
-                            SiteID = 43
-                        },
-                        new
-                        {
-                            PhotoID = 45,
-                            Caption = "Site 11B - Walk-in Trailer",
-                            DateUploaded = new DateTime(2025, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            DisplayOrder = 1,
-                            PhotoURL = "https://i0.wp.com/pointofrocksrvcampground.com/wp-content/uploads/2019/06/IMG_1309.jpg?w=4032&ssl=1",
-                            SiteID = 44
-                        },
-                        new
-                        {
-                            PhotoID = 46,
-                            Caption = "Site 12B - Walk-in Trailer",
-                            DateUploaded = new DateTime(2025, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            DisplayOrder = 1,
-                            PhotoURL = "https://i0.wp.com/pointofrocksrvcampground.com/wp-content/uploads/2019/05/IMG_0439.jpg?w=4032&ssl=1",
-                            SiteID = 45
-                        },
-                        new
-                        {
-                            PhotoID = 47,
-                            Caption = "Dry Storage A",
-                            DateUploaded = new DateTime(2025, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            DisplayOrder = 1,
-                            PhotoURL = "https://i0.wp.com/pointofrocksrvcampground.com/wp-content/uploads/2019/05/IMG_0603.jpg?w=4032&ssl=1",
-                            SiteID = 46
-                        },
-                        new
-                        {
-                            PhotoID = 48,
-                            Caption = "Dry Storage B",
-                            DateUploaded = new DateTime(2025, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            DisplayOrder = 1,
-                            PhotoURL = "https://i0.wp.com/pointofrocksrvcampground.com/wp-content/uploads/2019/05/IMG_0444.jpg?w=4032&ssl=1",
-                            SiteID = 47
-                        },
-                        new
-                        {
-                            PhotoID = 49,
-                            Caption = "Dry Storage C",
-                            DateUploaded = new DateTime(2025, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            DisplayOrder = 1,
-                            PhotoURL = "https://i0.wp.com/pointofrocksrvcampground.com/wp-content/uploads/2019/05/IMG_0976.jpg?w=4032&ssl=1",
-                            SiteID = 48
-                        },
-                        new
-                        {
-                            PhotoID = 50,
-                            Caption = "Dry Storage D",
-                            DateUploaded = new DateTime(2025, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            DisplayOrder = 1,
-                            PhotoURL = "https://i0.wp.com/pointofrocksrvcampground.com/wp-content/uploads/2019/05/IMG_0413.jpg?w=4032&ssl=1",
-                            SiteID = 49
-                        },
-                        new
-                        {
-                            PhotoID = 51,
+                            PhotoID = 8,
                             Caption = "Tent Site - Near Dog Park",
-                            DateUploaded = new DateTime(2025, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            DateUploaded = new DateTime(2026, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
                             DisplayOrder = 1,
                             PhotoURL = "https://i0.wp.com/pointofrocksrvcampground.com/wp-content/uploads/2019/05/IMG_0515.jpg?w=4032&ssl=1",
-                            SiteID = 50
+                            SiteID = 8
                         });
                 });
 
@@ -2012,7 +1450,7 @@ namespace SiteReservationSystem.Web.Migrations
                             BasePrice = 25.00m,
                             Description = "Current rate for standard trailers",
                             SiteTypeID = 1,
-                            StartDate = new DateTime(2024, 10, 1, 0, 0, 0, 0, DateTimeKind.Unspecified)
+                            StartDate = new DateTime(2025, 10, 1, 0, 0, 0, 0, DateTimeKind.Unspecified)
                         },
                         new
                         {
@@ -2020,15 +1458,15 @@ namespace SiteReservationSystem.Web.Migrations
                             BasePrice = 30.00m,
                             Description = "Current rate for walk-in trailers",
                             SiteTypeID = 2,
-                            StartDate = new DateTime(2024, 10, 1, 0, 0, 0, 0, DateTimeKind.Unspecified)
+                            StartDate = new DateTime(2025, 10, 1, 0, 0, 0, 0, DateTimeKind.Unspecified)
                         },
                         new
                         {
                             PricingID = 3,
                             BasePrice = 5.00m,
-                            Description = "Current daily rate for dry storage (also $30/week, $36/month)",
+                            Description = "Current daily rate for dry storage",
                             SiteTypeID = 3,
-                            StartDate = new DateTime(2024, 10, 1, 0, 0, 0, 0, DateTimeKind.Unspecified)
+                            StartDate = new DateTime(2025, 10, 1, 0, 0, 0, 0, DateTimeKind.Unspecified)
                         },
                         new
                         {
@@ -2036,7 +1474,7 @@ namespace SiteReservationSystem.Web.Migrations
                             BasePrice = 17.00m,
                             Description = "Current rate for tent site",
                             SiteTypeID = 4,
-                            StartDate = new DateTime(2024, 10, 1, 0, 0, 0, 0, DateTimeKind.Unspecified)
+                            StartDate = new DateTime(2025, 10, 1, 0, 0, 0, 0, DateTimeKind.Unspecified)
                         });
                 });
 
@@ -2081,145 +1519,28 @@ namespace SiteReservationSystem.Web.Migrations
                         new
                         {
                             UserID = 1,
-                            DateCreated = new DateTime(2025, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            Email = "ashlyn.arave@example.com",
+                            DateCreated = new DateTime(2026, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            Email = "admin@rvpark.com",
                             IsActive = true,
-                            PasswordHash = "hashed_password_1",
+                            PasswordHash = "Password123!",
                             Role = 2
                         },
                         new
                         {
                             UserID = 2,
-                            DateCreated = new DateTime(2025, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            Email = "kelise.bridge@example.com",
+                            DateCreated = new DateTime(2026, 1, 15, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            Email = "jane.doe@rvpark.com",
                             IsActive = true,
-                            PasswordHash = "hashed_password_2",
-                            Role = 2
+                            PasswordHash = "Password123!",
+                            Role = 1
                         },
                         new
                         {
                             UserID = 3,
-                            DateCreated = new DateTime(2025, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            Email = "zachary.chamberlain@example.com",
-                            IsActive = true,
-                            PasswordHash = "hashed_password_3",
-                            Role = 2
-                        },
-                        new
-                        {
-                            UserID = 4,
-                            DateCreated = new DateTime(2025, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            Email = "tyler.fleischel@example.com",
-                            IsActive = true,
-                            PasswordHash = "hashed_password_4",
-                            Role = 2
-                        },
-                        new
-                        {
-                            UserID = 5,
-                            DateCreated = new DateTime(2025, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            Email = "nicole.gaddis@example.com",
-                            IsActive = true,
-                            PasswordHash = "hashed_password_5",
-                            Role = 2
-                        },
-                        new
-                        {
-                            UserID = 6,
-                            DateCreated = new DateTime(2025, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            Email = "luke.peterson@example.com",
-                            IsActive = true,
-                            PasswordHash = "hashed_password_6",
-                            Role = 2
-                        },
-                        new
-                        {
-                            UserID = 13,
-                            DateCreated = new DateTime(2025, 1, 15, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            Email = "jane.doe@rvpark.com",
-                            IsActive = true,
-                            PasswordHash = "hashed_password_13",
-                            Role = 1
-                        },
-                        new
-                        {
-                            UserID = 14,
-                            DateCreated = new DateTime(2025, 1, 15, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            Email = "bob.smith@rvpark.com",
-                            IsActive = true,
-                            PasswordHash = "hashed_password_14",
-                            Role = 1
-                        },
-                        new
-                        {
-                            UserID = 15,
-                            DateCreated = new DateTime(2025, 2, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            Email = "carol.white@rvpark.com",
-                            IsActive = true,
-                            PasswordHash = "hashed_password_15",
-                            Role = 1
-                        },
-                        new
-                        {
-                            UserID = 16,
-                            DateCreated = new DateTime(2025, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            Email = "dan.locked@rvpark.com",
-                            IsActive = false,
-                            PasswordHash = "hashed_password_16",
-                            Role = 1
-                        },
-                        new
-                        {
-                            UserID = 7,
-                            DateCreated = new DateTime(2025, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            DateCreated = new DateTime(2026, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
                             Email = "john.smith@military.com",
                             IsActive = true,
-                            PasswordHash = "hashed_password_7",
-                            Role = 0
-                        },
-                        new
-                        {
-                            UserID = 8,
-                            DateCreated = new DateTime(2024, 12, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            Email = "sarah.johnson@military.com",
-                            IsActive = true,
-                            PasswordHash = "hashed_password_8",
-                            Role = 0
-                        },
-                        new
-                        {
-                            UserID = 9,
-                            DateCreated = new DateTime(2025, 2, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            Email = "mike.williams@military.com",
-                            IsActive = true,
-                            PasswordHash = "hashed_password_9",
-                            Role = 0
-                        },
-                        new
-                        {
-                            UserID = 10,
-                            DateCreated = new DateTime(2025, 2, 15, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            Email = "emily.davis@military.com",
-                            IsActive = true,
-                            PasswordHash = "hashed_password_10",
-                            Role = 0
-                        },
-                        new
-                        {
-                            UserID = 11,
-                            DateCreated = new DateTime(2024, 11, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            Email = "david.martinez@military.com",
-                            IsActive = true,
-                            PasswordHash = "hashed_password_11",
-                            Role = 0
-                        },
-                        new
-                        {
-                            UserID = 12,
-                            DateCreated = new DateTime(2025, 2, 19, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            Email = "lisa.anderson@military.com",
-                            IsActive = true,
-                            PasswordHash = "hashed_password_12",
+                            PasswordHash = "Password123!",
                             Role = 0
                         });
                 });

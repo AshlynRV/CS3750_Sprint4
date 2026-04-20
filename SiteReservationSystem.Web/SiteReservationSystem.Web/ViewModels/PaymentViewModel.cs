@@ -29,4 +29,22 @@ namespace SiteReservationSystem.Web.ViewModels
         public string FeeName { get; set; } = string.Empty;
         public decimal Amount { get; set; }
     }
+
+    public class ReservationDataViewModel
+    {
+        public int SiteID { get; set; }
+        public string? SiteNumber { get; set; }
+        public int CustomerID { get; set; }
+        public DateTime StartDate { get; set; }
+        public DateTime EndDate { get; set; }
+        public int? TrailerLengthFeet { get; set; }
+        public int NumberOfGuests { get; set; }
+        public int NumberOfPets { get; set; }
+        public string? SpecialRequests { get; set; }
+        public decimal TotalAmount { get; set; }
+        public int NumberOfNights { get; set; }
+        public decimal PricePerNight { get; set; }
+        public string? CustomerEmail { get; set; }
+        public string? CustomerPhone { get; set; }
+    }
 }

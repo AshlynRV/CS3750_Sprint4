@@ -1,7 +1,8 @@
-﻿@model SiteReservationSystem.Web.Models.Reservation
+@model SiteReservationSystem.Web.Models.Reservation
 
 @{
     ViewData["Title"] = "Edit Reservation";
+    var isPCS = Context.Session.GetInt32("IsPCSOrders") == 1;
 }
 
 <h2>Edit Reservation</h2>
@@ -62,4 +63,62 @@
     @{
         await Html.RenderPartialAsync("_ValidationScriptsPartial");
     }
+    <script>
+        var isPCS = @isPCS.ToString().ToLower();
+
+        function isPeakSeason(date) {
+            var month = date.getMonth();
+            return month >= 3 && month <= 9;
+        }
+
+        function limitEndDate() {
+            var startInput = document.getElementById('StartDate');
+            var endInput = document.getElementById('EndDate');
+            var tomorrow = new Date();
+            tomorrow.setDate(tomorrow.getDate() + 1);
+
+            if (!startInput.value) {
+                startInput.value = tomorrow.toISOString().split('T')[0];
+            }
+
+            startInput.min = tomorrow.toISOString().split('T')[0];
+
+            var startDate = new Date(startInput.value);
+            var minEnd = new Date(startDate);
+            minEnd.setDate(minEnd.getDate() + 1);
+            endInput.min = minEnd.toISOString().split('T')[0];
+
+            if (isPeakSeason(startDate) && !isPCS) {
+                var maxStay = 14;
+                var maxEnd = new Date(startDate);
+                maxEnd.setDate(maxEnd.getDate() + maxStay);
+                endInput.max = maxEnd.toISOString().split('T')[0];
+
+                var currentEnd = new Date(endInput.value);
+                if (currentEnd > maxEnd) {
+                    endInput.value = maxEnd.toISOString().split('T')[0];
+                }
+            } else {
+                endInput.removeAttribute('max');
+            }
+        }
+
+        document.getElementById('StartDate')?.addEventListener('change', limitEndDate);
+
+        window.onload = function() {
+            limitEndDate();
+        };
+
+        document.querySelector('form').addEventListener('submit', function(e) {
+            var startDate = new Date(document.getElementById('StartDate').value);
+            var endDate = new Date(document.getElementById('EndDate').value);
+            var stayLength = Math.ceil((endDate - startDate) / (1000 * 60 * 60 * 24));
+
+            if (!isPCS && isPeakSeason(startDate) && stayLength > 14) {
+                e.preventDefault();
+                alert('Maximum stay is 14 days during peak season.');
+                return false;
+            }
+        });
+    </script>
 }

@@ -1,10 +1,12 @@
-﻿using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations;
 
 namespace SiteReservationSystem.Web.ViewModels
 {
     public class CreateReservationViewModel
     {
         public int SiteID { get; set; }
+
+        public string? SiteNumber { get; set; }
 
         [Required]
         public DateTime StartDate { get; set; }

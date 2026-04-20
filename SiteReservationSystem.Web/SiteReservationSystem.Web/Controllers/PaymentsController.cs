@@ -10,7 +10,7 @@ namespace SiteReservationSystem.Web.Controllers
     {
         private readonly ApplicationDbContext _context;
 
-        public PaymentsController(ApplicationDbContext context)
+        public PaymentsController(ApplicationDbContext context) : base(context)
         {
             _context = context;
         }
@@ -32,11 +32,13 @@ namespace SiteReservationSystem.Web.Controllers
         /// <param name="reservationId">Reservation ID (optional)</param>
         /// <param name="invoiceId">Invoice ID (optional)</param>
         /// <returns>Payment view with invoice details</returns>
-        public IActionResult Index(int reservationId = 0, int invoiceId = 0)
+        public async Task<IActionResult> Index(int reservationId = 0, int invoiceId = 0)
         {
             // Ensure user is logged in before accessing any payment information
             if (!IsLoggedIn())
                 return RedirectToAction("Login", "Account");
+
+            await UpdateReservationStatuses();
 
             // Determine user role from session to handle different flows
             var userRole = HttpContext.Session.GetString("UserRole");
@@ -156,7 +158,7 @@ namespace SiteReservationSystem.Web.Controllers
             // Calculate actual amount paid (exclude refunds)
             var amountPaid = reservation.Invoice.Payments?.Where(p => !p.IsRefund).Sum(p => p.Amount) ?? 0;
             
-            // BalanceDue = TotalAmount - AmountPaid (can be negative if overpaid)
+            // BalanceDue = TotalAmount - AmountPaid (can be negative if overpaid = refund owed)
             var actualBalanceDue = reservation.TotalAmount - amountPaid;
             
             // isPaidInFull = true when balance is 0 or negative
@@ -382,6 +384,133 @@ namespace SiteReservationSystem.Web.Controllers
 
             // Redirect back to payment page to show updated status
             return RedirectToAction("Index", new { reservationId = model.ReservationID, invoiceId = model.InvoiceID });
+        }
+
+        [HttpGet]
+        public IActionResult CreateReservationPayment()
+        {
+            if (!IsLoggedIn())
+                return RedirectToAction("Login", "Account");
+
+            var userRole = HttpContext.Session.GetString("UserRole");
+            if (userRole != "Customer")
+                return RedirectToAction("AccessDenied", "Account");
+
+            var reservationDataJson = HttpContext.Session.GetString("ReservationData");
+            if (string.IsNullOrEmpty(reservationDataJson))
+            {
+                TempData["ErrorMessage"] = "Reservation data not found. Please start a new reservation.";
+                return RedirectToAction("Index", "Home");
+            }
+
+            var reservationData = System.Text.Json.JsonSerializer.Deserialize<ViewModels.ReservationDataViewModel>(reservationDataJson);
+            if (reservationData == null)
+            {
+                TempData["ErrorMessage"] = "Invalid reservation data.";
+                return RedirectToAction("Index", "Home");
+            }
+
+            var model = new PaymentViewModel
+            {
+                ReservationID = 0,
+                SiteNumber = reservationData.SiteNumber,
+                StartDate = reservationData.StartDate,
+                EndDate = reservationData.EndDate,
+                NumberOfNights = reservationData.NumberOfNights,
+                TotalAmount = reservationData.TotalAmount,
+                CustomerEmail = HttpContext.Session.GetString("Name") ?? ""
+            };
+
+            ViewBag.ReservationData = reservationData;
+            return View(model);
+        }
+
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> ProcessReservationPayment(PaymentViewModel model)
+        {
+            if (!IsLoggedIn())
+                return RedirectToAction("Login", "Account");
+
+            var userRole = HttpContext.Session.GetString("UserRole");
+            if (userRole != "Customer")
+                return RedirectToAction("AccessDenied", "Account");
+
+            var reservationDataJson = HttpContext.Session.GetString("ReservationData");
+            if (string.IsNullOrEmpty(reservationDataJson))
+            {
+                TempData["ErrorMessage"] = "Reservation data not found. Please start a new reservation.";
+                return RedirectToAction("Index", "Home");
+            }
+
+            var reservationData = System.Text.Json.JsonSerializer.Deserialize<ViewModels.ReservationDataViewModel>(reservationDataJson);
+            if (reservationData == null)
+            {
+                TempData["ErrorMessage"] = "Invalid reservation data.";
+                return RedirectToAction("Index", "Home");
+            }
+
+            var customerId = HttpContext.Session.GetInt32("CustomerID");
+            if (!customerId.HasValue)
+                return RedirectToAction("Login", "Account");
+
+            var reservation = new Reservation
+            {
+                SiteID = reservationData.SiteID,
+                CustomerID = customerId.Value,
+                ReservationStatusID = 1,
+                StartDate = reservationData.StartDate,
+                EndDate = reservationData.EndDate,
+                TrailerLengthFeet = reservationData.TrailerLengthFeet,
+                NumberOfGuests = reservationData.NumberOfGuests,
+                NumberOfPets = reservationData.NumberOfPets,
+                Notes = reservationData.SpecialRequests,
+                BaseAmount = reservationData.TotalAmount,
+                TotalAmount = reservationData.TotalAmount,
+                BalanceDue = 0,
+                ScheduledCheckInTime = reservationData.StartDate,
+                ScheduledCheckOutTime = reservationData.EndDate,
+                DateCreated = DateTime.UtcNow,
+                LastUpdated = DateTime.UtcNow
+            };
+
+            _context.Reservations.Add(reservation);
+            await _context.SaveChangesAsync();
+
+            var invoice = new Invoice
+            {
+                ReservationID = reservation.ReservationID,
+                CustomerID = customerId.Value,
+                SubTotal = reservationData.TotalAmount,
+                TotalFees = 0,
+                TotalAmount = reservationData.TotalAmount,
+                InvoiceDate = DateTime.UtcNow,
+                DueDate = reservationData.StartDate,
+                IsPaid = true,
+                DatePaid = DateTime.UtcNow
+            };
+
+            _context.Invoices.Add(invoice);
+            await _context.SaveChangesAsync();
+
+            var payment = new Payment
+            {
+                InvoiceID = invoice.InvoiceID,
+                PaymentMethodID = 1,
+                Amount = reservationData.TotalAmount,
+                PaymentDate = DateTime.UtcNow,
+                StripeTransactionID = "sim_" + Guid.NewGuid().ToString("N")[..16],
+                PaymentStatus = "Completed",
+                IsRefund = false
+            };
+
+            _context.Payments.Add(payment);
+            await _context.SaveChangesAsync();
+
+            HttpContext.Session.Remove("ReservationData");
+
+            TempData["SuccessMessage"] = "Reservation created successfully!";
+            return RedirectToAction("MyReservations", "Home");
         }
     }
 }
