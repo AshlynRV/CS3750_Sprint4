@@ -318,43 +318,119 @@ namespace SiteReservationSystem.Web.Data
                 );
 
             // ============================================================================
-            // SEED DATA - Sites (2-3 per type)
+            // SEED DATA - Sites
             // ============================================================================
 
-            modelBuilder
-                .Entity<Site>()
-                .HasData(
-                    // Type 1: Trailers (3 sites - varied max lengths)
-                    new Site { SiteID = 1, SiteNumber = "2",      SiteTypeID = 1, MaxLengthFeet = 40, IsActive = true },
-                    new Site { SiteID = 2, SiteNumber = "17",     SiteTypeID = 1, MaxLengthFeet = 45, IsActive = true },
-                    new Site { SiteID = 3, SiteNumber = "32",     SiteTypeID = 1, MaxLengthFeet = 65, IsActive = true },
-                    // Type 2: Walk-in Trailers (2 sites)
-                    new Site { SiteID = 4, SiteNumber = "11B",    SiteTypeID = 2, MaxLengthFeet = 30, Notes = "Walk-in trailer with linens", IsActive = true },
-                    new Site { SiteID = 5, SiteNumber = "12B",    SiteTypeID = 2, MaxLengthFeet = 30, Notes = "Walk-in trailer with linens", IsActive = true },
-                    // Type 3: Dry Storage (2 sites)
-                    new Site { SiteID = 6, SiteNumber = "A",      SiteTypeID = 3, MaxLengthFeet = 65, Notes = "Dry storage site", IsActive = true },
-                    new Site { SiteID = 7, SiteNumber = "B",      SiteTypeID = 3, MaxLengthFeet = 65, Notes = "Dry storage site", IsActive = true },
-                    // Type 4: Tent (1 site)
-                    new Site { SiteID = 8, SiteNumber = "TENT-1", SiteTypeID = 4, MaxLengthFeet = 0,  Notes = "Tent site near Dog Park", IsActive = true }
-                );
+            modelBuilder.Entity<Site>().HasData(
+                new Site { SiteID = 1,  SiteNumber = "2",      SiteTypeID = 1, MaxLengthFeet = 40, IsActive = true },
+                new Site { SiteID = 2,  SiteNumber = "3",      SiteTypeID = 1, MaxLengthFeet = 40, IsActive = true },
+                new Site { SiteID = 3,  SiteNumber = "4",      SiteTypeID = 1, MaxLengthFeet = 40, IsActive = true },
+                new Site { SiteID = 4,  SiteNumber = "5",      SiteTypeID = 1, MaxLengthFeet = 40, IsActive = true },
+                new Site { SiteID = 5,  SiteNumber = "6",      SiteTypeID = 1, MaxLengthFeet = 40, IsActive = true },
+                new Site { SiteID = 6,  SiteNumber = "7",      SiteTypeID = 1, MaxLengthFeet = 40, IsActive = true },
+                new Site { SiteID = 7,  SiteNumber = "8",      SiteTypeID = 1, MaxLengthFeet = 40, IsActive = true },
+                new Site { SiteID = 8,  SiteNumber = "9",      SiteTypeID = 1, MaxLengthFeet = 40, IsActive = true },
+                new Site { SiteID = 9,  SiteNumber = "10",     SiteTypeID = 1, MaxLengthFeet = 40, IsActive = true },
+                new Site { SiteID = 10, SiteNumber = "11",     SiteTypeID = 1, MaxLengthFeet = 40, IsActive = true },
+                new Site { SiteID = 11, SiteNumber = "12",     SiteTypeID = 1, MaxLengthFeet = 40, IsActive = true },
+                new Site { SiteID = 12, SiteNumber = "13",     SiteTypeID = 1, MaxLengthFeet = 40, IsActive = true },
+                new Site { SiteID = 13, SiteNumber = "14",     SiteTypeID = 1, MaxLengthFeet = 40, IsActive = true },
+                new Site { SiteID = 14, SiteNumber = "17",     SiteTypeID = 1, MaxLengthFeet = 45, IsActive = true },
+                new Site { SiteID = 15, SiteNumber = "18",     SiteTypeID = 1, MaxLengthFeet = 45, IsActive = true },
+                new Site { SiteID = 16, SiteNumber = "20",     SiteTypeID = 1, MaxLengthFeet = 45, IsActive = true },
+                new Site { SiteID = 17, SiteNumber = "22",     SiteTypeID = 1, MaxLengthFeet = 45, IsActive = true },
+                new Site { SiteID = 18, SiteNumber = "23",     SiteTypeID = 1, MaxLengthFeet = 45, IsActive = true },
+                new Site { SiteID = 19, SiteNumber = "24",     SiteTypeID = 1, MaxLengthFeet = 45, IsActive = true },
+                new Site { SiteID = 20, SiteNumber = "25",     SiteTypeID = 1, MaxLengthFeet = 45, IsActive = true },
+                new Site { SiteID = 21, SiteNumber = "26",     SiteTypeID = 1, MaxLengthFeet = 45, IsActive = true },
+                new Site { SiteID = 22, SiteNumber = "27",     SiteTypeID = 1, MaxLengthFeet = 45, IsActive = true },
+                new Site { SiteID = 23, SiteNumber = "28",     SiteTypeID = 1, MaxLengthFeet = 45, IsActive = true },
+                new Site { SiteID = 24, SiteNumber = "29",     SiteTypeID = 1, MaxLengthFeet = 45, IsActive = true },
+                new Site { SiteID = 25, SiteNumber = "30",     SiteTypeID = 1, MaxLengthFeet = 45, IsActive = true },
+                new Site { SiteID = 26, SiteNumber = "31",     SiteTypeID = 1, MaxLengthFeet = 45, IsActive = true },
+                new Site { SiteID = 27, SiteNumber = "32",     SiteTypeID = 1, MaxLengthFeet = 65, IsActive = true },
+                new Site { SiteID = 28, SiteNumber = "33",     SiteTypeID = 1, MaxLengthFeet = 65, IsActive = true },
+                new Site { SiteID = 29, SiteNumber = "34",     SiteTypeID = 1, MaxLengthFeet = 65, IsActive = true },
+                new Site { SiteID = 30, SiteNumber = "35",     SiteTypeID = 1, MaxLengthFeet = 65, IsActive = true },
+                new Site { SiteID = 31, SiteNumber = "36",     SiteTypeID = 1, MaxLengthFeet = 65, IsActive = true },
+                new Site { SiteID = 32, SiteNumber = "37",     SiteTypeID = 1, MaxLengthFeet = 65, IsActive = true },
+                new Site { SiteID = 33, SiteNumber = "38",     SiteTypeID = 1, MaxLengthFeet = 65, IsActive = true },
+                new Site { SiteID = 34, SiteNumber = "39",     SiteTypeID = 1, MaxLengthFeet = 65, IsActive = true },
+                new Site { SiteID = 35, SiteNumber = "40",     SiteTypeID = 1, MaxLengthFeet = 65, IsActive = true },
+                new Site { SiteID = 36, SiteNumber = "41",     SiteTypeID = 1, MaxLengthFeet = 65, IsActive = true },
+                new Site { SiteID = 37, SiteNumber = "42",     SiteTypeID = 1, MaxLengthFeet = 65, IsActive = true },
+                new Site { SiteID = 38, SiteNumber = "43",     SiteTypeID = 1, MaxLengthFeet = 65, IsActive = true },
+                new Site { SiteID = 39, SiteNumber = "44",     SiteTypeID = 1, MaxLengthFeet = 65, IsActive = true },
+                new Site { SiteID = 40, SiteNumber = "45",     SiteTypeID = 1, MaxLengthFeet = 65, IsActive = true },
+                new Site { SiteID = 41, SiteNumber = "1",      SiteTypeID = 1, MaxLengthFeet = 55, Notes = "Exception - 55 feet", IsActive = true },
+                new Site { SiteID = 42, SiteNumber = "19",     SiteTypeID = 1, MaxLengthFeet = 55, Notes = "Exception - 55 feet", IsActive = true },
+                new Site { SiteID = 43, SiteNumber = "21",     SiteTypeID = 1, MaxLengthFeet = 55, Notes = "Exception - 55 feet", IsActive = true },
+                new Site { SiteID = 44, SiteNumber = "11B",    SiteTypeID = 2, MaxLengthFeet = 30, Notes = "Walk-in trailer with linens", IsActive = true },
+                new Site { SiteID = 45, SiteNumber = "12B",    SiteTypeID = 2, MaxLengthFeet = 30, Notes = "Walk-in trailer with linens", IsActive = true },
+                new Site { SiteID = 46, SiteNumber = "A",      SiteTypeID = 3, MaxLengthFeet = 65, Notes = "Dry storage site", IsActive = true },
+                new Site { SiteID = 47, SiteNumber = "B",      SiteTypeID = 3, MaxLengthFeet = 65, Notes = "Dry storage site", IsActive = true },
+                new Site { SiteID = 48, SiteNumber = "C",      SiteTypeID = 3, MaxLengthFeet = 65, Notes = "Dry storage site", IsActive = true },
+                new Site { SiteID = 49, SiteNumber = "D",      SiteTypeID = 3, MaxLengthFeet = 65, Notes = "Dry storage site", IsActive = true },
+                new Site { SiteID = 50, SiteNumber = "TENT-1", SiteTypeID = 4, MaxLengthFeet = 0,  Notes = "Tent site near Dog Park", IsActive = true }
+            );
 
             // ============================================================================
-            // SEED DATA - Site Photos (1-2 per site)
+            // SEED DATA - Site Photos
             // ============================================================================
 
-            modelBuilder
-                .Entity<SitePhoto>()
-                .HasData(
-                    new SitePhoto { PhotoID = 1, SiteID = 1, PhotoURL = "https://i0.wp.com/pointofrocksrvcampground.com/wp-content/uploads/2019/05/IMG_0694.jpg?w=4032&ssl=1",  Caption = "Site 2 - 40ft Trailer",      DisplayOrder = 1, DateUploaded = new DateTime(2026, 1, 1) },
-                    new SitePhoto { PhotoID = 2, SiteID = 2, PhotoURL = "https://i0.wp.com/pointofrocksrvcampground.com/wp-content/uploads/2019/05/IMG_0954.jpg?w=4032&ssl=1",  Caption = "Site 17 - 45ft Trailer",     DisplayOrder = 1, DateUploaded = new DateTime(2026, 1, 1) },
-                    new SitePhoto { PhotoID = 9, SiteID = 2, PhotoURL = "https://i0.wp.com/pointofrocksrvcampground.com/wp-content/uploads/2019/05/IMG_0512.jpg?w=4032&ssl=1",  Caption = "Site 17 - Hookup View",      DisplayOrder = 2, DateUploaded = new DateTime(2026, 1, 1) },
-                    new SitePhoto { PhotoID = 3, SiteID = 3, PhotoURL = "https://i0.wp.com/pointofrocksrvcampground.com/wp-content/uploads/2019/06/IMG_1226.jpg?w=4032&ssl=1",  Caption = "Site 32 - 65ft Trailer",     DisplayOrder = 1, DateUploaded = new DateTime(2026, 1, 1) },
-                    new SitePhoto { PhotoID = 4, SiteID = 4, PhotoURL = "https://i0.wp.com/pointofrocksrvcampground.com/wp-content/uploads/2019/06/IMG_1309.jpg?w=4032&ssl=1",  Caption = "Site 11B - Walk-in Trailer", DisplayOrder = 1, DateUploaded = new DateTime(2026, 1, 1) },
-                    new SitePhoto { PhotoID = 5, SiteID = 5, PhotoURL = "https://i0.wp.com/pointofrocksrvcampground.com/wp-content/uploads/2019/05/IMG_0439.jpg?w=4032&ssl=1",  Caption = "Site 12B - Walk-in Trailer", DisplayOrder = 1, DateUploaded = new DateTime(2026, 1, 1) },
-                    new SitePhoto { PhotoID = 6, SiteID = 6, PhotoURL = "https://i0.wp.com/pointofrocksrvcampground.com/wp-content/uploads/2019/05/IMG_0603.jpg?w=4032&ssl=1",  Caption = "Dry Storage A",              DisplayOrder = 1, DateUploaded = new DateTime(2026, 1, 1) },
-                    new SitePhoto { PhotoID = 7, SiteID = 7, PhotoURL = "https://i0.wp.com/pointofrocksrvcampground.com/wp-content/uploads/2019/05/IMG_0444.jpg?w=4032&ssl=1",  Caption = "Dry Storage B",              DisplayOrder = 1, DateUploaded = new DateTime(2026, 1, 1) },
-                    new SitePhoto { PhotoID = 8, SiteID = 8, PhotoURL = "https://i0.wp.com/pointofrocksrvcampground.com/wp-content/uploads/2019/05/IMG_0515.jpg?w=4032&ssl=1",  Caption = "Tent Site - Near Dog Park",  DisplayOrder = 1, DateUploaded = new DateTime(2026, 1, 1) }
-                );
+            modelBuilder.Entity<SitePhoto>().HasData(
+                new SitePhoto { PhotoID = 1,  SiteID = 1,  PhotoURL = "https://i0.wp.com/pointofrocksrvcampground.com/wp-content/uploads/2019/05/IMG_0694.jpg?w=4032&ssl=1",            Caption = "Site 2 - Overview",          DisplayOrder = 1, DateUploaded = new DateTime(2025, 1, 1) },
+                new SitePhoto { PhotoID = 2,  SiteID = 1,  PhotoURL = "https://i0.wp.com/pointofrocksrvcampground.com/wp-content/uploads/2019/09/IMG_1864.jpg?w=4032&ssl=1",            Caption = "Site 2 - Hookup View",       DisplayOrder = 2, DateUploaded = new DateTime(2025, 1, 1) },
+                new SitePhoto { PhotoID = 3,  SiteID = 2,  PhotoURL = "https://i0.wp.com/pointofrocksrvcampground.com/wp-content/uploads/2019/09/IMG_1843.jpg?w=4032&ssl=1",            Caption = "Site 3",                     DisplayOrder = 1, DateUploaded = new DateTime(2025, 1, 1) },
+                new SitePhoto { PhotoID = 4,  SiteID = 3,  PhotoURL = "https://i0.wp.com/pointofrocksrvcampground.com/wp-content/uploads/2019/09/IMG_1844.jpg?w=4032&ssl=1",            Caption = "Site 4",                     DisplayOrder = 1, DateUploaded = new DateTime(2025, 1, 1) },
+                new SitePhoto { PhotoID = 5,  SiteID = 4,  PhotoURL = "https://i0.wp.com/pointofrocksrvcampground.com/wp-content/uploads/2019/10/IMG_2113.jpg?w=4032&ssl=1",            Caption = "Site 5",                     DisplayOrder = 1, DateUploaded = new DateTime(2025, 1, 1) },
+                new SitePhoto { PhotoID = 6,  SiteID = 5,  PhotoURL = "https://i0.wp.com/pointofrocksrvcampground.com/wp-content/uploads/2019/05/IMG_0401.jpg?w=4032&ssl=1",            Caption = "Site 6",                     DisplayOrder = 1, DateUploaded = new DateTime(2025, 1, 1) },
+                new SitePhoto { PhotoID = 7,  SiteID = 6,  PhotoURL = "https://i0.wp.com/pointofrocksrvcampground.com/wp-content/uploads/2019/05/IMG_0710.jpg?w=4032&ssl=1",            Caption = "Site 7",                     DisplayOrder = 1, DateUploaded = new DateTime(2025, 1, 1) },
+                new SitePhoto { PhotoID = 8,  SiteID = 7,  PhotoURL = "https://i0.wp.com/pointofrocksrvcampground.com/wp-content/uploads/2019/09/IMG_1855-1.jpg?w=4032&ssl=1",          Caption = "Site 8",                     DisplayOrder = 1, DateUploaded = new DateTime(2025, 1, 1) },
+                new SitePhoto { PhotoID = 9,  SiteID = 8,  PhotoURL = "https://i0.wp.com/pointofrocksrvcampground.com/wp-content/uploads/2019/06/IMG_1345.jpg?w=4032&ssl=1",            Caption = "Site 9",                     DisplayOrder = 1, DateUploaded = new DateTime(2025, 1, 1) },
+                new SitePhoto { PhotoID = 10, SiteID = 9,  PhotoURL = "https://i0.wp.com/pointofrocksrvcampground.com/wp-content/uploads/2019/05/IMG_1054.jpg?w=4032&ssl=1",            Caption = "Site 10",                    DisplayOrder = 1, DateUploaded = new DateTime(2025, 1, 1) },
+                new SitePhoto { PhotoID = 11, SiteID = 10, PhotoURL = "https://i0.wp.com/pointofrocksrvcampground.com/wp-content/uploads/2019/05/IMG_1039.jpg?w=4032&ssl=1",            Caption = "Site 11",                    DisplayOrder = 1, DateUploaded = new DateTime(2025, 1, 1) },
+                new SitePhoto { PhotoID = 12, SiteID = 11, PhotoURL = "https://i0.wp.com/pointofrocksrvcampground.com/wp-content/uploads/2019/09/IMG_1860.jpg?w=4032&ssl=1",            Caption = "Site 12",                    DisplayOrder = 1, DateUploaded = new DateTime(2025, 1, 1) },
+                new SitePhoto { PhotoID = 13, SiteID = 12, PhotoURL = "https://i0.wp.com/pointofrocksrvcampground.com/wp-content/uploads/2019/05/IMG_1141.jpg?w=4032&ssl=1",            Caption = "Site 13",                    DisplayOrder = 1, DateUploaded = new DateTime(2025, 1, 1) },
+                new SitePhoto { PhotoID = 14, SiteID = 13, PhotoURL = "https://i0.wp.com/pointofrocksrvcampground.com/wp-content/uploads/2019/05/IMG_0419.jpg?w=4032&ssl=1",            Caption = "Site 14",                    DisplayOrder = 1, DateUploaded = new DateTime(2025, 1, 1) },
+                new SitePhoto { PhotoID = 15, SiteID = 14, PhotoURL = "https://i0.wp.com/pointofrocksrvcampground.com/wp-content/uploads/2019/05/IMG_0954.jpg?w=4032&ssl=1",            Caption = "Site 17",                    DisplayOrder = 1, DateUploaded = new DateTime(2025, 1, 1) },
+                new SitePhoto { PhotoID = 16, SiteID = 15, PhotoURL = "https://i0.wp.com/pointofrocksrvcampground.com/wp-content/uploads/2019/05/IMG_0512.jpg?w=4032&ssl=1",            Caption = "Site 18",                    DisplayOrder = 1, DateUploaded = new DateTime(2025, 1, 1) },
+                new SitePhoto { PhotoID = 17, SiteID = 16, PhotoURL = "https://i0.wp.com/pointofrocksrvcampground.com/wp-content/uploads/2019/05/IMG_0596.jpg?w=4032&ssl=1",            Caption = "Site 20",                    DisplayOrder = 1, DateUploaded = new DateTime(2025, 1, 1) },
+                new SitePhoto { PhotoID = 18, SiteID = 17, PhotoURL = "https://i0.wp.com/pointofrocksrvcampground.com/wp-content/uploads/2019/05/IMG_0659.jpg?w=4032&ssl=1",            Caption = "Site 22",                    DisplayOrder = 1, DateUploaded = new DateTime(2025, 1, 1) },
+                new SitePhoto { PhotoID = 19, SiteID = 18, PhotoURL = "https://i0.wp.com/pointofrocksrvcampground.com/wp-content/uploads/2019/05/IMG_0408.jpg?w=4032&ssl=1",            Caption = "Site 23",                    DisplayOrder = 1, DateUploaded = new DateTime(2025, 1, 1) },
+                new SitePhoto { PhotoID = 20, SiteID = 19, PhotoURL = "https://i0.wp.com/pointofrocksrvcampground.com/wp-content/uploads/2019/06/IMG_1321.jpg?w=4032&ssl=1",            Caption = "Site 24",                    DisplayOrder = 1, DateUploaded = new DateTime(2025, 1, 1) },
+                new SitePhoto { PhotoID = 21, SiteID = 20, PhotoURL = "https://i0.wp.com/pointofrocksrvcampground.com/wp-content/uploads/2019/05/IMG_0409.jpg?w=4032&ssl=1",            Caption = "Site 25",                    DisplayOrder = 1, DateUploaded = new DateTime(2025, 1, 1) },
+                new SitePhoto { PhotoID = 22, SiteID = 21, PhotoURL = "https://i0.wp.com/pointofrocksrvcampground.com/wp-content/uploads/2019/05/IMG_0403.jpg?w=4032&ssl=1",            Caption = "Site 26",                    DisplayOrder = 1, DateUploaded = new DateTime(2025, 1, 1) },
+                new SitePhoto { PhotoID = 23, SiteID = 22, PhotoURL = "https://i0.wp.com/pointofrocksrvcampground.com/wp-content/uploads/2019/06/IMG_1223-1.jpg?w=4032&ssl=1",          Caption = "Site 27",                    DisplayOrder = 1, DateUploaded = new DateTime(2025, 1, 1) },
+                new SitePhoto { PhotoID = 24, SiteID = 23, PhotoURL = "https://i0.wp.com/pointofrocksrvcampground.com/wp-content/uploads/2019/05/IMG_0407.jpg?w=4032&ssl=1",            Caption = "Site 28",                    DisplayOrder = 1, DateUploaded = new DateTime(2025, 1, 1) },
+                new SitePhoto { PhotoID = 25, SiteID = 24, PhotoURL = "https://i0.wp.com/pointofrocksrvcampground.com/wp-content/uploads/2019/05/IMG_1164.jpg?w=4032&ssl=1",            Caption = "Site 29",                    DisplayOrder = 1, DateUploaded = new DateTime(2025, 1, 1) },
+                new SitePhoto { PhotoID = 26, SiteID = 25, PhotoURL = "https://i0.wp.com/pointofrocksrvcampground.com/wp-content/uploads/2019/04/IMG_20190422_100028.jpg?w=4032&ssl=1", Caption = "Site 30",                    DisplayOrder = 1, DateUploaded = new DateTime(2025, 1, 1) },
+                new SitePhoto { PhotoID = 27, SiteID = 26, PhotoURL = "https://i0.wp.com/pointofrocksrvcampground.com/wp-content/uploads/2019/05/IMG_1065.jpg?w=4032&ssl=1",            Caption = "Site 31",                    DisplayOrder = 1, DateUploaded = new DateTime(2025, 1, 1) },
+                new SitePhoto { PhotoID = 28, SiteID = 27, PhotoURL = "https://i0.wp.com/pointofrocksrvcampground.com/wp-content/uploads/2019/06/IMG_1226.jpg?w=4032&ssl=1",            Caption = "Site 32",                    DisplayOrder = 1, DateUploaded = new DateTime(2025, 1, 1) },
+                new SitePhoto { PhotoID = 29, SiteID = 28, PhotoURL = "https://i0.wp.com/pointofrocksrvcampground.com/wp-content/uploads/2019/05/IMG_0982.jpg?w=4032&ssl=1",            Caption = "Site 33",                    DisplayOrder = 1, DateUploaded = new DateTime(2025, 1, 1) },
+                new SitePhoto { PhotoID = 30, SiteID = 29, PhotoURL = "https://i0.wp.com/pointofrocksrvcampground.com/wp-content/uploads/2019/05/IMG_0988.jpg?w=4032&ssl=1",            Caption = "Site 34",                    DisplayOrder = 1, DateUploaded = new DateTime(2025, 1, 1) },
+                new SitePhoto { PhotoID = 31, SiteID = 30, PhotoURL = "https://i0.wp.com/pointofrocksrvcampground.com/wp-content/uploads/2019/05/IMG_1173.jpg?w=4032&ssl=1",            Caption = "Site 35",                    DisplayOrder = 1, DateUploaded = new DateTime(2025, 1, 1) },
+                new SitePhoto { PhotoID = 32, SiteID = 31, PhotoURL = "https://i0.wp.com/pointofrocksrvcampground.com/wp-content/uploads/2019/06/IMG_1269.jpg?w=4032&ssl=1",            Caption = "Site 36",                    DisplayOrder = 1, DateUploaded = new DateTime(2025, 1, 1) },
+                new SitePhoto { PhotoID = 33, SiteID = 32, PhotoURL = "https://i0.wp.com/pointofrocksrvcampground.com/wp-content/uploads/2019/05/IMG_0640.jpg?w=4032&ssl=1",            Caption = "Site 37",                    DisplayOrder = 1, DateUploaded = new DateTime(2025, 1, 1) },
+                new SitePhoto { PhotoID = 34, SiteID = 33, PhotoURL = "https://i0.wp.com/pointofrocksrvcampground.com/wp-content/uploads/2019/05/IMG_1199.jpg?w=4032&ssl=1",            Caption = "Site 38",                    DisplayOrder = 1, DateUploaded = new DateTime(2025, 1, 1) },
+                new SitePhoto { PhotoID = 35, SiteID = 34, PhotoURL = "https://i0.wp.com/pointofrocksrvcampground.com/wp-content/uploads/2019/06/IMG_1377.jpg?w=4032&ssl=1",            Caption = "Site 39",                    DisplayOrder = 1, DateUploaded = new DateTime(2025, 1, 1) },
+                new SitePhoto { PhotoID = 36, SiteID = 35, PhotoURL = "https://i0.wp.com/pointofrocksrvcampground.com/wp-content/uploads/2019/05/IMG_0617.jpg?w=4032&ssl=1",            Caption = "Site 40",                    DisplayOrder = 1, DateUploaded = new DateTime(2025, 1, 1) },
+                new SitePhoto { PhotoID = 37, SiteID = 36, PhotoURL = "https://i0.wp.com/pointofrocksrvcampground.com/wp-content/uploads/2019/05/IMG_1004.jpg?w=4032&ssl=1",            Caption = "Site 41",                    DisplayOrder = 1, DateUploaded = new DateTime(2025, 1, 1) },
+                new SitePhoto { PhotoID = 38, SiteID = 37, PhotoURL = "https://i0.wp.com/pointofrocksrvcampground.com/wp-content/uploads/2019/06/IMG_1315.jpg?w=4032&ssl=1",            Caption = "Site 42",                    DisplayOrder = 1, DateUploaded = new DateTime(2025, 1, 1) },
+                new SitePhoto { PhotoID = 39, SiteID = 38, PhotoURL = "https://i0.wp.com/pointofrocksrvcampground.com/wp-content/uploads/2019/05/IMG_0390.jpg?w=4032&ssl=1",            Caption = "Site 43",                    DisplayOrder = 1, DateUploaded = new DateTime(2025, 1, 1) },
+                new SitePhoto { PhotoID = 40, SiteID = 39, PhotoURL = "https://i0.wp.com/pointofrocksrvcampground.com/wp-content/uploads/2019/05/IMG_0612.jpg?w=4032&ssl=1",            Caption = "Site 44",                    DisplayOrder = 1, DateUploaded = new DateTime(2025, 1, 1) },
+                new SitePhoto { PhotoID = 41, SiteID = 40, PhotoURL = "https://i0.wp.com/pointofrocksrvcampground.com/wp-content/uploads/2019/05/IMG_20190430_100259.jpg?w=4032&ssl=1", Caption = "Site 45",                    DisplayOrder = 1, DateUploaded = new DateTime(2025, 1, 1) },
+                new SitePhoto { PhotoID = 42, SiteID = 41, PhotoURL = "https://i0.wp.com/pointofrocksrvcampground.com/wp-content/uploads/2019/06/IMG_1304.jpg?w=4032&ssl=1",            Caption = "Site 1 (55ft exception)",    DisplayOrder = 1, DateUploaded = new DateTime(2025, 1, 1) },
+                new SitePhoto { PhotoID = 43, SiteID = 42, PhotoURL = "https://i0.wp.com/pointofrocksrvcampground.com/wp-content/uploads/2019/05/IMG_20190430_100506.jpg?w=4032&ssl=1", Caption = "Site 19 (55ft exception)",   DisplayOrder = 1, DateUploaded = new DateTime(2025, 1, 1) },
+                new SitePhoto { PhotoID = 44, SiteID = 43, PhotoURL = "https://i0.wp.com/pointofrocksrvcampground.com/wp-content/uploads/2019/05/IMG_1019.jpg?w=4032&ssl=1",            Caption = "Site 21 (55ft exception)",   DisplayOrder = 1, DateUploaded = new DateTime(2025, 1, 1) },
+                new SitePhoto { PhotoID = 45, SiteID = 44, PhotoURL = "https://i0.wp.com/pointofrocksrvcampground.com/wp-content/uploads/2019/06/IMG_1309.jpg?w=4032&ssl=1",            Caption = "Site 11B - Walk-in Trailer", DisplayOrder = 1, DateUploaded = new DateTime(2025, 1, 1) },
+                new SitePhoto { PhotoID = 46, SiteID = 45, PhotoURL = "https://i0.wp.com/pointofrocksrvcampground.com/wp-content/uploads/2019/05/IMG_0439.jpg?w=4032&ssl=1",            Caption = "Site 12B - Walk-in Trailer", DisplayOrder = 1, DateUploaded = new DateTime(2025, 1, 1) },
+                new SitePhoto { PhotoID = 47, SiteID = 46, PhotoURL = "https://i0.wp.com/pointofrocksrvcampground.com/wp-content/uploads/2019/05/IMG_0603.jpg?w=4032&ssl=1",            Caption = "Dry Storage A",              DisplayOrder = 1, DateUploaded = new DateTime(2025, 1, 1) },
+                new SitePhoto { PhotoID = 48, SiteID = 47, PhotoURL = "https://i0.wp.com/pointofrocksrvcampground.com/wp-content/uploads/2019/05/IMG_0444.jpg?w=4032&ssl=1",            Caption = "Dry Storage B",              DisplayOrder = 1, DateUploaded = new DateTime(2025, 1, 1) },
+                new SitePhoto { PhotoID = 49, SiteID = 48, PhotoURL = "https://i0.wp.com/pointofrocksrvcampground.com/wp-content/uploads/2019/05/IMG_0976.jpg?w=4032&ssl=1",            Caption = "Dry Storage C",              DisplayOrder = 1, DateUploaded = new DateTime(2025, 1, 1) },
+                new SitePhoto { PhotoID = 50, SiteID = 49, PhotoURL = "https://i0.wp.com/pointofrocksrvcampground.com/wp-content/uploads/2019/05/IMG_0413.jpg?w=4032&ssl=1",            Caption = "Dry Storage D",              DisplayOrder = 1, DateUploaded = new DateTime(2025, 1, 1) },
+                new SitePhoto { PhotoID = 51, SiteID = 50, PhotoURL = "https://i0.wp.com/pointofrocksrvcampground.com/wp-content/uploads/2019/05/IMG_0515.jpg?w=4032&ssl=1",            Caption = "Tent Site - Near Dog Park",  DisplayOrder = 1, DateUploaded = new DateTime(2025, 1, 1) }
+            );
 
             // ============================================================================
             // SEED DATA - Reservations
@@ -398,7 +474,7 @@ namespace SiteReservationSystem.Web.Data
                     {
                         ReservationID = 2,
                         CustomerID = 1,
-                        SiteID = 2,
+                        SiteID = 14,
                         ReservationStatusID = 4,
                         StartDate = new DateTime(2026, 3, 5),
                         EndDate = new DateTime(2026, 3, 9),
@@ -419,7 +495,7 @@ namespace SiteReservationSystem.Web.Data
                     {
                         ReservationID = 3,
                         CustomerID = 1,
-                        SiteID = 3,
+                        SiteID = 27,
                         ReservationStatusID = 1,
                         StartDate = new DateTime(2026, 4, 25),
                         EndDate = new DateTime(2026, 5, 2),
@@ -442,7 +518,7 @@ namespace SiteReservationSystem.Web.Data
                     {
                         ReservationID = 4,
                         CustomerID = 1,
-                        SiteID = 4,
+                        SiteID = 44,
                         ReservationStatusID = 3,
                         StartDate = new DateTime(2026, 2, 20),
                         EndDate = new DateTime(2026, 2, 23),
@@ -462,7 +538,7 @@ namespace SiteReservationSystem.Web.Data
                     {
                         ReservationID = 5,
                         CustomerID = 1,
-                        SiteID = 5,
+                        SiteID = 45,
                         ReservationStatusID = 2,
                         StartDate = new DateTime(2026, 4, 18),
                         EndDate = new DateTime(2026, 4, 23),
@@ -505,7 +581,7 @@ namespace SiteReservationSystem.Web.Data
                     {
                         ReservationID = 7,
                         CustomerID = 1,
-                        SiteID = 6,
+                        SiteID = 46,
                         ReservationStatusID = 3,
                         StartDate = new DateTime(2026, 2, 1),
                         EndDate = new DateTime(2026, 2, 11),
@@ -525,7 +601,7 @@ namespace SiteReservationSystem.Web.Data
                     {
                         ReservationID = 8,
                         CustomerID = 1,
-                        SiteID = 7,
+                        SiteID = 47,
                         ReservationStatusID = 4,
                         StartDate = new DateTime(2026, 3, 15),
                         EndDate = new DateTime(2026, 3, 21),
@@ -546,7 +622,7 @@ namespace SiteReservationSystem.Web.Data
                     {
                         ReservationID = 9,
                         CustomerID = 1,
-                        SiteID = 6,
+                        SiteID = 46,
                         ReservationStatusID = 1,
                         StartDate = new DateTime(2026, 5, 1),
                         EndDate = new DateTime(2026, 5, 31),
@@ -570,7 +646,7 @@ namespace SiteReservationSystem.Web.Data
                     {
                         ReservationID = 10,
                         CustomerID = 1,
-                        SiteID = 8,
+                        SiteID = 50,
                         ReservationStatusID = 3,
                         StartDate = new DateTime(2026, 2, 28),
                         EndDate = new DateTime(2026, 3, 2),
@@ -590,7 +666,7 @@ namespace SiteReservationSystem.Web.Data
                     {
                         ReservationID = 11,
                         CustomerID = 1,
-                        SiteID = 8,
+                        SiteID = 50,
                         ReservationStatusID = 2,
                         StartDate = new DateTime(2026, 4, 17),
                         EndDate = new DateTime(2026, 4, 20),
@@ -610,7 +686,7 @@ namespace SiteReservationSystem.Web.Data
                     {
                         ReservationID = 12,
                         CustomerID = 1,
-                        SiteID = 8,
+                        SiteID = 50,
                         ReservationStatusID = 1,
                         StartDate = new DateTime(2026, 5, 5),
                         EndDate = new DateTime(2026, 5, 9),
