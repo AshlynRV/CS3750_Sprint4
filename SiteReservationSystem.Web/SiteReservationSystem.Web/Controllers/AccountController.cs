@@ -165,16 +165,25 @@ namespace SiteReservationSystem.Web.Controllers
                 _context.Add(customer);
                 await _context.SaveChangesAsync();
 
-                var client = new PostmarkClient(_configuration["Postmark:ServerToken"]);
-                var message = new PostmarkMessage()
+                try
                 {
-                    To = user.Email,
-                    From = "kelsiebridge@mail.weber.edu",
-                    Subject = "RV Park Registration",
-                    TextBody = $"Hello {customer.FirstName},\n\nYour account has been created. Thank you."
-                };
-                await client.SendMessageAsync(message);
-
+                    var client = new PostmarkClient(_configuration["Postmark:ServerToken"]);
+                    var message = new PostmarkMessage()
+                    {
+                        To = user.Email,
+                        From = "kelsiebridge@mail.weber.edu",
+                        Subject = "RV Park Registration",
+                        TextBody = $"Hello {customer.FirstName},\n\nYour account has been created. Thank you."
+                    };
+                    await client.SendMessageAsync(message);
+                }
+                catch (Exception ex)
+                {
+                    // TODO: remove this if postmark account gets verified
+                    // Log email send failure to emails that dont end in @mail.weber.edu
+                    Console.WriteLine($"Email send failed: {ex.Message}");
+                }
+                
                 TempData["Message"] = "Account created. Check your email for confirmation.";
                 return RedirectToAction("Login");
 
