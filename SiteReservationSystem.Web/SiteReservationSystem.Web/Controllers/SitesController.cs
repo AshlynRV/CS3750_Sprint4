@@ -293,5 +293,48 @@ namespace SiteReservationSystem.Web.Controllers
             if (photo == null) return NotFound();
             return View(photo);
         }
+
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        [Authorize(AccessPermissions.ManageSites)]
+        public async Task<IActionResult> EditPhoto(int id, SitePhoto photo)
+        {
+            if (id != photo.PhotoID) return NotFound();
+            var existing = await _context.SitePhotos
+                .Include(p => p.Site)
+                .FirstOrDefaultAsync(p => p.PhotoID == id);
+            if (existing == null) return NotFound();
+            existing.PhotoURL = photo.PhotoURL;
+            existing.Caption = photo.Caption;
+            await _context.SaveChangesAsync();
+            return RedirectToAction("Details", new { id = existing.SiteID });
+        }
+
+        [Authorize(AccessPermissions.ManageSites)]
+        public async Task<IActionResult> DeletePhoto(int? id)
+        {
+            if (id == null) return NotFound();
+            var photo = await _context.SitePhotos
+                .Include(p => p.Site)
+                .FirstOrDefaultAsync(p => p.PhotoID == id);
+            if (photo == null) return NotFound();
+            return View(photo);
+        }
+
+        [HttpPost, ActionName("DeletePhoto")]
+        [ValidateAntiForgeryToken]
+        [Authorize(AccessPermissions.ManageSites)]
+        public async Task<IActionResult> DeletePhotoConfirmed(int id)
+        {
+            var photo = await _context.SitePhotos.FindAsync(id);
+            var siteID = 0;
+            if (photo != null) siteID = photo.SiteID;
+            if (photo != null)
+            {
+                _context.SitePhotos.Remove(photo);
+                await _context.SaveChangesAsync();
+            }
+            return RedirectToAction("Details", new { id = siteID });
+        }
     }
 }
