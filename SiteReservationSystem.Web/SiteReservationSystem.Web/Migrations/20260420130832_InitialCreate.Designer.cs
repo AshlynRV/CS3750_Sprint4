@@ -12,8 +12,8 @@ using SiteReservationSystem.Web.Data;
 namespace SiteReservationSystem.Web.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    [Migration("20260420124145_DemoSeedFinal")]
-    partial class DemoSeedFinal
+    [Migration("20260420130832_InitialCreate")]
+    partial class InitialCreate
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)

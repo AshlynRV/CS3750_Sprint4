@@ -63,6 +63,8 @@ namespace SiteReservationSystem.Web.Controllers
 
                 if (employee == null || employee.IsLockedOut)
                 {
+                    // Clear session before showing error
+                    HttpContext.Session.Clear();
                     ViewBag.Error = "Your account has been locked. Contact an administrator.";
                     return View();
                 }

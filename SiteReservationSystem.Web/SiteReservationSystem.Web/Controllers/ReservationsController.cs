@@ -83,14 +83,12 @@ namespace SiteReservationSystem.Web.Controllers
             if (reservation == null)
                 return NotFound();
 
-            // Get current price per night based on reservation start date
+            // Calculate original price per night from BaseAmount
             // This is used in the view to show "num nights x $price"
-            var pricing = reservation.Site.SiteType.SiteTypePricings
-                .Where(p => p.StartDate <= reservation.StartDate && (p.EndDate == null || p.EndDate >= reservation.StartDate))
-                .OrderByDescending(p => p.StartDate)
-                .FirstOrDefault();
+            var numberOfNights = (reservation.EndDate - reservation.StartDate).Days;
+            var originalPricePerNight = numberOfNights > 0 ? reservation.BaseAmount / numberOfNights : 0;
 
-            ViewBag.CurrentPricePerNight = pricing?.BasePrice ?? 0;
+            ViewBag.CurrentPricePerNight = originalPricePerNight;
 
             return View(reservation);
         }
