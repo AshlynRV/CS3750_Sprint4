@@ -1,4 +1,4 @@
-﻿using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using SiteReservationSystem.Web.Data;
@@ -14,7 +14,7 @@ namespace SiteReservationSystem.Web.Controllers
         private readonly ApplicationDbContext _context;
 
         // Inject DbContext into controller
-        public FeesController(ApplicationDbContext context)
+        public FeesController(ApplicationDbContext context) : base(context)
         {
             _context = context;
         }

@@ -1,8 +1,12 @@
-﻿@{
+@{
     ViewData["Title"] = "Site Details";
 }
 
 @model SiteReservationSystem.Web.Models.Site
+
+@{
+    var userRole = Context.Session.GetString("UserRole");
+}
 
 <h2>Site @Html.DisplayFor(site => site.SiteNumber)</h2>
 
@@ -47,20 +51,28 @@
                     </td>
                     <td>@photo.Caption</td>
                     <td>
+                        @if (userRole != "Customer")
+                        {
                         <a asp-action="EditPhoto" asp-route-id="@photo.PhotoID" class="btn btn-sm btn-warning">Edit</a>
                         <a asp-action="DeletePhoto" asp-route-id="@photo.PhotoID" class="btn btn-sm btn-danger">Delete</a>
+                        }
                     </td>
                 </tr>
             }
         </tbody>
     </table>
 
+    @if (userRole != "Customer")
+{
     <h3 style="margin-top: 10px;">Add Photo</h3>
 
     <p>
         <a asp-action="CreatePhoto" asp-route-siteID="@Model.SiteID" class="btn btn-primary">Add Photo</a>
     </p>
+}
 
+    @if (userRole == "Customer")
+    {
     <p>
         <a asp-action="Reserve"
                asp-route-id="@Model.SiteID"
@@ -68,9 +80,12 @@
             Reserve This Site
         </a>
     </p>
+    }
 
 </div>
 
+@if (userRole != "Customer")
+{
 <div>
     <h3>Reservations</h3>
 
@@ -132,6 +147,7 @@
         <p style="padding-top: 10px;">No reservations</p>
     }
 </div>
+}
 
 @section Scripts {
     @{

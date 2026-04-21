@@ -12,7 +12,7 @@ namespace SiteReservationSystem.Web.Controllers
     {
         private readonly ApplicationDbContext _context;
 
-        public SiteTypesController(ApplicationDbContext context)
+        public SiteTypesController(ApplicationDbContext context) : base(context)
         {
             _context = context;
         }

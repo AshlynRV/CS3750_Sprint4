@@ -1,4 +1,4 @@
-﻿@*
+@*
     For more information on enabling MVC for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
 *@
 @model IEnumerable<SiteReservationSystem.Web.Models.Site>
@@ -6,43 +6,51 @@
 
 <h2>Create Reservation</h2>
 
-<form asp-action="Search" method="get" >
+<form asp-action="Search" method="get" id="searchForm">
     <div class="col-md-3 gap-4 mt-3">
         <label class="form-label">Start Date</label>
-        <input type="date" name="startDate" class="form-control" required value="@Context.Request.Query["startDate"]"/>
+        <input type="date" name="startDate" id="startDate" class="form-control" required value="@Context.Request.Query["startDate"]" />
     </div>
     <div class="col-md-3 gap-2 mt-2">
         <label class="form-label">End Date</label>
-        <input type="date" name="endDate" class="form-control" required value="@Context.Request.Query["endDate"]" />
+        <input type="date" name="endDate" id="endDate" class="form-control" required value="@Context.Request.Query["endDate"]" />
     </div>
     <select id="filterSite" name="filterSite" class="form-select col-md-3 gap-4 mt-3" onchange="toggleLengthInput()">
-        <option>Selct Site Type</option>
+        <option>Select Site Type</option>
         <option value="1" selected="@(Context.Request.Query["filterSite"] == "1")">Bring own Unit</option>
         <option value="2" selected="@(Context.Request.Query["filterSite"] == "2")">On site Unit</option>
-        <option value="3" selected="@(Context.Request.Query["filterSite"] == "3")">Tent</option>
-        <option value="4" selected="@(Context.Request.Query["filterSite"] == "4")">Dry Storage</option>
+        <option value="3" selected="@(Context.Request.Query["filterSite"] == "3")">Dry Storage</option>
+        <option value="4" selected="@(Context.Request.Query["filterSite"] == "4")">Tent</option>
     </select>
     <!-- This will be hidden unless user selects bring own unit-->
     <div class="col-md-3 gap-4 mt-3" id="lengthInputSection" style="display: none;">
         <label class="form-label">Trailer Length (ft)</label>
         <input id="TrailerLengthFeet" type="number" name="length" class="form-control" value="@Context.Request.Query["length"]" />
     </div>
-    <div class="col-md-3 align-self-end gap-4 mt-3">
+    <div class="col-md-3 align-self-end gap-4 mt-3 mb-4">
         <button type="submit" class="btn btn-primary">Find Available Sites</button>
     </div>
 </form>
 @if (Model != null)
 {
-    <table class="table">
+    <table class="table table-bordered">
+        <thead class="table-light">
+            <tr>
+                <th class="text-center">Site Number</th>
+                <th class="text-center">Photo</th>
+                <th class="text-center">Max Trailer Size (ft)</th>
+                <th class="text-center">Reserve</th>
+            </tr>
+        </thead>
         <tbody>
             @foreach (var site in Model)
             {
                 <tr>
-                    <td>@site.SiteNumber</td>
-                    <td>
+                    <td class="text-center">@site.SiteNumber</td>
+                    <td class="text-center">
                         @if (site.SitePhotos != null && site.SitePhotos.Any())
                         {
-                           <div class="d-flex flex-wrap gap-2">
+                           <div class="d-flex flex-wrap gap-2 justify-content-center">
                                 @foreach (var photo in site.SitePhotos)
                                 {
                                     <img src="@photo.PhotoURL" alt="Site Photo" style="width: 100px; height: auto;" class="img-thumbnail" />
@@ -55,12 +63,13 @@
                             <span>No Photo</span>
                         }
                     </td>
-                    <td style="padding: 10px">
+                    <td class="text-center">@site.MaxLengthFeet ft</td>
+                    <td class="text-center">
                         <a asp-action="Reserve" 
                             asp-route-siteId="@site.SiteID"
                             asp-route-startDate="@Context.Request.Query["startDate"]"
                             asp-route-endDate="@Context.Request.Query["endDate"]"
-                            asp-route-length="@Context.Request.Query["TrailerLengthFeet"]"
+                            asp-route-length="@Context.Request.Query["length"]"
                             class="btn btn-success">
                             Reserve Now
                         </a>
@@ -89,5 +98,61 @@
 
 
     // Run on page load to ensure correct state if the page refreshes
-    document.addEventListener("DOMContentLoaded", toggleLengthInput);
+    document.addEventListener("DOMContentLoaded", function() {
+        toggleLengthInput();
+        initDates();
+    });
+
+    function isPeakSeason(date) {
+        var month = date.getMonth();
+        return month >= 3 && month <= 9;
+    }
+
+    function getMaxStay(isPCS) {
+        var startInput = document.getElementById('startDate');
+        if (!startInput.value) return 14;
+        var startDate = new Date(startInput.value);
+        if (!isPeakSeason(startDate)) return 9999;
+        return 14;
+    }
+
+    function limitEndDate() {
+        var startInput = document.getElementById('startDate');
+        var endInput = document.getElementById('endDate');
+        var isPCS = @((Context.Session.GetInt32("IsPCSOrders") == 1).ToString().ToLower());
+        
+        var tomorrow = new Date();
+        tomorrow.setDate(tomorrow.getDate() + 1);
+        
+        if (!startInput.value) {
+            startInput.value = tomorrow.toISOString().split('T')[0];
+        }
+        
+        startInput.min = tomorrow.toISOString().split('T')[0];
+        
+        var startDate = new Date(startInput.value);
+        var minEnd = new Date(startDate);
+        minEnd.setDate(minEnd.getDate() + 1);
+        endInput.min = minEnd.toISOString().split('T')[0];
+        
+        var maxStay = getMaxStay(isPCS);
+        if (maxStay < 9999) {
+            var maxEnd = new Date(startDate);
+            maxEnd.setDate(maxEnd.getDate() + maxStay);
+            endInput.max = maxEnd.toISOString().split('T')[0];
+            
+            var currentEnd = new Date(endInput.value);
+            if (currentEnd > maxEnd) {
+                endInput.value = maxEnd.toISOString().split('T')[0];
+            }
+        } else {
+            endInput.removeAttribute('max');
+        }
+    }
+
+    function initDates() {
+        limitEndDate();
+    }
+
+    document.getElementById('startDate').addEventListener('change', limitEndDate);
 </script>

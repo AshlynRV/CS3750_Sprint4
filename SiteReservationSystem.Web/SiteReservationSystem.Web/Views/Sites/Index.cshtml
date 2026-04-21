@@ -1,14 +1,18 @@
-﻿@model List<SiteReservationSystem.Web.Models.Site>
+@model List<SiteReservationSystem.Web.Models.Site>
 
 @{
     ViewData["Title"] = "Sites";
+    var userRole = Context.Session.GetString("UserRole");
 }
 
 <h2>Sites</h2>
 
+@if (userRole != "Customer")
+{
 <p>
     <a asp-action="CreateSite" class="btn btn-primary">Add New Site</a>
 </p>
+}
 
 <h4>(Click each site name to view photo and reservation details)</h4>
 
@@ -20,8 +24,11 @@
             <th style="padding: 10px; text-align: left">Site Type</th>
             <th style="padding: 10px; text-align: left">Max Length (ft)</th>
             <th style="padding: 10px; text-align: left">Notes</th>
+            @if (userRole != "Customer")
+            {
             <th style="padding: 10px; text-align: left">Active</th>
             <th style="padding: 10px; text-align: left">Actions</th>
+            }
         </tr>
     </thead>
     <tbody>
@@ -44,11 +51,14 @@
                 <td style="padding: 10px">@site.SiteType.TypeName</td>
                 <td style="padding: 10px">@site.MaxLengthFeet</td>
                 <td style="padding: 10px">@site.Notes</td>
+                @if (userRole != "Customer")
+                {
                 <td style="padding: 10px">@(site.IsActive ? "Yes" : "No")</td>
                 <td>
                     <a asp-action="EditSite" asp-route-id="@site.SiteID" class="btn btn-sm btn-warning">Edit</a>
                     <a asp-action="DeleteSite" asp-route-id="@site.SiteID" class="btn btn-sm btn-danger">Delete</a>
                 </td>
+                }
         </tr>
         }
     </tbody>

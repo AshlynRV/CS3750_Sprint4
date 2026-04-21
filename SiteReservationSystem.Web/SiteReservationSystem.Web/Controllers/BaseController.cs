@@ -1,9 +1,20 @@
 using System.Diagnostics;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
+using SiteReservationSystem.Web.Data;
 using SiteReservationSystem.Web.Models;
 
 public class BaseController : Controller
 {
+    protected ApplicationDbContext? _context;
+
+    public BaseController(ApplicationDbContext context)
+    {
+        _context = context;
+    }
+
+    public BaseController() { }
+
     // Call this at the top of any action that requires login
     // Check if user is logged in by checking if HttpContext.Session.GetInt32("UserID") is not null, this was set in AccountController.Login
     protected bool IsLoggedIn()
@@ -68,5 +79,62 @@ public class BaseController : Controller
         if (!IsAdmin() && !HasPermission(permission))
             return RedirectToAction("AccessDenied", "Account");
         return null;
+    }
+
+    /// Updates reservation statuses for upcoming, in progress, completed, and cancelled reservations.
+    /// Called in AccountController.Login, HomeController.Index, HomeController.MyReservations,
+    /// SiteController.Deatils, PaymentsController.Index, and ReservationsController.Index
+    ///
+    /// Should be called once per day at 11:01 AM MST but this works for demonstration purposes
+    protected async Task UpdateReservationStatuses()
+    {
+        if (_context == null) return;
+
+        var now = DateTime.UtcNow;
+        var mstZone = TimeZoneInfo.FindSystemTimeZoneById("US Mountain Standard Time");
+        var todayMST = TimeZoneInfo.ConvertTimeFromUtc(now, mstZone).Date;
+        var cutoffTodayMST = todayMST.AddHours(11);
+        var cutoffTodayUTC = TimeZoneInfo.ConvertTimeToUtc(cutoffTodayMST, mstZone);
+
+        var inProgressStatus = await _context.ReservationStatuses.FirstOrDefaultAsync(s => s.StatusName == "In Progress");
+        var completedStatus = await _context.ReservationStatuses.FirstOrDefaultAsync(s => s.StatusName == "Completed");
+        var upcomingStatus = await _context.ReservationStatuses.FirstOrDefaultAsync(s => s.StatusName == "Upcoming");
+        var cancelledStatus = await _context.ReservationStatuses.FirstOrDefaultAsync(s => s.StatusName == "Cancelled");
+
+        if (inProgressStatus == null || completedStatus == null || upcomingStatus == null || cancelledStatus == null)
+            return;
+
+        var isPastCutoff = now >= cutoffTodayUTC;
+
+        var reservations = await _context.Reservations
+            .Where(r => r.ReservationStatusID == upcomingStatus.ReservationStatusID || r.ReservationStatusID == inProgressStatus.ReservationStatusID)
+            .ToListAsync();
+
+        foreach (var res in reservations)
+        {
+            var startDate = res.StartDate.Date;
+            var endDate = res.EndDate.Date;
+
+            if (startDate <= todayMST && todayMST <= endDate)
+            {
+                if (res.ReservationStatusID == upcomingStatus.ReservationStatusID)
+                {
+                    res.ReservationStatusID = inProgressStatus.ReservationStatusID;
+                }
+            }
+            else if (todayMST > endDate)
+            {
+                var endedToday = endDate == todayMST.AddDays(-1);
+                if (!endedToday || isPastCutoff)
+                {
+                    if (res.ReservationStatusID != cancelledStatus.ReservationStatusID)
+                    {
+                        res.ReservationStatusID = completedStatus.ReservationStatusID;
+                    }
+                }
+            }
+        }
+
+        await _context.SaveChangesAsync();
     }
 }

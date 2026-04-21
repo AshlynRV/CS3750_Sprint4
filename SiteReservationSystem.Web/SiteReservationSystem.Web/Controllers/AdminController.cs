@@ -1,4 +1,4 @@
-﻿using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using SiteReservationSystem.Web.Data;
 using SiteReservationSystem.Web.Models;
@@ -16,7 +16,7 @@ namespace SiteReservationSystem.Web.Controllers
     {
         private readonly ApplicationDbContext _context;
 
-        public AdminController(ApplicationDbContext context)
+        public AdminController(ApplicationDbContext context) : base(context)
         {
             _context = context;
         }

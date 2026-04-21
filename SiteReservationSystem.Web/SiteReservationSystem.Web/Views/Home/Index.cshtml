@@ -2,35 +2,49 @@
 
 @{
     ViewData["Title"] = "Home Page";
+    var userRole = Context.Session.GetString("UserRole");
+    var userId = Context.Session.GetInt32("UserID");
+    var isCustomer = userRole == "Customer" && userId.HasValue;
+    var isAdmin = userRole == "Admin" && userId.HasValue;
+    var perms = Context.Session.GetInt32("Permissions") ?? 0;
+    var canBrowseSites = isAdmin || (perms & 1) == 1; // ManageSites = 1, or admin
 }
 
 <div class="text-center">
     <h1 class="display-4">Welcome to the RV park!</h1>
 </div>
 
-<h3>Quick Links:</h3>
-<ul>
-    <li><a href="@Url.Action("CreateReservation", "Home")">Create Reservation</a></li>
-    <li><a href="@Url.Action("MyReservations", "Home")">Manage My Reservations</a></li>
-    <li><a href="@Url.Action("Index", "Sites")">Browse Sites</a></li>
-</ul>
+<div class="d-flex justify-content-center gap-2 mt-3 mb-4">
+    @if (isCustomer)
+    {
+        <a href="@Url.Action("CreateReservation", "Home")" class="btn btn-primary">Create Reservation</a>
+    }
+    @if (isCustomer || canBrowseSites)
+    {
+        <a href="@Url.Action("Index", "Sites")" class="btn btn-secondary">Browse Sites</a>
+    }
+    @if (isCustomer)
+    {
+        <a href="@Url.Action("MyReservations", "Home")" class="btn btn-dark">Manage My Reservations</a>
+        <a href="@Url.Action("Index", "Payments")" class="btn btn-success">Payments</a>
+    }
+</div>
 
 <h4>Currently available sites: </h4>
-<table class="table table-striped">
-    <thead>
+<table class="table table-striped table-hover">
+    <thead class="table-dark">
         <tr>
-            <th>Site Number</th>
-            <th>Maximum Trailer Size</th>
-            <th>Site Type</th>
-            <th>Status</th>
+            <th class="text-center align-middle">Photo</th>
+            <th class="text-center align-middle">Site Number</th>
+            <th class="text-center align-middle">Maximum Trailer Size</th>
+            <th class="text-center align-middle">Site Type</th>
+            <th class="text-center align-middle">Status</th>
         </tr>
     </thead>
     <tbody>
             @foreach (var site in Model)
             {
-                //Getting 
                 var reservation = site.Reservations.FirstOrDefault();
-                //Setting message for last column
                 var statusMessage = reservation?.ReservationStatusID switch
                 {
                     1 => "Reserved at future time",
@@ -39,11 +53,24 @@
                     4 => "Available",
                     _ => "Available"
                 };
-                <tr>
-                    <td>@site.SiteNumber</td>
-                    <td>@site.MaxLengthFeet</td>
-                    <td>@site.SiteType.TypeName</td>
-                    <td>@statusMessage</td>
+                var firstPhoto = site.SitePhotos.FirstOrDefault();
+                <tr style="cursor: pointer;" onclick="window.location='@Url.Action("Details", "Sites", new { id = site.SiteID })'">
+                    <td class="text-center align-middle">
+                        @if (firstPhoto != null)
+                        {
+                            <img src="@firstPhoto.PhotoURL" style="width: 100px; height: 75px; object-fit: cover;" />
+                        }
+                        else
+                        {
+                            <span>-</span>
+                        }
+                    </td>
+                    <td class="text-center align-middle">
+                        <a asp-controller="Sites" asp-action="Details" asp-route-id="@site.SiteID" class="text-decoration-none text-dark fw-bold">@site.SiteNumber</a>
+                    </td>
+                    <td class="text-center align-middle">@site.MaxLengthFeet ft</td>
+                    <td class="text-center align-middle">@site.SiteType.TypeName</td>
+                    <td class="text-center align-middle">@statusMessage</td>
                 </tr>
             }
     </tbody>

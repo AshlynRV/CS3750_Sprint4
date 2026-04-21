@@ -6,9 +6,7 @@ namespace SiteReservationSystem.Web.Data
     public class ApplicationDbContext : DbContext
     {
         public ApplicationDbContext(DbContextOptions<ApplicationDbContext> options)
-            : base(options)
-        {
-        }
+            : base(options) { }
 
         // DbSets - Users & Authentication
         public DbSet<User> Users { get; set; }
@@ -38,216 +36,286 @@ namespace SiteReservationSystem.Web.Data
             base.OnModelCreating(modelBuilder);
 
             // User relationships - One-to-One
-            modelBuilder.Entity<Customer>()
+            modelBuilder
+                .Entity<Customer>()
                 .HasOne(c => c.User)
                 .WithOne(u => u.Customer)
                 .HasForeignKey<Customer>(c => c.UserID)
                 .OnDelete(DeleteBehavior.Cascade);
 
-            modelBuilder.Entity<Employee>()
+            modelBuilder
+                .Entity<Employee>()
                 .HasOne(e => e.User)
                 .WithOne(u => u.Employee)
                 .HasForeignKey<Employee>(e => e.UserID)
                 .OnDelete(DeleteBehavior.Cascade);
 
-            modelBuilder.Entity<Admin>()
+            modelBuilder
+                .Entity<Admin>()
                 .HasOne(a => a.User)
                 .WithOne(u => u.Admin)
                 .HasForeignKey<Admin>(a => a.UserID)
                 .OnDelete(DeleteBehavior.Cascade);
 
             // Site relationships
-            modelBuilder.Entity<Site>()
+            modelBuilder
+                .Entity<Site>()
                 .HasOne(s => s.SiteType)
                 .WithMany(st => st.Sites)
                 .HasForeignKey(s => s.SiteTypeID)
                 .OnDelete(DeleteBehavior.Restrict);
 
-            modelBuilder.Entity<SitePhoto>()
+            modelBuilder
+                .Entity<SitePhoto>()
                 .HasOne(sp => sp.Site)
                 .WithMany(s => s.SitePhotos)
                 .HasForeignKey(sp => sp.SiteID)
                 .OnDelete(DeleteBehavior.Cascade);
 
-            modelBuilder.Entity<SiteTypePricing>()
+            modelBuilder
+                .Entity<SiteTypePricing>()
                 .HasOne(stp => stp.SiteType)
                 .WithMany(st => st.SiteTypePricings)
                 .HasForeignKey(stp => stp.SiteTypeID)
                 .OnDelete(DeleteBehavior.Cascade);
 
             // Reservation relationships
-            modelBuilder.Entity<Reservation>()
+            modelBuilder
+                .Entity<Reservation>()
                 .HasOne(r => r.Customer)
                 .WithMany(c => c.Reservations)
                 .HasForeignKey(r => r.CustomerID)
                 .OnDelete(DeleteBehavior.Restrict);
 
-            modelBuilder.Entity<Reservation>()
+            modelBuilder
+                .Entity<Reservation>()
                 .HasOne(r => r.Site)
                 .WithMany(s => s.Reservations)
                 .HasForeignKey(r => r.SiteID)
                 .OnDelete(DeleteBehavior.Restrict);
 
-            modelBuilder.Entity<Reservation>()
+            modelBuilder
+                .Entity<Reservation>()
                 .HasOne(r => r.ReservationStatus)
                 .WithMany(rs => rs.Reservations)
                 .HasForeignKey(r => r.ReservationStatusID)
                 .OnDelete(DeleteBehavior.Restrict);
 
             // ReservationFee relationships
-            modelBuilder.Entity<ReservationFee>()
+            modelBuilder
+                .Entity<ReservationFee>()
                 .HasOne(rf => rf.Reservation)
                 .WithMany(r => r.ReservationFees)
                 .HasForeignKey(rf => rf.ReservationID)
                 .OnDelete(DeleteBehavior.Cascade);
 
-            modelBuilder.Entity<ReservationFee>()
+            modelBuilder
+                .Entity<ReservationFee>()
                 .HasOne(rf => rf.Fee)
                 .WithMany(f => f.ReservationFees)
                 .HasForeignKey(rf => rf.FeeID)
                 .OnDelete(DeleteBehavior.Restrict);
 
             // Invoice relationships
-            modelBuilder.Entity<Invoice>()
+            modelBuilder
+                .Entity<Invoice>()
                 .HasOne(i => i.Reservation)
                 .WithOne(r => r.Invoice)
                 .HasForeignKey<Invoice>(i => i.ReservationID)
                 .OnDelete(DeleteBehavior.Restrict);
 
-            modelBuilder.Entity<Invoice>()
+            modelBuilder
+                .Entity<Invoice>()
                 .HasOne(i => i.Customer)
                 .WithMany(c => c.Invoices)
                 .HasForeignKey(i => i.CustomerID)
                 .OnDelete(DeleteBehavior.Restrict);
 
             // Payment relationships
-            modelBuilder.Entity<Payment>()
+            modelBuilder
+                .Entity<Payment>()
                 .HasOne(p => p.Invoice)
                 .WithMany(i => i.Payments)
                 .HasForeignKey(p => p.InvoiceID)
                 .OnDelete(DeleteBehavior.Cascade);
 
-            modelBuilder.Entity<Payment>()
+            modelBuilder
+                .Entity<Payment>()
                 .HasOne(p => p.PaymentMethod)
                 .WithMany(pm => pm.Payments)
                 .HasForeignKey(p => p.PaymentMethodID)
                 .OnDelete(DeleteBehavior.Restrict);
 
-            modelBuilder.Entity<Payment>()
+            modelBuilder
+                .Entity<Payment>()
                 .HasOne(p => p.ProcessedByEmployee)
                 .WithMany(e => e.ProcessedPayments)
                 .HasForeignKey(p => p.ProcessedByEmployeeID)
                 .OnDelete(DeleteBehavior.SetNull);
 
             // Unique constraints
-            modelBuilder.Entity<User>()
-                .HasIndex(u => u.Email)
-                .IsUnique();
-
-            modelBuilder.Entity<Site>()
-                .HasIndex(s => s.SiteNumber)
-                .IsUnique();
-
-            // Seed Data - Reservation Statuses
-            modelBuilder.Entity<ReservationStatus>().HasData(
-                new ReservationStatus { ReservationStatusID = 1, StatusName = "Upcoming",    Description = "Reservation is scheduled for future dates" },
-                new ReservationStatus { ReservationStatusID = 2, StatusName = "In Progress", Description = "Guest is currently checked in" },
-                new ReservationStatus { ReservationStatusID = 3, StatusName = "Completed",   Description = "Reservation has been completed" },
-                new ReservationStatus { ReservationStatusID = 4, StatusName = "Cancelled",   Description = "Reservation was cancelled" }
-            );
-
-            // Seed Data - Payment Methods
-            modelBuilder.Entity<PaymentMethod>().HasData(
-                new PaymentMethod { PaymentMethodID = 1, MethodName = "Credit Card", RequiresOnlineProcessing = true,  IsActive = true },
-                new PaymentMethod { PaymentMethodID = 2, MethodName = "Debit Card",  RequiresOnlineProcessing = true,  IsActive = true },
-                new PaymentMethod { PaymentMethodID = 3, MethodName = "Cash",        RequiresOnlineProcessing = false, IsActive = true },
-                new PaymentMethod { PaymentMethodID = 4, MethodName = "Check",       RequiresOnlineProcessing = false, IsActive = true }
-            );
-
-            // Seed Data - Common Fees
-            modelBuilder.Entity<Fee>().HasData(
-                new Fee { FeeID = 1, FeeName = "Late Checkout",    DefaultAmount = 25.00m, Description = "Fee for checking out after designated time", IsActive = true },
-                new Fee { FeeID = 2, FeeName = "Early Check-in",   DefaultAmount = 15.00m, Description = "Fee for checking in before standard time",   IsActive = true },
-                new Fee { FeeID = 3, FeeName = "Cancellation Fee", DefaultAmount = 10.00m, Description = "Standard cancellation fee",                   IsActive = true }
-            );
+            modelBuilder.Entity<User>().HasIndex(u => u.Email).IsUnique();
+            modelBuilder.Entity<Site>().HasIndex(s => s.SiteNumber).IsUnique();
 
             // ============================================================================
-            // SEED DATA - Team Admins
+            // SEED DATA - Reservation Statuses
             // ============================================================================
 
-            modelBuilder.Entity<User>().HasData(
-                new User { UserID = 1, Email = "ashlyn.arave@example.com",        PasswordHash = "hashed_password_1", Role = UserRole.Admin, IsActive = true, DateCreated = new DateTime(2025, 1, 1) },
-                new User { UserID = 2, Email = "kelise.bridge@example.com",       PasswordHash = "hashed_password_2", Role = UserRole.Admin, IsActive = true, DateCreated = new DateTime(2025, 1, 1) },
-                new User { UserID = 3, Email = "zachary.chamberlain@example.com", PasswordHash = "hashed_password_3", Role = UserRole.Admin, IsActive = true, DateCreated = new DateTime(2025, 1, 1) },
-                new User { UserID = 4, Email = "tyler.fleischel@example.com",     PasswordHash = "hashed_password_4", Role = UserRole.Admin, IsActive = true, DateCreated = new DateTime(2025, 1, 1) },
-                new User { UserID = 5, Email = "nicole.gaddis@example.com",       PasswordHash = "hashed_password_5", Role = UserRole.Admin, IsActive = true, DateCreated = new DateTime(2025, 1, 1) },
-                new User { UserID = 6, Email = "luke.peterson@example.com",       PasswordHash = "hashed_password_6", Role = UserRole.Admin, IsActive = true, DateCreated = new DateTime(2025, 1, 1) }
-            );
-
-            modelBuilder.Entity<Admin>().HasData(
-                new Admin { AdminID = 1, UserID = 1, FirstName = "Ashlyn",  LastName = "Arave",       DateCreated = new DateTime(2025, 1, 1) },
-                new Admin { AdminID = 2, UserID = 2, FirstName = "Kelise",  LastName = "Bridge",      DateCreated = new DateTime(2025, 1, 1) },
-                new Admin { AdminID = 3, UserID = 3, FirstName = "Zachary", LastName = "Chamberlain", DateCreated = new DateTime(2025, 1, 1) },
-                new Admin { AdminID = 4, UserID = 4, FirstName = "Tyler",   LastName = "Fleischel",   DateCreated = new DateTime(2025, 1, 1) },
-                new Admin { AdminID = 5, UserID = 5, FirstName = "Nicole",  LastName = "Gaddis",      DateCreated = new DateTime(2025, 1, 1) },
-                new Admin { AdminID = 6, UserID = 6, FirstName = "Luke",    LastName = "Peterson",    DateCreated = new DateTime(2025, 1, 1) }
-            );
+            modelBuilder
+                .Entity<ReservationStatus>()
+                .HasData(
+                    new ReservationStatus { ReservationStatusID = 1, StatusName = "Upcoming",    Description = "Reservation is scheduled for future dates" },
+                    new ReservationStatus { ReservationStatusID = 2, StatusName = "In Progress", Description = "Guest is currently checked in" },
+                    new ReservationStatus { ReservationStatusID = 3, StatusName = "Completed",   Description = "Reservation has been completed" },
+                    new ReservationStatus { ReservationStatusID = 4, StatusName = "Cancelled",   Description = "Reservation was cancelled" }
+                );
 
             // ============================================================================
-            // SEED DATA - Employees
+            // SEED DATA - Payment Methods
             // ============================================================================
 
-            modelBuilder.Entity<User>().HasData(
-                new User { UserID = 13, Email = "jane.doe@rvpark.com",    PasswordHash = "hashed_password_13", Role = UserRole.Employee, IsActive = true,  DateCreated = new DateTime(2025, 1, 15) },
-                new User { UserID = 14, Email = "bob.smith@rvpark.com",   PasswordHash = "hashed_password_14", Role = UserRole.Employee, IsActive = true,  DateCreated = new DateTime(2025, 1, 15) },
-                new User { UserID = 15, Email = "carol.white@rvpark.com", PasswordHash = "hashed_password_15", Role = UserRole.Employee, IsActive = true,  DateCreated = new DateTime(2025, 2, 1) },
-                new User { UserID = 16, Email = "dan.locked@rvpark.com",  PasswordHash = "hashed_password_16", Role = UserRole.Employee, IsActive = false, DateCreated = new DateTime(2025, 1, 1) }
-            );
+            modelBuilder
+                .Entity<PaymentMethod>()
+                .HasData(
+                    new PaymentMethod { PaymentMethodID = 1, MethodName = "Credit Card", RequiresOnlineProcessing = true,  IsActive = true },
+                    new PaymentMethod { PaymentMethodID = 2, MethodName = "Debit Card",  RequiresOnlineProcessing = true,  IsActive = true },
+                    new PaymentMethod { PaymentMethodID = 3, MethodName = "Cash",        RequiresOnlineProcessing = false, IsActive = true },
+                    new PaymentMethod { PaymentMethodID = 4, MethodName = "Check",       RequiresOnlineProcessing = false, IsActive = true }
+                );
 
-            modelBuilder.Entity<Employee>().HasData(
-                new Employee
-                {
-                    EmployeeID = 1, UserID = 13, FirstName = "Jane", LastName = "Doe",
-                    AccessPermissions = AccessPermissions.ManageSites | AccessPermissions.ManageReservations | AccessPermissions.ViewReports | AccessPermissions.ManageFees,
-                    IsLockedOut = false, DateHired = new DateTime(2025, 1, 15), IsActive = true
-                },
-                new Employee
-                {
-                    EmployeeID = 2, UserID = 14, FirstName = "Bob", LastName = "Smith",
-                    AccessPermissions = AccessPermissions.ManageReservations | AccessPermissions.ViewReports,
-                    IsLockedOut = false, DateHired = new DateTime(2025, 1, 15), IsActive = true
-                },
-                new Employee
-                {
-                    EmployeeID = 3, UserID = 15, FirstName = "Carol", LastName = "White",
-                    AccessPermissions = AccessPermissions.ViewReports,
-                    IsLockedOut = false, DateHired = new DateTime(2025, 2, 1), IsActive = true
-                },
-                new Employee
-                {
-                    EmployeeID = 4, UserID = 16, FirstName = "Dan", LastName = "Locked",
-                    AccessPermissions = AccessPermissions.ManageReservations,
-                    IsLockedOut = true, DateHired = new DateTime(2025, 1, 1), IsActive = false
-                }
-            );
+            // ============================================================================
+            // SEED DATA - Common Fees
+            // ============================================================================
+
+            modelBuilder
+                .Entity<Fee>()
+                .HasData(
+                    new Fee { FeeID = 1, FeeName = "Late Checkout",    DefaultAmount = 25.00m, Description = "Fee for checking out after designated time", IsActive = true },
+                    new Fee { FeeID = 2, FeeName = "Early Check-in",   DefaultAmount = 15.00m, Description = "Fee for checking in before standard time",   IsActive = true },
+                    new Fee { FeeID = 3, FeeName = "Cancellation Fee", DefaultAmount = 10.00m, Description = "Standard cancellation fee",                   IsActive = true }
+                );
+
+            // ============================================================================
+            // SEED DATA - Demo Admin
+            // ============================================================================
+
+            modelBuilder
+                .Entity<User>()
+                .HasData(
+                    new User
+                    {
+                        UserID = 1,
+                        Email = "admin@rvpark.com",
+                        PasswordHash = "Password123!",
+                        Role = UserRole.Admin,
+                        IsActive = true,
+                        DateCreated = new DateTime(2026, 1, 1),
+                    }
+                );
+
+            modelBuilder
+                .Entity<Admin>()
+                .HasData(
+                    new Admin
+                    {
+                        AdminID = 1,
+                        UserID = 1,
+                        FirstName = "Demo",
+                        LastName = "Admin",
+                        DateCreated = new DateTime(2026, 1, 1),
+                    }
+                );
+
+            // ============================================================================
+            // SEED DATA - Demo Employee (Jane Doe)
+            // ============================================================================
+
+            modelBuilder
+                .Entity<User>()
+                .HasData(
+                    new User
+                    {
+                        UserID = 2,
+                        Email = "jane.doe@rvpark.com",
+                        PasswordHash = "Password123!",
+                        Role = UserRole.Employee,
+                        IsActive = true,
+                        DateCreated = new DateTime(2026, 1, 15),
+                    }
+                );
+
+            modelBuilder
+                .Entity<Employee>()
+                .HasData(
+                    new Employee
+                    {
+                        EmployeeID = 1,
+                        UserID = 2,
+                        FirstName = "Jane",
+                        LastName = "Doe",
+                        AccessPermissions =
+                            AccessPermissions.ManageReservations | AccessPermissions.ViewReports,
+                        IsLockedOut = false,
+                        DateHired = new DateTime(2026, 1, 15),
+                        IsActive = true,
+                    }
+                );
+
+            // ============================================================================
+            // SEED DATA - Demo Customer (John Smith - ACTIVE_DUTY, NOT PCS_ORDERS)
+            // ============================================================================
+
+            modelBuilder
+                .Entity<User>()
+                .HasData(
+                    new User
+                    {
+                        UserID = 3,
+                        Email = "john.smith@military.com",
+                        PasswordHash = "Password123!",
+                        Role = UserRole.Customer,
+                        IsActive = true,
+                        DateCreated = new DateTime(2026, 1, 1),
+                    }
+                );
+
+            modelBuilder
+                .Entity<Customer>()
+                .HasData(
+                    new Customer
+                    {
+                        CustomerID = 1,
+                        UserID = 3,
+                        FirstName = "John",
+                        LastName = "Smith",
+                        PhoneNumber = "555-123-4567",
+                        MilitaryAffiliation = MilitaryAffiliation.AIR_FORCE,
+                        DoDStatus = DoDStatus.ACTIVE_DUTY,
+                        DateCreated = new DateTime(2026, 1, 1),
+                    }
+                );
 
             // ============================================================================
             // SEED DATA - Site Types & Pricing
             // ============================================================================
 
-            modelBuilder.Entity<SiteType>().HasData(
-                new SiteType { SiteTypeID = 1, TypeName = "Trailers (1-45)",           Description = "Standard trailer sites for vehicles 1-45 feet", IsActive = true },
-                new SiteType { SiteTypeID = 2, TypeName = "Walk-in Trailers (11B, 12B)", Description = "Walk-in trailer sites with linens provided",   IsActive = true },
-                new SiteType { SiteTypeID = 3, TypeName = "Dry Storage",               Description = "Dry storage sites for RV parking",              IsActive = true },
-                new SiteType { SiteTypeID = 4, TypeName = "Tent Site",                 Description = "Tent camping site near Dog Park",                IsActive = true }
-            );
+            modelBuilder
+                .Entity<SiteType>()
+                .HasData(
+                    new SiteType { SiteTypeID = 1, TypeName = "Trailers (1-45)",             Description = "Standard trailer sites for vehicles 1-45 feet", IsActive = true },
+                    new SiteType { SiteTypeID = 2, TypeName = "Walk-in Trailers (11B, 12B)", Description = "Walk-in trailer sites with linens provided",     IsActive = true },
+                    new SiteType { SiteTypeID = 3, TypeName = "Dry Storage",                 Description = "Dry storage sites for RV parking",              IsActive = true },
+                    new SiteType { SiteTypeID = 4, TypeName = "Tent Site",                   Description = "Tent camping site near Dog Park",                IsActive = true }
+                );
 
-            modelBuilder.Entity<SiteTypePricing>().HasData(
-                new SiteTypePricing { PricingID = 1, SiteTypeID = 1, StartDate = new DateTime(2024, 10, 1), EndDate = null, BasePrice = 25.00m, Description = "Current rate for standard trailers" },
-                new SiteTypePricing { PricingID = 2, SiteTypeID = 2, StartDate = new DateTime(2024, 10, 1), EndDate = null, BasePrice = 30.00m, Description = "Current rate for walk-in trailers" },
-                new SiteTypePricing { PricingID = 3, SiteTypeID = 3, StartDate = new DateTime(2024, 10, 1), EndDate = null, BasePrice = 5.00m,  Description = "Current daily rate for dry storage (also $30/week, $36/month)" },
-                new SiteTypePricing { PricingID = 4, SiteTypeID = 4, StartDate = new DateTime(2024, 10, 1), EndDate = null, BasePrice = 17.00m, Description = "Current rate for tent site" }
-            );
+            modelBuilder
+                .Entity<SiteTypePricing>()
+                .HasData(
+                    new SiteTypePricing { PricingID = 1, SiteTypeID = 1, StartDate = new DateTime(2025, 10, 1), EndDate = null, BasePrice = 25.00m, Description = "Current rate for standard trailers" },
+                    new SiteTypePricing { PricingID = 2, SiteTypeID = 2, StartDate = new DateTime(2025, 10, 1), EndDate = null, BasePrice = 30.00m, Description = "Current rate for walk-in trailers" },
+                    new SiteTypePricing { PricingID = 3, SiteTypeID = 3, StartDate = new DateTime(2025, 10, 1), EndDate = null, BasePrice = 5.00m,  Description = "Current daily rate for dry storage" },
+                    new SiteTypePricing { PricingID = 4, SiteTypeID = 4, StartDate = new DateTime(2025, 10, 1), EndDate = null, BasePrice = 17.00m, Description = "Current rate for tent site" }
+                );
 
             // ============================================================================
             // SEED DATA - Sites
@@ -365,136 +433,380 @@ namespace SiteReservationSystem.Web.Data
             );
 
             // ============================================================================
-            // SEED DATA - Guest Customers
+            // SEED DATA - Reservations
+            // 12 reservations, 3 per site type, varied statuses
+            // Rates: Trailer=$25/night, Walk-in=$30/night, Dry Storage=$5/night, Tent=$17/night
+            //
+            // Type 1 - Trailers (1-45) : Res 1 (Completed), Res 2 (Cancelled), Res 3 (Upcoming)
+            // Type 2 - Walk-in Trailers: Res 4 (Completed), Res 5 (In Progress), Res 6 (Upcoming)
+            // Type 3 - Dry Storage     : Res 7 (Completed), Res 8 (Cancelled),   Res 9 (Upcoming)
+            // Type 4 - Tent Site       : Res 10 (Completed), Res 11 (In Progress), Res 12 (Upcoming)
             // ============================================================================
 
-            modelBuilder.Entity<User>().HasData(
-                new User { UserID = 7,  Email = "john.smith@military.com",     PasswordHash = "hashed_password_7",  Role = UserRole.Customer, IsActive = true, DateCreated = new DateTime(2025, 1, 1) },
-                new User { UserID = 8,  Email = "sarah.johnson@military.com",  PasswordHash = "hashed_password_8",  Role = UserRole.Customer, IsActive = true, DateCreated = new DateTime(2024, 12, 1) },
-                new User { UserID = 9,  Email = "mike.williams@military.com",  PasswordHash = "hashed_password_9",  Role = UserRole.Customer, IsActive = true, DateCreated = new DateTime(2025, 2, 1) },
-                new User { UserID = 10, Email = "emily.davis@military.com",    PasswordHash = "hashed_password_10", Role = UserRole.Customer, IsActive = true, DateCreated = new DateTime(2025, 2, 15) },
-                new User { UserID = 11, Email = "david.martinez@military.com", PasswordHash = "hashed_password_11", Role = UserRole.Customer, IsActive = true, DateCreated = new DateTime(2024, 11, 1) },
-                new User { UserID = 12, Email = "lisa.anderson@military.com",  PasswordHash = "hashed_password_12", Role = UserRole.Customer, IsActive = true, DateCreated = new DateTime(2025, 2, 19) }
-            );
+            modelBuilder
+                .Entity<Reservation>()
+                .HasData(
 
-            // DoDStatus note: Mike Williams = PCS_ORDERS, which exempts him from the
-            // 14-day peak season limit (see Reservation 3 - 14-night stay during peak).
-            modelBuilder.Entity<Customer>().HasData(
-                new Customer { CustomerID = 1, UserID = 7,  FirstName = "John",  LastName = "Smith",    PhoneNumber = "111-111-1111", MilitaryAffiliation = MilitaryAffiliation.AIR_FORCE,    DoDStatus = DoDStatus.ACTIVE_DUTY, DateCreated = new DateTime(2025, 1, 1) },
-                new Customer { CustomerID = 2, UserID = 8,  FirstName = "Sarah", LastName = "Johnson",  PhoneNumber = "222-222-2222", MilitaryAffiliation = MilitaryAffiliation.ARMY,         DoDStatus = DoDStatus.RETIRED,     DateCreated = new DateTime(2024, 12, 1) },
-                new Customer { CustomerID = 3, UserID = 9,  FirstName = "Mike",  LastName = "Williams", PhoneNumber = "333-333-3333", MilitaryAffiliation = MilitaryAffiliation.NAVY,         DoDStatus = DoDStatus.PCS_ORDERS,  DateCreated = new DateTime(2025, 2, 1) },
-                new Customer { CustomerID = 4, UserID = 10, FirstName = "Emily", LastName = "Davis",    PhoneNumber = "444-444-4444", MilitaryAffiliation = MilitaryAffiliation.MARINES,      DoDStatus = DoDStatus.ACTIVE_DUTY, DateCreated = new DateTime(2025, 2, 15) },
-                new Customer { CustomerID = 5, UserID = 11, FirstName = "David", LastName = "Martinez", PhoneNumber = "555-555-5555", MilitaryAffiliation = MilitaryAffiliation.COAST_GUARD,  DoDStatus = DoDStatus.RESERVIST,   DateCreated = new DateTime(2024, 11, 1) },
-                new Customer { CustomerID = 6, UserID = 12, FirstName = "Lisa",  LastName = "Anderson", PhoneNumber = "666-666-6666", MilitaryAffiliation = MilitaryAffiliation.DOD_CIVILIAN, DoDStatus = DoDStatus.ACTIVE_DUTY, DateCreated = new DateTime(2025, 2, 19) }
-            );
+                    // ── TYPE 1: TRAILERS (1-45) ──────────────────────────────────────────────
 
-            // ============================================================================
-            // SEED DATA - Reservations (Anchor: 2025-03-01)
-            // ============================================================================
+                    // 1. COMPLETED - Site 2 (40ft), 3 nights @ $25 = $75
+                    new Reservation
+                    {
+                        ReservationID = 1,
+                        CustomerID = 1,
+                        SiteID = 1,
+                        ReservationStatusID = 3,
+                        StartDate = new DateTime(2026, 2, 10),
+                        EndDate = new DateTime(2026, 2, 13),
+                        TrailerLengthFeet = 38,
+                        BaseAmount = 75.00m,
+                        TotalAmount = 75.00m,
+                        BalanceDue = 0m,
+                        ScheduledCheckInTime  = new DateTime(2026, 2, 10, 13, 0, 0),
+                        ActualCheckInTime     = new DateTime(2026, 2, 10, 13, 20, 0),
+                        ScheduledCheckOutTime = new DateTime(2026, 2, 13, 12, 0, 0),
+                        ActualCheckOutTime    = new DateTime(2026, 2, 13, 11, 50, 0),
+                        DateCreated = new DateTime(2026, 2, 1),
+                        LastUpdated = new DateTime(2026, 2, 13),
+                    },
+                    // 2. CANCELLED - Site 17 (45ft), 4 nights @ $25 = $100 + $10 cancel fee = $110
+                    new Reservation
+                    {
+                        ReservationID = 2,
+                        CustomerID = 1,
+                        SiteID = 14,
+                        ReservationStatusID = 4,
+                        StartDate = new DateTime(2026, 3, 5),
+                        EndDate = new DateTime(2026, 3, 9),
+                        TrailerLengthFeet = 42,
+                        BaseAmount = 100.00m,
+                        TotalAmount = 110.00m,
+                        BalanceDue = 0m,
+                        ScheduledCheckInTime  = new DateTime(2026, 3, 5, 13, 0, 0),
+                        ActualCheckInTime     = null,
+                        ScheduledCheckOutTime = new DateTime(2026, 3, 9, 12, 0, 0),
+                        ActualCheckOutTime    = null,
+                        DateCreated = new DateTime(2026, 2, 15),
+                        LastUpdated = new DateTime(2026, 2, 28),
+                        Notes = "Cancelled - plans changed",
+                    },
+                    // 3. UPCOMING - Site 32 (65ft), 7 nights @ $25 = $175
+                    new Reservation
+                    {
+                        ReservationID = 3,
+                        CustomerID = 1,
+                        SiteID = 27,
+                        ReservationStatusID = 1,
+                        StartDate = new DateTime(2026, 4, 25),
+                        EndDate = new DateTime(2026, 5, 2),
+                        TrailerLengthFeet = 60,
+                        BaseAmount = 175.00m,
+                        TotalAmount = 175.00m,
+                        BalanceDue = 0m,
+                        ScheduledCheckInTime  = new DateTime(2026, 4, 25, 13, 0, 0),
+                        ActualCheckInTime     = null,
+                        ScheduledCheckOutTime = new DateTime(2026, 5, 2, 12, 0, 0),
+                        ActualCheckOutTime    = null,
+                        DateCreated = new DateTime(2026, 4, 10),
+                        LastUpdated = new DateTime(2026, 4, 10),
+                    },
 
-            modelBuilder.Entity<Reservation>().HasData(
-                new Reservation
-                {
-                    ReservationID = 1, CustomerID = 1, SiteID = 14, ReservationStatusID = 3,
-                    StartDate = new DateTime(2025, 2, 19), EndDate = new DateTime(2025, 2, 22),
-                    TrailerLengthFeet = 42, BaseAmount = 75.00m, TotalAmount = 75.00m, BalanceDue = 0m,
-                    ScheduledCheckInTime  = new DateTime(2025, 2, 19, 13, 0, 0),
-                    ActualCheckInTime     = new DateTime(2025, 2, 19, 13, 15, 0),
-                    ScheduledCheckOutTime = new DateTime(2025, 2, 22, 12, 0, 0),
-                    ActualCheckOutTime    = new DateTime(2025, 2, 22, 11, 45, 0),
-                    DateCreated = new DateTime(2025, 2, 14), LastUpdated = new DateTime(2025, 2, 22)
-                },
-                new Reservation
-                {
-                    ReservationID = 2, CustomerID = 2, SiteID = 27, ReservationStatusID = 2,
-                    StartDate = new DateTime(2025, 2, 27), EndDate = new DateTime(2025, 3, 8),
-                    TrailerLengthFeet = 60, BaseAmount = 225.00m, TotalAmount = 250.00m, BalanceDue = 0m,
-                    ScheduledCheckInTime  = new DateTime(2025, 2, 27, 13, 0, 0),
-                    ActualCheckInTime     = new DateTime(2025, 2, 27, 14, 30, 0),
-                    ScheduledCheckOutTime = new DateTime(2025, 3, 8, 12, 0, 0),
-                    ActualCheckOutTime = null,
-                    DateCreated = new DateTime(2025, 2, 19), LastUpdated = new DateTime(2025, 2, 27)
-                },
-                // 14-night stay - valid because CustomerID 3 has DoDStatus = PCS_ORDERS
-                new Reservation
-                {
-                    ReservationID = 3, CustomerID = 3, SiteID = 20, ReservationStatusID = 1,
-                    StartDate = new DateTime(2025, 3, 8), EndDate = new DateTime(2025, 3, 22),
-                    TrailerLengthFeet = 38, BaseAmount = 350.00m, TotalAmount = 350.00m, BalanceDue = 0m,
-                    ScheduledCheckInTime  = new DateTime(2025, 3, 8, 13, 0, 0),
-                    ActualCheckInTime = null,
-                    ScheduledCheckOutTime = new DateTime(2025, 3, 22, 12, 0, 0),
-                    ActualCheckOutTime = null,
-                    DateCreated = new DateTime(2025, 2, 24), LastUpdated = new DateTime(2025, 2, 24)
-                },
-                new Reservation
-                {
-                    ReservationID = 4, CustomerID = 4, SiteID = 5, ReservationStatusID = 4,
-                    StartDate = new DateTime(2025, 3, 11), EndDate = new DateTime(2025, 3, 15),
-                    TrailerLengthFeet = 35, BaseAmount = 100.00m, TotalAmount = 110.00m, BalanceDue = 0m,
-                    ScheduledCheckInTime  = new DateTime(2025, 3, 11, 13, 0, 0),
-                    ActualCheckInTime = null,
-                    ScheduledCheckOutTime = new DateTime(2025, 3, 15, 12, 0, 0),
-                    ActualCheckOutTime = null,
-                    DateCreated = new DateTime(2025, 2, 9), LastUpdated = new DateTime(2025, 2, 26),
-                    Notes = "Cancelled due to change in travel plans"
-                },
-                new Reservation
-                {
-                    ReservationID = 5, CustomerID = 5, SiteID = 44, ReservationStatusID = 1,
-                    StartDate = new DateTime(2025, 3, 4), EndDate = new DateTime(2025, 3, 7),
-                    TrailerLengthFeet = null, BaseAmount = 90.00m, TotalAmount = 105.00m, BalanceDue = 0m,
-                    ScheduledCheckInTime  = new DateTime(2025, 3, 4, 8, 0, 0),
-                    ActualCheckInTime = null,
-                    ScheduledCheckOutTime = new DateTime(2025, 3, 7, 12, 0, 0),
-                    ActualCheckOutTime = null,
-                    DateCreated = new DateTime(2025, 2, 22), LastUpdated = new DateTime(2025, 2, 22)
-                },
-                new Reservation
-                {
-                    ReservationID = 6, CustomerID = 6, SiteID = 50, ReservationStatusID = 1,
-                    StartDate = new DateTime(2025, 3, 2), EndDate = new DateTime(2025, 3, 4),
-                    TrailerLengthFeet = null, BaseAmount = 34.00m, TotalAmount = 34.00m, BalanceDue = 0m,
-                    ScheduledCheckInTime  = new DateTime(2025, 3, 2, 13, 0, 0),
-                    ActualCheckInTime = null,
-                    ScheduledCheckOutTime = new DateTime(2025, 3, 4, 12, 0, 0),
-                    ActualCheckOutTime = null,
-                    DateCreated = new DateTime(2025, 2, 27), LastUpdated = new DateTime(2025, 2, 27)
-                }
-            );
+                    // ── TYPE 2: WALK-IN TRAILERS ─────────────────────────────────────────────
+
+                    // 4. COMPLETED - Site 11B, 3 nights @ $30 = $90
+                    new Reservation
+                    {
+                        ReservationID = 4,
+                        CustomerID = 1,
+                        SiteID = 44,
+                        ReservationStatusID = 3,
+                        StartDate = new DateTime(2026, 2, 20),
+                        EndDate = new DateTime(2026, 2, 23),
+                        TrailerLengthFeet = null,
+                        BaseAmount = 90.00m,
+                        TotalAmount = 90.00m,
+                        BalanceDue = 0m,
+                        ScheduledCheckInTime  = new DateTime(2026, 2, 20, 13, 0, 0),
+                        ActualCheckInTime     = new DateTime(2026, 2, 20, 13, 10, 0),
+                        ScheduledCheckOutTime = new DateTime(2026, 2, 23, 12, 0, 0),
+                        ActualCheckOutTime    = new DateTime(2026, 2, 23, 11, 30, 0),
+                        DateCreated = new DateTime(2026, 2, 10),
+                        LastUpdated = new DateTime(2026, 2, 23),
+                    },
+                    // 5. IN PROGRESS - Site 12B, 5 nights @ $30 = $150 + $15 early check-in = $165
+                    new Reservation
+                    {
+                        ReservationID = 5,
+                        CustomerID = 1,
+                        SiteID = 45,
+                        ReservationStatusID = 2,
+                        StartDate = new DateTime(2026, 4, 18),
+                        EndDate = new DateTime(2026, 4, 23),
+                        TrailerLengthFeet = null,
+                        BaseAmount = 150.00m,
+                        TotalAmount = 165.00m,
+                        BalanceDue = 0m,
+                        ScheduledCheckInTime  = new DateTime(2026, 4, 18, 8, 0, 0),
+                        ActualCheckInTime     = new DateTime(2026, 4, 18, 8, 10, 0),
+                        ScheduledCheckOutTime = new DateTime(2026, 4, 23, 12, 0, 0),
+                        ActualCheckOutTime    = null,
+                        DateCreated = new DateTime(2026, 4, 5),
+                        LastUpdated = new DateTime(2026, 4, 18),
+                    },
+                    // 6. UPCOMING - Site 11B, 4 nights @ $30 = $120
+                    new Reservation
+                    {
+                        ReservationID = 6,
+                        CustomerID = 1,
+                        SiteID = 4,
+                        ReservationStatusID = 1,
+                        StartDate = new DateTime(2026, 5, 10),
+                        EndDate = new DateTime(2026, 5, 14),
+                        TrailerLengthFeet = null,
+                        BaseAmount = 120.00m,
+                        TotalAmount = 120.00m,
+                        BalanceDue = 0m,
+                        ScheduledCheckInTime  = new DateTime(2026, 5, 10, 13, 0, 0),
+                        ActualCheckInTime     = null,
+                        ScheduledCheckOutTime = new DateTime(2026, 5, 14, 12, 0, 0),
+                        ActualCheckOutTime    = null,
+                        DateCreated = new DateTime(2026, 4, 20),
+                        LastUpdated = new DateTime(2026, 4, 20),
+                    },
+
+                    // ── TYPE 3: DRY STORAGE ──────────────────────────────────────────────────
+
+                    // 7. COMPLETED - Site A, 10 nights @ $5 = $50
+                    new Reservation
+                    {
+                        ReservationID = 7,
+                        CustomerID = 1,
+                        SiteID = 46,
+                        ReservationStatusID = 3,
+                        StartDate = new DateTime(2026, 2, 1),
+                        EndDate = new DateTime(2026, 2, 11),
+                        TrailerLengthFeet = 45,
+                        BaseAmount = 50.00m,
+                        TotalAmount = 50.00m,
+                        BalanceDue = 0m,
+                        ScheduledCheckInTime  = new DateTime(2026, 2, 1, 13, 0, 0),
+                        ActualCheckInTime     = new DateTime(2026, 2, 1, 13, 30, 0),
+                        ScheduledCheckOutTime = new DateTime(2026, 2, 11, 12, 0, 0),
+                        ActualCheckOutTime    = new DateTime(2026, 2, 11, 12, 0, 0),
+                        DateCreated = new DateTime(2026, 1, 20),
+                        LastUpdated = new DateTime(2026, 2, 11),
+                    },
+                    // 8. CANCELLED - Site B, 6 nights @ $5 = $30 + $10 cancel fee = $40
+                    new Reservation
+                    {
+                        ReservationID = 8,
+                        CustomerID = 1,
+                        SiteID = 47,
+                        ReservationStatusID = 4,
+                        StartDate = new DateTime(2026, 3, 15),
+                        EndDate = new DateTime(2026, 3, 21),
+                        TrailerLengthFeet = 50,
+                        BaseAmount = 30.00m,
+                        TotalAmount = 40.00m,
+                        BalanceDue = 0m,
+                        ScheduledCheckInTime  = new DateTime(2026, 3, 15, 13, 0, 0),
+                        ActualCheckInTime     = null,
+                        ScheduledCheckOutTime = new DateTime(2026, 3, 21, 12, 0, 0),
+                        ActualCheckOutTime    = null,
+                        DateCreated = new DateTime(2026, 3, 1),
+                        LastUpdated = new DateTime(2026, 3, 12),
+                        Notes = "Cancelled - vehicle sold",
+                    },
+                    // 9. UPCOMING - Site A, 30 nights @ $5 = $150
+                    new Reservation
+                    {
+                        ReservationID = 9,
+                        CustomerID = 1,
+                        SiteID = 46,
+                        ReservationStatusID = 1,
+                        StartDate = new DateTime(2026, 5, 1),
+                        EndDate = new DateTime(2026, 5, 31),
+                        TrailerLengthFeet = 48,
+                        BaseAmount = 150.00m,
+                        TotalAmount = 150.00m,
+                        BalanceDue = 0m,
+                        ScheduledCheckInTime  = new DateTime(2026, 5, 1, 13, 0, 0),
+                        ActualCheckInTime     = null,
+                        ScheduledCheckOutTime = new DateTime(2026, 5, 31, 12, 0, 0),
+                        ActualCheckOutTime    = null,
+                        DateCreated = new DateTime(2026, 4, 15),
+                        LastUpdated = new DateTime(2026, 4, 15),
+                        Notes = "30-day dry storage rental",
+                    },
+
+                    // ── TYPE 4: TENT SITE ────────────────────────────────────────────────────
+
+                    // 10. COMPLETED - TENT-1, 2 nights @ $17 = $34
+                    new Reservation
+                    {
+                        ReservationID = 10,
+                        CustomerID = 1,
+                        SiteID = 50,
+                        ReservationStatusID = 3,
+                        StartDate = new DateTime(2026, 2, 28),
+                        EndDate = new DateTime(2026, 3, 2),
+                        TrailerLengthFeet = null,
+                        BaseAmount = 34.00m,
+                        TotalAmount = 34.00m,
+                        BalanceDue = 0m,
+                        ScheduledCheckInTime  = new DateTime(2026, 2, 28, 13, 0, 0),
+                        ActualCheckInTime     = new DateTime(2026, 2, 28, 14, 0, 0),
+                        ScheduledCheckOutTime = new DateTime(2026, 3, 2, 12, 0, 0),
+                        ActualCheckOutTime    = new DateTime(2026, 3, 2, 11, 45, 0),
+                        DateCreated = new DateTime(2026, 2, 18),
+                        LastUpdated = new DateTime(2026, 3, 2),
+                    },
+                    // 11. IN PROGRESS - TENT-1, 3 nights @ $17 = $51 + $25 late checkout = $76
+                    new Reservation
+                    {
+                        ReservationID = 11,
+                        CustomerID = 1,
+                        SiteID = 50,
+                        ReservationStatusID = 2,
+                        StartDate = new DateTime(2026, 4, 17),
+                        EndDate = new DateTime(2026, 4, 20),
+                        TrailerLengthFeet = null,
+                        BaseAmount = 51.00m,
+                        TotalAmount = 76.00m,
+                        BalanceDue = 0m,
+                        ScheduledCheckInTime  = new DateTime(2026, 4, 17, 13, 0, 0),
+                        ActualCheckInTime     = new DateTime(2026, 4, 17, 13, 5, 0),
+                        ScheduledCheckOutTime = new DateTime(2026, 4, 20, 12, 0, 0),
+                        ActualCheckOutTime    = null,
+                        DateCreated = new DateTime(2026, 4, 7),
+                        LastUpdated = new DateTime(2026, 4, 17),
+                    },
+                    // 12. UPCOMING - TENT-1, 4 nights @ $17 = $68
+                    new Reservation
+                    {
+                        ReservationID = 12,
+                        CustomerID = 1,
+                        SiteID = 50,
+                        ReservationStatusID = 1,
+                        StartDate = new DateTime(2026, 5, 5),
+                        EndDate = new DateTime(2026, 5, 9),
+                        TrailerLengthFeet = null,
+                        BaseAmount = 68.00m,
+                        TotalAmount = 68.00m,
+                        BalanceDue = 0m,
+                        ScheduledCheckInTime  = new DateTime(2026, 5, 5, 13, 0, 0),
+                        ActualCheckInTime     = null,
+                        ScheduledCheckOutTime = new DateTime(2026, 5, 9, 12, 0, 0),
+                        ActualCheckOutTime    = null,
+                        DateCreated = new DateTime(2026, 4, 22),
+                        LastUpdated = new DateTime(2026, 4, 22),
+                    }
+                );
 
             // ============================================================================
             // SEED DATA - Reservation Fees
             // ============================================================================
 
-            modelBuilder.Entity<ReservationFee>().HasData(
-                new ReservationFee { ReservationFeeID = 1, ReservationID = 2, FeeID = 1, Amount = 25.00m, DateApplied = new DateTime(2025, 2, 27), Notes = "Requested late checkout until 3:00 PM" },
-                new ReservationFee { ReservationFeeID = 2, ReservationID = 4, FeeID = 3, Amount = 10.00m, DateApplied = new DateTime(2025, 2, 26), Notes = "Cancelled more than 72 hours before arrival" },
-                new ReservationFee { ReservationFeeID = 3, ReservationID = 5, FeeID = 2, Amount = 15.00m, DateApplied = new DateTime(2025, 2, 22), Notes = "Early check-in requested for 8:00 AM" }
-            );
+            modelBuilder
+                .Entity<ReservationFee>()
+                .HasData(
+                    // Res 2: Cancellation fee
+                    new ReservationFee
+                    {
+                        ReservationFeeID = 1,
+                        ReservationID = 2,
+                        FeeID = 3,
+                        Amount = 10.00m,
+                        DateApplied = new DateTime(2026, 2, 28),
+                        Notes = "Cancellation fee applied",
+                    },
+                    // Res 5: Early Check-in fee
+                    new ReservationFee
+                    {
+                        ReservationFeeID = 2,
+                        ReservationID = 5,
+                        FeeID = 2,
+                        Amount = 15.00m,
+                        DateApplied = new DateTime(2026, 4, 18),
+                        Notes = "Early check-in at 8:00 AM",
+                    },
+                    // Res 8: Cancellation fee
+                    new ReservationFee
+                    {
+                        ReservationFeeID = 3,
+                        ReservationID = 8,
+                        FeeID = 3,
+                        Amount = 10.00m,
+                        DateApplied = new DateTime(2026, 3, 12),
+                        Notes = "Cancellation fee applied",
+                    },
+                    // Res 11: Late Checkout fee
+                    new ReservationFee
+                    {
+                        ReservationFeeID = 4,
+                        ReservationID = 11,
+                        FeeID = 1,
+                        Amount = 25.00m,
+                        DateApplied = new DateTime(2026, 4, 17),
+                        Notes = "Late checkout requested",
+                    }
+                );
 
             // ============================================================================
-            // SEED DATA - Invoices & Payments
+            // SEED DATA - Invoices
             // ============================================================================
 
-            modelBuilder.Entity<Invoice>().HasData(
-                new Invoice { InvoiceID = 1, ReservationID = 1, CustomerID = 1, SubTotal = 75.00m,  TotalFees = 0m,     TotalAmount = 75.00m,  InvoiceDate = new DateTime(2025, 2, 14), DueDate = new DateTime(2025, 2, 19), IsPaid = true, DatePaid = new DateTime(2025, 2, 14) },
-                new Invoice { InvoiceID = 2, ReservationID = 2, CustomerID = 2, SubTotal = 225.00m, TotalFees = 25.00m, TotalAmount = 250.00m, InvoiceDate = new DateTime(2025, 2, 19), DueDate = new DateTime(2025, 2, 27), IsPaid = true, DatePaid = new DateTime(2025, 2, 19) },
-                new Invoice { InvoiceID = 3, ReservationID = 3, CustomerID = 3, SubTotal = 350.00m, TotalFees = 0m,     TotalAmount = 350.00m, InvoiceDate = new DateTime(2025, 2, 24), DueDate = new DateTime(2025, 3, 8),  IsPaid = true, DatePaid = new DateTime(2025, 2, 24) },
-                new Invoice { InvoiceID = 4, ReservationID = 4, CustomerID = 4, SubTotal = 100.00m, TotalFees = 10.00m, TotalAmount = 110.00m, InvoiceDate = new DateTime(2025, 2, 9),  DueDate = new DateTime(2025, 3, 11), IsPaid = true, DatePaid = new DateTime(2025, 2, 9) },
-                new Invoice { InvoiceID = 5, ReservationID = 5, CustomerID = 5, SubTotal = 90.00m,  TotalFees = 15.00m, TotalAmount = 105.00m, InvoiceDate = new DateTime(2025, 2, 22), DueDate = new DateTime(2025, 3, 4),  IsPaid = true, DatePaid = new DateTime(2025, 2, 22) },
-                new Invoice { InvoiceID = 6, ReservationID = 6, CustomerID = 6, SubTotal = 34.00m,  TotalFees = 0m,     TotalAmount = 34.00m,  InvoiceDate = new DateTime(2025, 2, 27), DueDate = new DateTime(2025, 3, 2),  IsPaid = true, DatePaid = new DateTime(2025, 2, 27) }
-            );
+            modelBuilder
+                .Entity<Invoice>()
+                .HasData(
+                    new Invoice { InvoiceID = 1,  ReservationID = 1,  CustomerID = 1, SubTotal = 75.00m,  TotalFees = 0m,     TotalAmount = 75.00m,  InvoiceDate = new DateTime(2026, 2, 1),  DueDate = new DateTime(2026, 2, 10), IsPaid = true, DatePaid = new DateTime(2026, 2, 1) },
+                    new Invoice { InvoiceID = 2,  ReservationID = 2,  CustomerID = 1, SubTotal = 100.00m, TotalFees = 10.00m, TotalAmount = 110.00m, InvoiceDate = new DateTime(2026, 2, 15), DueDate = new DateTime(2026, 3, 5),  IsPaid = true, DatePaid = new DateTime(2026, 2, 15) },
+                    new Invoice { InvoiceID = 3,  ReservationID = 3,  CustomerID = 1, SubTotal = 175.00m, TotalFees = 0m,     TotalAmount = 175.00m, InvoiceDate = new DateTime(2026, 4, 10), DueDate = new DateTime(2026, 4, 25), IsPaid = true, DatePaid = new DateTime(2026, 4, 10) },
+                    new Invoice { InvoiceID = 4,  ReservationID = 4,  CustomerID = 1, SubTotal = 90.00m,  TotalFees = 0m,     TotalAmount = 90.00m,  InvoiceDate = new DateTime(2026, 2, 10), DueDate = new DateTime(2026, 2, 20), IsPaid = true, DatePaid = new DateTime(2026, 2, 10) },
+                    new Invoice { InvoiceID = 5,  ReservationID = 5,  CustomerID = 1, SubTotal = 150.00m, TotalFees = 15.00m, TotalAmount = 165.00m, InvoiceDate = new DateTime(2026, 4, 5),  DueDate = new DateTime(2026, 4, 18), IsPaid = true, DatePaid = new DateTime(2026, 4, 5) },
+                    new Invoice { InvoiceID = 6,  ReservationID = 6,  CustomerID = 1, SubTotal = 120.00m, TotalFees = 0m,     TotalAmount = 120.00m, InvoiceDate = new DateTime(2026, 4, 20), DueDate = new DateTime(2026, 5, 10), IsPaid = true, DatePaid = new DateTime(2026, 4, 20) },
+                    new Invoice { InvoiceID = 7,  ReservationID = 7,  CustomerID = 1, SubTotal = 50.00m,  TotalFees = 0m,     TotalAmount = 50.00m,  InvoiceDate = new DateTime(2026, 1, 20), DueDate = new DateTime(2026, 2, 1),  IsPaid = true, DatePaid = new DateTime(2026, 1, 20) },
+                    new Invoice { InvoiceID = 8,  ReservationID = 8,  CustomerID = 1, SubTotal = 30.00m,  TotalFees = 10.00m, TotalAmount = 40.00m,  InvoiceDate = new DateTime(2026, 3, 1),  DueDate = new DateTime(2026, 3, 15), IsPaid = true, DatePaid = new DateTime(2026, 3, 1) },
+                    new Invoice { InvoiceID = 9,  ReservationID = 9,  CustomerID = 1, SubTotal = 150.00m, TotalFees = 0m,     TotalAmount = 150.00m, InvoiceDate = new DateTime(2026, 4, 15), DueDate = new DateTime(2026, 5, 1),  IsPaid = true, DatePaid = new DateTime(2026, 4, 15) },
+                    new Invoice { InvoiceID = 10, ReservationID = 10, CustomerID = 1, SubTotal = 34.00m,  TotalFees = 0m,     TotalAmount = 34.00m,  InvoiceDate = new DateTime(2026, 2, 18), DueDate = new DateTime(2026, 2, 28), IsPaid = true, DatePaid = new DateTime(2026, 2, 18) },
+                    new Invoice { InvoiceID = 11, ReservationID = 11, CustomerID = 1, SubTotal = 51.00m,  TotalFees = 25.00m, TotalAmount = 76.00m,  InvoiceDate = new DateTime(2026, 4, 7),  DueDate = new DateTime(2026, 4, 17), IsPaid = true, DatePaid = new DateTime(2026, 4, 7) },
+                    new Invoice { InvoiceID = 12, ReservationID = 12, CustomerID = 1, SubTotal = 68.00m,  TotalFees = 0m,     TotalAmount = 68.00m,  InvoiceDate = new DateTime(2026, 4, 22), DueDate = new DateTime(2026, 5, 5),  IsPaid = true, DatePaid = new DateTime(2026, 4, 22) }
+                );
 
-            modelBuilder.Entity<Payment>().HasData(
-                new Payment { PaymentID = 1, InvoiceID = 1, PaymentMethodID = 1, Amount = 75.00m,   PaymentDate = new DateTime(2025, 2, 14), StripeTransactionID = "txn_1ABC123",        PaymentStatus = "Completed", IsRefund = false },
-                new Payment { PaymentID = 2, InvoiceID = 2, PaymentMethodID = 2, Amount = 250.00m,  PaymentDate = new DateTime(2025, 2, 19), StripeTransactionID = "txn_2DEF456",        PaymentStatus = "Completed", IsRefund = false },
-                new Payment { PaymentID = 3, InvoiceID = 3, PaymentMethodID = 1, Amount = 350.00m,  PaymentDate = new DateTime(2025, 2, 24), StripeTransactionID = "txn_3GHI789",        PaymentStatus = "Completed", IsRefund = false },
-                new Payment { PaymentID = 4, InvoiceID = 4, PaymentMethodID = 1, Amount = 110.00m,  PaymentDate = new DateTime(2025, 2, 9),  StripeTransactionID = "txn_4JKL012",        PaymentStatus = "Completed", IsRefund = false },
-                new Payment { PaymentID = 5, InvoiceID = 4, PaymentMethodID = 1, Amount = -100.00m, PaymentDate = new DateTime(2025, 2, 26), StripeTransactionID = "txn_4JKL012_refund", PaymentStatus = "Refunded",  IsRefund = true,  Notes = "Refund issued: $100.00 (Original $110.00 - $10.00 cancellation fee)" },
-                new Payment { PaymentID = 6, InvoiceID = 5, PaymentMethodID = 3, Amount = 105.00m,  PaymentDate = new DateTime(2025, 2, 22), PaymentStatus = "Completed", ProcessedByEmployeeID = null, IsRefund = false },
-                new Payment { PaymentID = 7, InvoiceID = 6, PaymentMethodID = 2, Amount = 34.00m,   PaymentDate = new DateTime(2025, 2, 27), StripeTransactionID = "txn_6MNO345",        PaymentStatus = "Completed", IsRefund = false }
-            );
+            // ============================================================================
+            // SEED DATA - Payments
+            // ============================================================================
+
+            modelBuilder
+                .Entity<Payment>()
+                .HasData(
+                    // Res 1 - Completed trailer, credit card
+                    new Payment { PaymentID = 1,  InvoiceID = 1,  PaymentMethodID = 1, Amount = 75.00m,   PaymentDate = new DateTime(2026, 2, 1),  StripeTransactionID = "txn_demo_001",        PaymentStatus = "Completed", IsRefund = false },
+                    // Res 2 - Cancelled: paid then refunded minus $10 fee
+                    new Payment { PaymentID = 2,  InvoiceID = 2,  PaymentMethodID = 1, Amount = 110.00m,  PaymentDate = new DateTime(2026, 2, 15), StripeTransactionID = "txn_demo_002",        PaymentStatus = "Completed", IsRefund = false },
+                    new Payment { PaymentID = 3,  InvoiceID = 2,  PaymentMethodID = 1, Amount = -100.00m, PaymentDate = new DateTime(2026, 2, 28), StripeTransactionID = "txn_demo_002_refund", PaymentStatus = "Refunded",  IsRefund = true,  Notes = "Refund: $100.00 (kept $10.00 cancellation fee)" },
+                    // Res 3 - Upcoming trailer, debit card
+                    new Payment { PaymentID = 4,  InvoiceID = 3,  PaymentMethodID = 2, Amount = 175.00m,  PaymentDate = new DateTime(2026, 4, 10), StripeTransactionID = "txn_demo_003",        PaymentStatus = "Completed", IsRefund = false },
+                    // Res 4 - Completed walk-in trailer, credit card
+                    new Payment { PaymentID = 5,  InvoiceID = 4,  PaymentMethodID = 1, Amount = 90.00m,   PaymentDate = new DateTime(2026, 2, 10), StripeTransactionID = "txn_demo_004",        PaymentStatus = "Completed", IsRefund = false },
+                    // Res 5 - In Progress walk-in trailer + early check-in fee, credit card
+                    new Payment { PaymentID = 6,  InvoiceID = 5,  PaymentMethodID = 1, Amount = 165.00m,  PaymentDate = new DateTime(2026, 4, 5),  StripeTransactionID = "txn_demo_005",        PaymentStatus = "Completed", IsRefund = false },
+                    // Res 6 - Upcoming walk-in trailer, debit card
+                    new Payment { PaymentID = 7,  InvoiceID = 6,  PaymentMethodID = 2, Amount = 120.00m,  PaymentDate = new DateTime(2026, 4, 20), StripeTransactionID = "txn_demo_006",        PaymentStatus = "Completed", IsRefund = false },
+                    // Res 7 - Completed dry storage, cash (processed by employee)
+                    new Payment { PaymentID = 8,  InvoiceID = 7,  PaymentMethodID = 3, Amount = 50.00m,   PaymentDate = new DateTime(2026, 1, 20), PaymentStatus = "Completed", ProcessedByEmployeeID = 1, IsRefund = false },
+                    // Res 8 - Cancelled dry storage: paid then refunded minus $10 fee
+                    new Payment { PaymentID = 9,  InvoiceID = 8,  PaymentMethodID = 1, Amount = 40.00m,   PaymentDate = new DateTime(2026, 3, 1),  StripeTransactionID = "txn_demo_008",        PaymentStatus = "Completed", IsRefund = false },
+                    new Payment { PaymentID = 10, InvoiceID = 8,  PaymentMethodID = 1, Amount = -30.00m,  PaymentDate = new DateTime(2026, 3, 12), StripeTransactionID = "txn_demo_008_refund", PaymentStatus = "Refunded",  IsRefund = true,  Notes = "Refund: $30.00 (kept $10.00 cancellation fee)" },
+                    // Res 9 - Upcoming dry storage, cash (processed by employee)
+                    new Payment { PaymentID = 11, InvoiceID = 9,  PaymentMethodID = 3, Amount = 150.00m,  PaymentDate = new DateTime(2026, 4, 15), PaymentStatus = "Completed", ProcessedByEmployeeID = 1, IsRefund = false },
+                    // Res 10 - Completed tent, debit card
+                    new Payment { PaymentID = 12, InvoiceID = 10, PaymentMethodID = 2, Amount = 34.00m,   PaymentDate = new DateTime(2026, 2, 18), StripeTransactionID = "txn_demo_010",        PaymentStatus = "Completed", IsRefund = false },
+                    // Res 11 - In Progress tent + late checkout fee, credit card
+                    new Payment { PaymentID = 13, InvoiceID = 11, PaymentMethodID = 1, Amount = 76.00m,   PaymentDate = new DateTime(2026, 4, 7),  StripeTransactionID = "txn_demo_011",        PaymentStatus = "Completed", IsRefund = false },
+                    // Res 12 - Upcoming tent, credit card
+                    new Payment { PaymentID = 14, InvoiceID = 12, PaymentMethodID = 1, Amount = 68.00m,   PaymentDate = new DateTime(2026, 4, 22), StripeTransactionID = "txn_demo_012",        PaymentStatus = "Completed", IsRefund = false }
+                );
         }
     }
 }
