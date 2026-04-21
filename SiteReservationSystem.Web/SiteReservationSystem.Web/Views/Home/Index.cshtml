@@ -7,7 +7,7 @@
     var isCustomer = userRole == "Customer" && userId.HasValue;
     var isAdmin = userRole == "Admin" && userId.HasValue;
     var perms = Context.Session.GetInt32("Permissions") ?? 0;
-    var canBrowseSites = isAdmin || (perms & 1) == 1; // ManageSites = 1, or admin
+    var canBrowseSites = (perms & 1) == 1; // ManageSites = 1
 }
 
 <div class="text-center">

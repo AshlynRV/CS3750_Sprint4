@@ -11,7 +11,6 @@ using System.Collections.Generic;
 
 namespace SiteReservationSystem.Web.Controllers
 {
-    [Authorize]
     public class AdminController : BaseController
     {
         private readonly ApplicationDbContext _context;
@@ -21,10 +20,17 @@ namespace SiteReservationSystem.Web.Controllers
             _context = context;
         }
 
-        // GET: Admin dashboard
-        public IActionResult Index() => View();
+        // GET: Admin dashboard - Admin only
+        public IActionResult Index()
+        {
+            var redirect = RequireAdmin();
+            if (redirect != null)
+                return redirect;
+            return View();
+        }
 
-        // GET: Admin/Employees
+        // GET: Admin/Employees - Admin OR ManageEmployees
+        [Authorize(AccessPermissions.ManageEmployees)]
         public async Task<IActionResult> Employees()
         {
             var employees = await _context.Employees
@@ -33,7 +39,8 @@ namespace SiteReservationSystem.Web.Controllers
             return View(employees);
         }
 
-        // GET: Admin/CreateEmployee
+        // GET: Admin/CreateEmployee - Admin OR ManageEmployees
+        [Authorize(AccessPermissions.ManageEmployees)]
         public IActionResult CreateEmployee()
         {
             var model = new EmployeeViewModel();
@@ -43,6 +50,7 @@ namespace SiteReservationSystem.Web.Controllers
         // POST: Admin/CreateEmployee
         [HttpPost]
         [ValidateAntiForgeryToken]
+        [Authorize(AccessPermissions.ManageEmployees)]
         public async Task<IActionResult> CreateEmployee(EmployeeViewModel model)
         {
             if (!ModelState.IsValid) return View(model);
@@ -50,7 +58,7 @@ namespace SiteReservationSystem.Web.Controllers
             var user = new User
             {
                 Email = model.Email,
-                PasswordHash = model.Password, // hash in production
+                PasswordHash = model.Password,
                 Role = UserRole.Employee,
                 IsActive = true,
                 DateCreated = DateTime.UtcNow
@@ -63,7 +71,7 @@ namespace SiteReservationSystem.Web.Controllers
                 UserID = user.UserID,
                 FirstName = model.FirstName,
                 LastName = model.LastName,
-                AccessPermissions = model.SelectedPermissions.Any() 
+                AccessPermissions = model.SelectedPermissions.Any()
                     ? model.SelectedPermissions.Aggregate(AccessPermissions.None, (acc, perm) => acc | perm)
                     : 0,
                 IsLockedOut = false,
@@ -76,7 +84,8 @@ namespace SiteReservationSystem.Web.Controllers
             return RedirectToAction(nameof(Employees));
         }
 
-        // GET: Admin/EditEmployee/5
+        // GET: Admin/EditEmployee/5 - Admin OR ManageEmployees
+        [Authorize(AccessPermissions.ManageEmployees)]
         public async Task<IActionResult> EditEmployee(int id)
         {
             var employee = await _context.Employees
@@ -93,9 +102,9 @@ namespace SiteReservationSystem.Web.Controllers
                 Email = employee.User.Email,
                 IsLockedOut = employee.IsLockedOut,
                 SelectedPermissions = Enum.GetValues(typeof(AccessPermissions))
-                                          .Cast<AccessPermissions>()
-                                          .Where(p => p != AccessPermissions.None && (employee.AccessPermissions & p) == p)
-                                          .ToList()
+                    .Cast<AccessPermissions>()
+                    .Where(p => p != AccessPermissions.None && (employee.AccessPermissions & p) == p)
+                    .ToList()
             };
 
             return View(model);
@@ -104,6 +113,7 @@ namespace SiteReservationSystem.Web.Controllers
         // POST: Admin/EditEmployee/5
         [HttpPost]
         [ValidateAntiForgeryToken]
+        [Authorize(AccessPermissions.ManageEmployees)]
         public async Task<IActionResult> EditEmployee(EmployeeViewModel model)
         {
             if (!ModelState.IsValid) return View(model);
@@ -119,7 +129,6 @@ namespace SiteReservationSystem.Web.Controllers
             employee.IsLockedOut = model.IsLockedOut;
             employee.User.Email = model.Email;
 
-            // Convert selected checkboxes to AccessPermissions enum
             employee.AccessPermissions = model.SelectedPermissions.Any()
                 ? model.SelectedPermissions.Aggregate(AccessPermissions.None, (acc, perm) => acc | perm)
                 : 0;
@@ -128,7 +137,8 @@ namespace SiteReservationSystem.Web.Controllers
             return RedirectToAction(nameof(Employees));
         }
 
-        // GET: Admin/DeleteEmployee/5
+        // GET: Admin/DeleteEmployee/5 - Admin OR ManageEmployees
+        [Authorize(AccessPermissions.ManageEmployees)]
         public async Task<IActionResult> DeleteEmployee(int id)
         {
             var employee = await _context.Employees
@@ -143,6 +153,7 @@ namespace SiteReservationSystem.Web.Controllers
         // POST: Admin/DeleteEmployeeConfirmed/5
         [HttpPost]
         [ValidateAntiForgeryToken]
+        [Authorize(AccessPermissions.ManageEmployees)]
         public async Task<IActionResult> DeleteEmployeeConfirmed(int id)
         {
             var employee = await _context.Employees
@@ -160,9 +171,10 @@ namespace SiteReservationSystem.Web.Controllers
             return RedirectToAction(nameof(Employees));
         }
 
-        // POST: Admin/ToggleLock/5
+        // POST: Admin/ToggleLock/5 - Admin OR ManageEmployees
         [HttpPost]
         [ValidateAntiForgeryToken]
+        [Authorize(AccessPermissions.ManageEmployees)]
         public async Task<IActionResult> ToggleLock(int id)
         {
             var employee = await _context.Employees

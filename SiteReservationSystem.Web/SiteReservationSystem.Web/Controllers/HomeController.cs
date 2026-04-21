@@ -288,13 +288,13 @@ namespace SiteReservationSystem.Web.Controllers
 
             var userId = HttpContext.Session.GetInt32("UserID");
             if (!userId.HasValue)
-                return Unauthorized();
+                return RedirectToAction("Login", "Account");
 
             var customer = await _context.Customers
                 .FirstOrDefaultAsync(c => c.UserID == userId.Value);
 
             if (customer == null)
-                return Unauthorized();
+                return RedirectToAction("Login", "Account");
 
             ModelState.Remove("Customer");
             ModelState.Remove("Site");
